@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { Strain, StrainFilter, StrainReview } from "@/types/strain";
 import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export function useStrains(filter: StrainFilter = {}) {
   const [strains, setStrains] = useState<Strain[]>([]);
@@ -9,12 +11,13 @@ export function useStrains(filter: StrainFilter = {}) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // This would be replaced with an API call in a production app
+    // For now, we use mock data but structure the code to easily migrate to Supabase
     const fetchStrains = async () => {
       try {
         setLoading(true);
         
-        // Simulate API fetch
+        // In the future, this will fetch from Supabase
+        // For now, we use mock data with a simulated delay
         await new Promise((resolve) => setTimeout(resolve, 500));
         
         // Apply filters
@@ -111,7 +114,8 @@ export function useStrainDetail(id: string | undefined) {
       try {
         setLoading(true);
         
-        // Simulate API fetch
+        // In the future, this will fetch from Supabase
+        // For now, use mock data with simulated delay
         await new Promise((resolve) => setTimeout(resolve, 500));
         
         const foundStrain = mockStrains.find(s => s.id === id) || null;
@@ -131,5 +135,101 @@ export function useStrainDetail(id: string | undefined) {
     fetchStrainDetail();
   }, [id]);
 
-  return { strain, reviews, loading, error };
+  // Function to add a review
+  const addReview = async (review: Omit<StrainReview, 'id' | 'createdAt'>) => {
+    try {
+      if (!strain) return;
+      
+      // In the future, this will use Supabase
+      // For now, create a mock review
+      const newReview: StrainReview = {
+        id: `review-${Date.now()}`,
+        strainId: strain.id,
+        createdAt: new Date().toISOString(),
+        ...review
+      };
+      
+      // Add to local state
+      setReviews(prev => [newReview, ...prev]);
+      
+      // Update mock strain review count
+      const updatedStrain = {
+        ...strain,
+        reviewCount: strain.reviewCount + 1,
+        rating: ((strain.rating * strain.reviewCount) + review.rating) / (strain.reviewCount + 1)
+      };
+      setStrain(updatedStrain);
+      
+      toast.success("Review added successfully");
+      return true;
+    } catch (err) {
+      console.error("Failed to add review:", err);
+      toast.error("Failed to add review");
+      return false;
+    }
+  };
+
+  return { 
+    strain, 
+    reviews, 
+    loading, 
+    error,
+    addReview 
+  };
+}
+
+export function useStrainEffects() {
+  // Commonly used strain effects
+  const allEffects = [
+    "relaxing", 
+    "euphoric", 
+    "happy", 
+    "uplifted", 
+    "creative", 
+    "energetic", 
+    "focused", 
+    "tingly", 
+    "sleepy", 
+    "hungry"
+  ];
+  
+  // Medical uses
+  const allMedicalUses = [
+    "stress", 
+    "anxiety", 
+    "pain", 
+    "depression", 
+    "insomnia", 
+    "lack of appetite", 
+    "inflammation", 
+    "muscle spasms", 
+    "nausea", 
+    "headaches"
+  ];
+  
+  // Flavors
+  const allFlavors = [
+    "earthy", 
+    "sweet", 
+    "citrus", 
+    "pine", 
+    "woody", 
+    "berry", 
+    "spicy", 
+    "herbal", 
+    "diesel", 
+    "floral",
+    "tropical",
+    "lemon",
+    "cheese",
+    "vanilla",
+    "mango",
+    "grape",
+    "mint",
+    "coffee",
+    "chocolate",
+    "pungent"
+  ];
+  
+  return { allEffects, allMedicalUses, allFlavors };
 }

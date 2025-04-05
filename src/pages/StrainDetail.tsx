@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useStrainDetail } from "@/hooks/use-strains";
@@ -8,13 +9,15 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Loader2, ArrowLeft, Star, Bookmark } from "lucide-react";
+import { Loader2, ArrowLeft, Star, Bookmark, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ReviewForm } from "@/components/strains/ReviewForm";
 
 const StrainDetail = () => {
   const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
-  const { strain, reviews, loading, error } = useStrainDetail(id);
+  const { strain, reviews, loading, error, addReview } = useStrainDetail(id);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   if (loading) {
     return (
@@ -51,6 +54,19 @@ const StrainDetail = () => {
       default:
         return "bg-gray-500";
     }
+  };
+
+  const handleReviewSubmit = async (reviewData: any) => {
+    const result = await addReview({
+      ...reviewData,
+      strainId: strain.id,
+    });
+    
+    if (result) {
+      setShowReviewForm(false);
+    }
+    
+    return result;
   };
 
   return (
@@ -157,6 +173,34 @@ const StrainDetail = () => {
               </TabsContent>
               
               <TabsContent value="reviews" className="mt-4 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium">{t("userReviews")}</h3>
+                  {!showReviewForm && (
+                    <Button 
+                      onClick={() => setShowReviewForm(true)}
+                      className="gap-1"
+                    >
+                      <Plus className="h-4 w-4" />
+                      {t("writeReview")}
+                    </Button>
+                  )}
+                </div>
+                
+                {showReviewForm && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{t("writeReview")}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ReviewForm 
+                        strainId={strain.id}
+                        onSubmit={handleReviewSubmit}
+                        onCancel={() => setShowReviewForm(false)}
+                      />
+                    </CardContent>
+                  </Card>
+                )}
+                
                 {reviews.length > 0 ? (
                   reviews.map(review => (
                     <Card key={review.id}>
@@ -179,15 +223,42 @@ const StrainDetail = () => {
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm">{review.comment}</p>
+                        
+                        {review.sideEffects && review.sideEffects.length > 0 && (
+                          <div className="mt-2">
+                            <p className="text-xs text-gray-500 mb-1">{t("sideEffects")}:</p>
+                            <div className="flex flex-wrap gap-1">
+                              {review.sideEffects.map((effect, i) => (
+                                <Badge key={i} variant="outline" className="text-xs">
+                                  {t(effect) || effect.replace('_', ' ')}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {review.effectiveness && (
+                          <div className="mt-2">
+                            <p className="text-xs text-gray-500 mb-1">{t("effectiveness")}:</p>
+                            <div className="flex items-center">
+                              {Array(5).fill(0).map((_, i) => (
+                                <Star 
+                                  key={i}
+                                  className="h-3 w-3 text-green-500"
+                                  fill={i < review.effectiveness ? "currentColor" : "none"}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   ))
-                ) : (
+                ) : !showReviewForm ? (
                   <div className="text-center py-6">
                     <p className="text-gray-500">{t("noReviewsYet")}</p>
-                    <Button className="mt-2">{t("writeReview")}</Button>
                   </div>
-                )}
+                ) : null}
               </TabsContent>
             </Tabs>
           </div>
@@ -231,7 +302,9 @@ const StrainDetail = () => {
                 <div className="space-y-3">
                   <h3 className="font-medium">{t("trackEffectiveness")}</h3>
                   <p className="text-sm text-gray-500">{t("journalDescription")}</p>
-                  <Button className="w-full">{t("startJournal")}</Button>
+                  <Button className="w-full" asChild>
+                    <Link to="/journal">{t("startJournal")}</Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -242,7 +315,9 @@ const StrainDetail = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-500 mb-3">{t("askCommunityDescription")}</p>
-                <Button variant="outline" className="w-full">{t("askQuestion")}</Button>
+                <Button variant="outline" className="w-full" asChild>
+                  <Link to="/community">{t("askQuestion")}</Link>
+                </Button>
               </CardContent>
             </Card>
           </div>
