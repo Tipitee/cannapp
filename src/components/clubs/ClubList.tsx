@@ -89,7 +89,7 @@ export function ClubList({ clubs, loading, onFilterChange, filter = { search: ""
             <SelectValue placeholder="Membership status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Statuses</SelectItem>
+            <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="open">Open</SelectItem>
             <SelectItem value="waitlist">Waitlist</SelectItem>
             <SelectItem value="closed">Closed</SelectItem>

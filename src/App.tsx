@@ -4,10 +4,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { Capacitor } from "@capacitor/core";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { lazy, Suspense } from "react";
 
 // Lazily load pages to improve initial load time
 const Index = lazy(() => import("./pages/Index"));
@@ -45,6 +44,7 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
       refetchOnWindowFocus: false, // Prevent refetching when window gets focus
+      useErrorBoundary: true, // Use error boundary for query errors
     },
   },
 });
@@ -61,9 +61,16 @@ function ScrollToTop() {
 }
 
 const App = () => {
-  // Initialize Capacitor on mount
+  const [appReady, setAppReady] = useState(false);
+  
+  // Initialize Capacitor and mark app as ready
   useEffect(() => {
-    initCapacitor();
+    const init = async () => {
+      await initCapacitor();
+      setAppReady(true);
+    };
+    
+    init();
   }, []);
 
   return (
