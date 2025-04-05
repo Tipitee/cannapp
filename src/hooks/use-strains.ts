@@ -1,8 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { Strain, StrainFilter, StrainReview } from "@/types/strain";
 import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
 
-export function useStrains(filter: StrainFilter = { search: "" }) {
+export function useStrains(filter: StrainFilter = {}) {
   const [strains, setStrains] = useState<Strain[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

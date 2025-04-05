@@ -27,7 +27,7 @@ export interface StrainReview {
 }
 
 export interface StrainFilter {
-  search: string;
+  search?: string; // Make search optional
   type?: "sativa" | "indica" | "hybrid";
   effects?: string[];
   medicalUses?: string[];
