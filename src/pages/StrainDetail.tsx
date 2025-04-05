@@ -6,18 +6,31 @@ import { useStrainDetail } from "@/hooks/use-strains";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Loader2, ArrowLeft, Star, Bookmark, Plus } from "lucide-react";
+import { 
+  Loader2, 
+  ArrowLeft, 
+  Star, 
+  Bookmark, 
+  Plus, 
+  ArrowRight, 
+  Cannabis, 
+  Share2, 
+  Heart 
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ReviewForm } from "@/components/strains/ReviewForm";
+import { RelatedStrains } from "@/components/strains/RelatedStrains";
+import { StrainDetailTabs } from "@/components/strains/StrainDetailTabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const StrainDetail = () => {
   const { t } = useLanguage();
   const { id } = useParams<{ id: string }>();
   const { strain, reviews, loading, error, addReview } = useStrainDetail(id);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [favorited, setFavorited] = useState(false);
 
   if (loading) {
     return (
@@ -46,11 +59,11 @@ const StrainDetail = () => {
   const getStrainTypeColor = (type: string) => {
     switch (type) {
       case "sativa":
-        return "bg-green-500";
+        return "bg-emerald-500";
       case "indica":
-        return "bg-purple-500";
+        return "bg-indigo-500";
       case "hybrid":
-        return "bg-blue-500";
+        return "bg-amber-500";
       default:
         return "bg-gray-500";
     }
@@ -72,30 +85,48 @@ const StrainDetail = () => {
   return (
     <PageLayout>
       <div className="space-y-6 animate-fade-in">
-        <div className="flex items-center gap-2">
-          <Link to="/strains">
-            <Button variant="outline" size="icon">
-              <ArrowLeft className="h-4 w-4" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Link to="/strains">
+              <Button variant="outline" size="icon" className="rounded-full">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
+            <h1 className="text-2xl md:text-3xl font-bold">{strain.name}</h1>
+            <Badge className={`${getStrainTypeColor(strain.type)} airbnb-badge`}>
+              {strain.type.charAt(0).toUpperCase() + strain.type.slice(1)}
+            </Badge>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="rounded-full"
+              onClick={() => setFavorited(!favorited)}
+            >
+              <Heart 
+                className={`h-5 w-5 ${favorited ? "fill-red-500 text-red-500" : "text-gray-500"}`} 
+              />
             </Button>
-          </Link>
-          <h1 className="text-2xl md:text-3xl font-bold">{strain.name}</h1>
-          <Badge className={getStrainTypeColor(strain.type)}>
-            {strain.type.charAt(0).toUpperCase() + strain.type.slice(1)}
-          </Badge>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <Share2 className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
-            <div className="rounded-lg overflow-hidden">
+            <div className="rounded-xl overflow-hidden shadow-lg">
               {strain.imageUrl ? (
                 <img 
                   src={strain.imageUrl} 
                   alt={strain.name} 
-                  className="w-full h-64 md:h-80 object-cover"
+                  className="w-full h-64 md:h-[380px] object-cover"
                 />
               ) : (
-                <div className="w-full h-64 md:h-80 flex items-center justify-center bg-gray-200">
-                  <span className="text-gray-500">No image available</span>
+                <div className="w-full h-64 md:h-[380px] flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                  <Cannabis className="h-16 w-16 text-gray-400" />
                 </div>
               )}
             </div>
@@ -112,64 +143,18 @@ const StrainDetail = () => {
                   ))}
                 </div>
                 <span className="ml-2 font-medium">{strain.rating.toFixed(1)}</span>
-                <span className="text-gray-500 ml-1">({strain.reviewCount})</span>
+                <span className="text-gray-500 ml-1">({strain.reviewCount} {t("reviews").toLowerCase()})</span>
               </div>
-              
-              <Button variant="outline" size="sm" className="gap-1">
-                <Bookmark className="h-4 w-4" />
-                {t("saveToFavorites")}
-              </Button>
             </div>
             
-            <Tabs defaultValue="details" className="mt-6">
-              <TabsList>
+            <Tabs defaultValue="details">
+              <TabsList className="hidden">
                 <TabsTrigger value="details">{t("details")}</TabsTrigger>
                 <TabsTrigger value="reviews">{t("userReviews")}</TabsTrigger>
               </TabsList>
-              <TabsContent value="details" className="mt-4 space-y-4">
-                <div>
-                  <h3 className="font-medium mb-2">{t("description")}</h3>
-                  <p className="text-gray-700">{strain.description}</p>
-                </div>
-                
-                <Separator />
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="font-medium mb-2">{t("effects")}</h3>
-                    <div className="flex flex-wrap gap-1">
-                      {strain.effects.map((effect, index) => (
-                        <Badge key={index} variant="secondary">
-                          {t(effect)}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium mb-2">{t("medicalUses")}</h3>
-                    <div className="flex flex-wrap gap-1">
-                      {strain.medicalUses.map((use, index) => (
-                        <Badge key={index} variant="outline">
-                          {use}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
-                <Separator />
-                
-                <div>
-                  <h3 className="font-medium mb-2">{t("flavors")}</h3>
-                  <div className="flex flex-wrap gap-1">
-                    {strain.flavors.map((flavor, index) => (
-                      <Badge key={index} variant="secondary" className="bg-amber-100 hover:bg-amber-200 text-amber-800">
-                        {flavor}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
+              
+              <TabsContent value="details" className="pt-4">
+                <StrainDetailTabs strain={strain} />
               </TabsContent>
               
               <TabsContent value="reviews" className="mt-4 space-y-4">
@@ -264,7 +249,7 @@ const StrainDetail = () => {
           </div>
           
           <div>
-            <Card>
+            <Card className="shadow-airbnb">
               <CardHeader>
                 <CardTitle>{t("cannabinoidProfile")}</CardTitle>
               </CardHeader>
@@ -275,9 +260,9 @@ const StrainDetail = () => {
                       <span className="text-sm font-medium">THC</span>
                       <span className="text-sm font-medium">{strain.thcLevel}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div 
-                        className="bg-green-600 h-2 rounded-full" 
+                        className="bg-emerald-500 h-2 rounded-full" 
                         style={{ width: `${Math.min(100, (strain.thcLevel / 30) * 100)}%` }}
                       ></div>
                     </div>
@@ -288,12 +273,25 @@ const StrainDetail = () => {
                       <span className="text-sm font-medium">CBD</span>
                       <span className="text-sm font-medium">{strain.cbdLevel}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div 
                         className="bg-blue-500 h-2 rounded-full" 
                         style={{ width: `${Math.min(100, (strain.cbdLevel / 20) * 100)}%` }}
                       ></div>
                     </div>
+                  </div>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <div className="space-y-2">
+                  <h3 className="font-medium">{t("consumptionMethods")}</h3>
+                  <div className="flex flex-wrap gap-1">
+                    {['smoking', 'vaping', 'edibles'].map((method) => (
+                      <Badge key={method} variant="secondary">
+                        {t(method)}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
                 
@@ -309,7 +307,7 @@ const StrainDetail = () => {
               </CardContent>
             </Card>
             
-            <Card className="mt-4">
+            <Card className="mt-4 shadow-airbnb">
               <CardHeader>
                 <CardTitle>{t("askCommunity")}</CardTitle>
               </CardHeader>
@@ -322,6 +320,14 @@ const StrainDetail = () => {
             </Card>
           </div>
         </div>
+        
+        <Separator className="my-8" />
+        
+        <RelatedStrains 
+          currentStrainId={strain.id}
+          strainType={strain.type}
+          effects={strain.effects}
+        />
       </div>
     </PageLayout>
   );
