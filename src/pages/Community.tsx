@@ -1,4 +1,3 @@
-
 import React from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageSquare, Heart, Share2, Users, Globe, UserCircle, Calendar, Bookmark, TrendingUp } from "lucide-react";
+import { MessageSquare, Heart, Share2, Users, Globe, UserCircle, Calendar, Bookmark, TrendingUp, LogIn } from "lucide-react";
 
 const CommunityPost = ({ 
   username, 
