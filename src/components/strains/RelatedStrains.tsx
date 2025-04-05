@@ -70,16 +70,16 @@ export function RelatedStrains({
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {filteredStrains.map((strain) => (
-            <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
-              <div className="p-1">
+            <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3 h-full">
+              <div className="p-1 h-full">
                 <StrainCard strain={strain} compact />
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
         <div className="flex justify-end gap-2 mt-2">
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious aria-label={t("previousStrain")} />
+          <CarouselNext aria-label={t("nextStrain")} />
         </div>
       </Carousel>
     </div>

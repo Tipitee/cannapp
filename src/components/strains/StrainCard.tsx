@@ -27,9 +27,9 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
   };
 
   return (
-    <Link to={`/strains/${strain.id}`}>
-      <Card className="h-full overflow-hidden hover:shadow-md transition-shadow">
-        <div className={`relative ${compact ? 'h-36' : 'h-48'} overflow-hidden`}>
+    <Link to={`/strains/${strain.id}`} className="block h-full">
+      <Card className="h-full overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+        <div className={`relative ${compact ? 'h-36' : 'h-48'} overflow-hidden flex-shrink-0`}>
           {strain.imageUrl ? (
             <img 
               src={strain.imageUrl} 
@@ -45,7 +45,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             {strain.type.charAt(0).toUpperCase() + strain.type.slice(1)}
           </Badge>
         </div>
-        <CardContent className={`p-4 ${compact ? 'space-y-1' : 'space-y-2'}`}>
+        <CardContent className={`p-4 ${compact ? 'space-y-1' : 'space-y-2'} flex-grow flex flex-col`}>
           <h3 className={`font-bold ${compact ? 'text-base' : 'text-lg'} mb-1 truncate`}>{strain.name}</h3>
           <div className="flex items-center mb-1">
             <div className="flex items-center mr-2">
@@ -67,7 +67,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             </div>
           )}
 
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-sm mt-auto">
             <div>
               <span className="font-medium">{t("thcLevel")}:</span> {strain.thcLevel}%
             </div>

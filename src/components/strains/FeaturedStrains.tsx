@@ -37,19 +37,16 @@ export const FeaturedStrains = () => {
     return null;
   }
   
-  const featuredStrainsText = t("featuredStrains") || "Featured Strains";
-  const viewAllText = t("viewAll") || "View All";
-  
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">{featuredStrainsText}</h2>
+        <h2 className="text-2xl font-bold">{t("featuredStrains")}</h2>
         <Button 
           variant="link" 
           onClick={handleViewAll}
           className="font-medium"
         >
-          {viewAllText}
+          {t("viewAll")}
         </Button>
       </div>
       
@@ -60,10 +57,10 @@ export const FeaturedStrains = () => {
         }}
         className="w-full"
       >
-        <CarouselContent className="py-2">
+        <CarouselContent className="-ml-2 md:-ml-4">
           {strains.map((strain) => (
-            <CarouselItem key={strain.id} className="pl-2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
-              <div className="p-1">
+            <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 h-full">
+              <div className="p-1 h-full">
                 <StrainCard key={strain.id} strain={strain} compact />
               </div>
             </CarouselItem>
@@ -72,11 +69,11 @@ export const FeaturedStrains = () => {
         <div className="hidden md:flex md:items-center md:justify-end md:gap-2 md:absolute md:top-[-50px] md:right-0">
           <CarouselPrevious 
             className="static h-8 w-8 translate-y-0 rounded-full" 
-            aria-label="Previous strain"
+            aria-label={t("previousStrain")}
           />
           <CarouselNext 
             className="static h-8 w-8 translate-y-0 rounded-full"
-            aria-label="Next strain"
+            aria-label={t("nextStrain")}
           />
         </div>
       </Carousel>

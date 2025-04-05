@@ -70,12 +70,17 @@ const translations: Translations = {
   "journalDesc": { en: "Track your personal cannabis experiences", de: "Verfolge deine persönlichen Cannabis-Erfahrungen" },
   
   // Strain Effects
+  "type": { en: "Type", de: "Typ" },
   "relaxing": { en: "Relaxing", de: "Entspannend" },
   "energizing": { en: "Energizing", de: "Energetisierend" },
   "creative": { en: "Creative", de: "Kreativ" },
   "sleepy": { en: "Sleepy", de: "Schläfrig" },
   "focused": { en: "Focused", de: "Konzentriert" },
   "euphoric": { en: "Euphoric", de: "Euphorisch" },
+  "happy": { en: "Happy", de: "Glücklich" },
+  "uplifted": { en: "Uplifted", de: "Aufgemuntert" },
+  "tingly": { en: "Tingly", de: "Kribbelig" },
+  "hungry": { en: "Hungry", de: "Hungrig" },
   
   // Actions
   "openMenu": { en: "Open Menu", de: "Menü öffnen" },
@@ -83,6 +88,9 @@ const translations: Translations = {
   "filterStrains": { en: "Filter Strains", de: "Sorten filtern" },
   "reset": { en: "Reset", de: "Zurücksetzen" },
   "noStrainsFound": { en: "No strains found", de: "Keine Sorten gefunden" },
+  "applyFilters": { en: "Apply Filters", de: "Filter anwenden" },
+  "similarStrains": { en: "Similar Strains", de: "Ähnliche Sorten" },
+  "noImage": { en: "No image", de: "Kein Bild" },
   
   // App-specific
   "homeDescription": { en: "Dashboard and overview", de: "Dashboard und Überblick" },

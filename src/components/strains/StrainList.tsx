@@ -78,9 +78,11 @@ export const StrainList = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentStrains.map((strain) => (
-                  <StrainCard key={strain.id} strain={strain} />
+                  <div key={strain.id} className="h-full">
+                    <StrainCard strain={strain} />
+                  </div>
                 ))}
               </div>
               
@@ -91,25 +93,40 @@ export const StrainList = () => {
                     <PaginationItem>
                       <PaginationPrevious 
                         onClick={() => prevPage()}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
                       />
                     </PaginationItem>
                     
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                      <PaginationItem key={page}>
-                        <PaginationLink 
-                          onClick={() => paginate(page)} 
-                          isActive={currentPage === page}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
+                    {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                      // Show first page, last page, current page, and pages around current
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      
+                      return (
+                        <PaginationItem key={pageNum}>
+                          <PaginationLink 
+                            onClick={() => paginate(pageNum)} 
+                            isActive={currentPage === pageNum}
+                            className="cursor-pointer"
+                          >
+                            {pageNum}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
                     
                     <PaginationItem>
                       <PaginationNext 
                         onClick={() => nextPage()}
-                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
                       />
                     </PaginationItem>
                   </PaginationContent>
