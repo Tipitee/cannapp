@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ClubFilter } from "@/types/club";
 import { toast } from "sonner";
-import { Loader2, Leaf, Map, List, Home, User, Settings, MessageSquare, Star } from "lucide-react";
+import { Loader2, Leaf, Map, List, Home, User, Settings, MessageSquare, Star, Users } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
 import { SplashScreen } from "@capacitor/splash-screen";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -25,7 +25,7 @@ const Index = () => {
   const [activeView, setActiveView] = useState<string>("welcome");
   const [filter, setFilter] = useState<ClubFilter>({ search: "" });
   const { clubs, loading: clubsLoading } = useClubs(filter);
-  const { strains, loading: strainsLoading } = useStrains({ limit: 4 });
+  const { strains, loading: strainsLoading } = useStrains({ search: "", limit: 4 });
   const { latitude, longitude, error: locationError, loading: locationLoading, requestGeolocation } = useGeolocation();
   const { platform, deviceType, isReady } = useDevice();
 
@@ -133,7 +133,7 @@ const Index = () => {
                 
                 <div>
                   <h3 className="text-xl font-semibold mb-4">{t("exploreFeatures")}</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <AppCard
                       title={t("findClubs")}
                       description={t("findClubsDesc")}
@@ -149,8 +149,14 @@ const Index = () => {
                     <AppCard
                       title={t("community")}
                       description={t("communityDesc")}
+                      icon={Users}
+                      onClick={() => window.location.href = "/community"}
+                    />
+                    <AppCard
+                      title={t("journal")}
+                      description={t("journalDesc")}
                       icon={MessageSquare}
-                      onClick={() => {}}
+                      onClick={() => window.location.href = "/journal"}
                     />
                   </div>
                 </div>
