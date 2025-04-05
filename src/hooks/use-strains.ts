@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Strain, StrainFilter, StrainReview } from "@/types/strain";
 import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
@@ -70,6 +69,11 @@ export function useStrains(filter: StrainFilter = { search: "" }) {
         // Rating filter
         if (filter.minRating !== undefined) {
           filteredStrains = filteredStrains.filter(strain => strain.rating >= filter.minRating!);
+        }
+
+        // Apply limit if specified
+        if (filter.limit !== undefined && filter.limit > 0) {
+          filteredStrains = filteredStrains.slice(0, filter.limit);
         }
 
         setStrains(filteredStrains);

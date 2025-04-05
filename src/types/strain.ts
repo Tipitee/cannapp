@@ -36,6 +36,7 @@ export interface StrainFilter {
   minCBD?: number;
   maxCBD?: number;
   minRating?: number;
+  limit?: number; // Add this property for pagination/limiting results
 }
 
 export interface JournalEntry {

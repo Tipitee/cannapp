@@ -7,9 +7,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StrainCardProps {
   strain: Strain;
+  compact?: boolean; // Added compact prop as optional boolean
 }
 
-export const StrainCard = ({ strain }: StrainCardProps) => {
+export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
   const { t } = useLanguage();
   
   const getStrainTypeColor = (type: string) => {
