@@ -10,9 +10,12 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import ClubDetail from "./pages/ClubDetail";
+import Strains from "./pages/Strains";
+import StrainDetail from "./pages/StrainDetail";
 import { Navigation } from "./components/navigation/Navigation";
 import { useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 // Initialize Capacitor plugins when needed
 const initCapacitor = async () => {
@@ -39,21 +42,25 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/clubs/:id" element={<ClubDetail />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/clubs/:id" element={<ClubDetail />} />
+              <Route path="/strains" element={<Strains />} />
+              <Route path="/strains/:id" element={<StrainDetail />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 };

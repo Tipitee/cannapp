@@ -1,32 +1,47 @@
 
-import { Home, User, Settings, Menu, X, Map, List } from "lucide-react";
-import { useState } from "react";
+import { Home, User, Settings, Menu, X, Map, List, Leaf } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 
 export const MobileNavBar = () => {
+  const { t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const isClubDetail = location.pathname.startsWith("/clubs/");
-
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Listen for the custom event to change tabs
+  useEffect(() => {
+    const handleTabChange = (event: CustomEvent<{ tab: string }>) => {
+      // Handle tab change if needed
+      console.log('Tab changed to:', event.detail.tab);
+    };
+
+    window.addEventListener('changeTab', handleTabChange as EventListener);
+    return () => {
+      window.removeEventListener('changeTab', handleTabChange as EventListener);
+    };
+  }, []);
 
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 md:hidden">
         <div className="flex items-center justify-around p-2">
-          <NavButton to="/" label="Home" active={location.pathname === "/"}>
+          <NavButton to="/" label={t("home")} active={location.pathname === "/"}>
             <Home className="h-6 w-6" />
           </NavButton>
           {isHomePage && (
             <>
               <NavButton 
                 to="/?view=map" 
-                label="Map"
+                label={t("map")}
                 onClick={() => {
                   const event = new CustomEvent('changeTab', { detail: { tab: 'map' } });
                   window.dispatchEvent(event);
@@ -37,7 +52,7 @@ export const MobileNavBar = () => {
               </NavButton>
               <NavButton 
                 to="/?view=list" 
-                label="List"
+                label={t("list")}
                 onClick={() => {
                   const event = new CustomEvent('changeTab', { detail: { tab: 'list' } });
                   window.dispatchEvent(event);
@@ -48,10 +63,13 @@ export const MobileNavBar = () => {
               </NavButton>
             </>
           )}
-          <NavButton to="/profile" label="Profile" active={location.pathname === "/profile"}>
+          <NavButton to="/strains" label={t("strains")} active={location.pathname.includes('/strains')}>
+            <Leaf className="h-6 w-6" />
+          </NavButton>
+          <NavButton to="/profile" label={t("profile")} active={location.pathname === "/profile"}>
             <User className="h-6 w-6" />
           </NavButton>
-          <NavButton to="/settings" label="Settings" active={location.pathname === "/settings"}>
+          <NavButton to="/settings" label={t("settings")} active={location.pathname === "/settings"}>
             <Settings className="h-6 w-6" />
           </NavButton>
         </div>
@@ -80,11 +98,27 @@ export const MobileNavBar = () => {
           )}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="space-y-6 pt-10">
-            <MobileMenuItem to="/" onClick={toggleMenu} active={location.pathname === "/"}>Home</MobileMenuItem>
-            <MobileMenuItem to="/profile" onClick={toggleMenu} active={location.pathname === "/profile"}>Profile</MobileMenuItem>
-            <MobileMenuItem to="/settings" onClick={toggleMenu} active={location.pathname === "/settings"}>Settings</MobileMenuItem>
-            <MobileMenuItem to="/login" onClick={toggleMenu} active={location.pathname === "/login"}>Login</MobileMenuItem>
+          <div className="flex justify-between items-center pt-2 pb-6">
+            <h3 className="font-bold">{t("appName")}</h3>
+            <LanguageSwitcher variant="minimal" />
+          </div>
+          
+          <div className="space-y-6">
+            <MobileMenuItem to="/" onClick={toggleMenu} active={location.pathname === "/"}>
+              {t("home")}
+            </MobileMenuItem>
+            <MobileMenuItem to="/strains" onClick={toggleMenu} active={location.pathname.includes('/strains')}>
+              {t("strains")}
+            </MobileMenuItem>
+            <MobileMenuItem to="/profile" onClick={toggleMenu} active={location.pathname === "/profile"}>
+              {t("profile")}
+            </MobileMenuItem>
+            <MobileMenuItem to="/settings" onClick={toggleMenu} active={location.pathname === "/settings"}>
+              {t("settings")}
+            </MobileMenuItem>
+            <MobileMenuItem to="/login" onClick={toggleMenu} active={location.pathname === "/login"}>
+              {t("login")}
+            </MobileMenuItem>
           </div>
         </div>
       </div>

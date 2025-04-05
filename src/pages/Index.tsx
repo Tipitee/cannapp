@@ -13,8 +13,11 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
 import { SplashScreen } from "@capacitor/splash-screen";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 
 const Index = () => {
+  const { t } = useLanguage();
   const [activeView, setActiveView] = useState<string>("map");
   const [filter, setFilter] = useState<ClubFilter>({ search: "" });
   const { clubs, loading } = useClubs(filter);
@@ -31,18 +34,30 @@ const Index = () => {
     hideSplash();
   }, []);
 
+  // Listen for custom tab change events
+  useEffect(() => {
+    const handleTabChange = (event: CustomEvent<{ tab: string }>) => {
+      setActiveView(event.detail.tab);
+    };
+
+    window.addEventListener('changeTab', handleTabChange as EventListener);
+    return () => {
+      window.removeEventListener('changeTab', handleTabChange as EventListener);
+    };
+  }, []);
+
   useEffect(() => {
     if (isReady) {
-      toast.message("Welcome to German Cannabis Club Finder", {
-        description: `You're using a ${deviceType} device on ${platform}`,
+      toast.message(t("welcomeTitle"), {
+        description: t("welcomeMessage"),
       });
     }
-  }, [isReady, deviceType, platform]);
+  }, [isReady, t]);
 
   const handleLocationRequest = () => {
     requestGeolocation();
-    toast.message("Accessing your location", {
-      description: "We'll show cannabis clubs near your current position",
+    toast.message(t("accessingLocation"), {
+      description: t("locationDescription"),
     });
   };
 
@@ -54,14 +69,17 @@ const Index = () => {
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent">
-                  Cannabis Club Finder
+                  {t("appName")}
                 </h1>
               </div>
               <TabsList>
-                <TabsTrigger value="map">Map</TabsTrigger>
-                <TabsTrigger value="list">List</TabsTrigger>
+                <TabsTrigger value="map">{t("map")}</TabsTrigger>
+                <TabsTrigger value="list">{t("list")}</TabsTrigger>
               </TabsList>
-              <div className="flex-1 flex justify-end">
+              <div className="flex-1 flex justify-end items-center space-x-2">
+                <div className="hidden sm:block">
+                  <LanguageSwitcher variant="minimal" />
+                </div>
                 <Button 
                   variant="outline" 
                   size="sm"
@@ -73,7 +91,7 @@ const Index = () => {
                   ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1"><path d="m12 12 9-5-9-5-9 5 9 5Z"/><path d="m12 12 9 5-9 5-9-5 9-5Z"/><path d="M12 22V12"/></svg>
                   )}
-                  Near Me
+                  {t("nearMe")}
                 </Button>
               </div>
             </div>

@@ -6,18 +6,22 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Capacitor } from "@capacitor/core";
 import { useDevice } from "@/hooks/use-device";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const Settings = () => {
   const { platform } = useDevice();
+  const { t, language, setLanguage } = useLanguage();
   const isNative = Capacitor.isNativePlatform();
   
   return (
     <PageLayout>
       <div className="space-y-6 animate-fade-in">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t("settings")}</h1>
           <p className="text-muted-foreground">
-            Manage your account settings and preferences.
+            {t("settingsDescription")}
           </p>
         </div>
         
@@ -26,17 +30,41 @@ const Settings = () => {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Profile</CardTitle>
+              <CardTitle>{t("languagePreference")}</CardTitle>
               <CardDescription>
-                Update your personal information
+                {t("languagePreferenceDescription")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <RadioGroup 
+                defaultValue={language} 
+                onValueChange={(value) => setLanguage(value as 'en' | 'de')}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="en" id="en" />
+                  <Label htmlFor="en">{t("english")}</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="de" id="de" />
+                  <Label htmlFor="de">{t("german")}</Label>
+                </div>
+              </RadioGroup>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("profileSettings")}</CardTitle>
+              <CardDescription>
+                {t("profileSettingsDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="font-medium">Public profile</p>
+                  <p className="font-medium">{t("publicProfile")}</p>
                   <p className="text-sm text-muted-foreground">
-                    Allow others to see your profile
+                    {t("publicProfileDescription")}
                   </p>
                 </div>
                 <Switch defaultChecked />
@@ -44,9 +72,9 @@ const Settings = () => {
               
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="font-medium">Show email</p>
+                  <p className="font-medium">{t("showEmail")}</p>
                   <p className="text-sm text-muted-foreground">
-                    Display your email on your public profile
+                    {t("showEmailDescription")}
                   </p>
                 </div>
                 <Switch />
@@ -56,17 +84,17 @@ const Settings = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>Notifications</CardTitle>
+              <CardTitle>{t("notificationSettings")}</CardTitle>
               <CardDescription>
-                Configure how you receive notifications
+                {t("notificationSettingsDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="font-medium">Push notifications</p>
+                  <p className="font-medium">{t("pushNotifications")}</p>
                   <p className="text-sm text-muted-foreground">
-                    Receive push notifications on your device
+                    {t("pushNotificationsDescription")}
                   </p>
                 </div>
                 <Switch defaultChecked disabled={!isNative} />
@@ -74,9 +102,9 @@ const Settings = () => {
               
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="font-medium">Email notifications</p>
+                  <p className="font-medium">{t("emailNotifications")}</p>
                   <p className="text-sm text-muted-foreground">
-                    Receive email updates and alerts
+                    {t("emailNotificationsDescription")}
                   </p>
                 </div>
                 <Switch defaultChecked />
@@ -84,9 +112,9 @@ const Settings = () => {
               
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="font-medium">Marketing emails</p>
+                  <p className="font-medium">{t("marketingEmails")}</p>
                   <p className="text-sm text-muted-foreground">
-                    Receive emails about new features and updates
+                    {t("marketingEmailsDescription")}
                   </p>
                 </div>
                 <Switch />
@@ -97,17 +125,17 @@ const Settings = () => {
           {isNative && (
             <Card>
               <CardHeader>
-                <CardTitle>Device Settings</CardTitle>
+                <CardTitle>{t("deviceSettings")}</CardTitle>
                 <CardDescription>
-                  Platform-specific settings for {platform}
+                  {t("deviceSettingsDescription")} {platform}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <p className="font-medium">Background refresh</p>
+                    <p className="font-medium">{t("backgroundRefresh")}</p>
                     <p className="text-sm text-muted-foreground">
-                      Update content when app is not active
+                      {t("backgroundRefreshDescription")}
                     </p>
                   </div>
                   <Switch defaultChecked />
@@ -115,9 +143,9 @@ const Settings = () => {
                 
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <p className="font-medium">Location services</p>
+                    <p className="font-medium">{t("locationServices")}</p>
                     <p className="text-sm text-muted-foreground">
-                      Allow app to use your location
+                      {t("locationServicesDescription")}
                     </p>
                   </div>
                   <Switch />
@@ -127,8 +155,8 @@ const Settings = () => {
           )}
           
           <div className="flex items-center justify-end space-x-2">
-            <Button variant="outline">Cancel</Button>
-            <Button>Save changes</Button>
+            <Button variant="outline">{t("cancel")}</Button>
+            <Button>{t("saveChanges")}</Button>
           </div>
         </div>
       </div>

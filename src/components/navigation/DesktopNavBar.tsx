@@ -1,6 +1,8 @@
 
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavItem {
   title: string;
@@ -8,32 +10,39 @@ interface NavItem {
   description?: string;
 }
 
-const navItems: NavItem[] = [
-  {
-    title: "Home",
-    href: "/",
-    description: "Return to the home page"
-  },
-  {
-    title: "Profile",
-    href: "/profile",
-    description: "View your profile"
-  },
-  {
-    title: "Settings",
-    href: "/settings",
-    description: "Manage your account settings"
-  }
-];
-
 export const DesktopNavBar = () => {
+  const { t } = useLanguage();
+  
+  const navItems: NavItem[] = [
+    {
+      title: t("home"),
+      href: "/",
+      description: t("homeDescription")
+    },
+    {
+      title: t("strains"),
+      href: "/strains",
+      description: t("strainsDescription")
+    },
+    {
+      title: t("profile"),
+      href: "/profile",
+      description: t("profileDescription")
+    },
+    {
+      title: t("settings"),
+      href: "/settings",
+      description: t("settingsDescription")
+    }
+  ];
+
   return (
     <div className="hidden md:block border-b">
       <div className="flex h-16 items-center px-6">
         <div className="flex items-center space-x-4">
           <Link to="/" className="flex items-center space-x-2">
             <span className="bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent text-2xl font-bold">
-              Cannabis Club Finder
+              {t("appName")}
             </span>
           </Link>
           <nav className="mx-6 flex items-center space-x-6">
@@ -54,11 +63,12 @@ export const DesktopNavBar = () => {
           </nav>
         </div>
         <div className="ml-auto flex items-center space-x-4">
+          <LanguageSwitcher variant="minimal" />
           <Link
             to="/login"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Login
+            {t("login")}
           </Link>
         </div>
       </div>
