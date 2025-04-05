@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import ClubDetail from "./pages/ClubDetail";
 import Strains from "./pages/Strains";
 import StrainDetail from "./pages/StrainDetail";
+import Journal from "./pages/Journal";
 import { Navigation } from "./components/navigation/Navigation";
 import { useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
@@ -53,6 +54,7 @@ const App = () => {
               <Route path="/clubs/:id" element={<ClubDetail />} />
               <Route path="/strains" element={<Strains />} />
               <Route path="/strains/:id" element={<StrainDetail />} />
+              <Route path="/journal" element={<Journal />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/login" element={<Login />} />

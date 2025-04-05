@@ -8,11 +8,32 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Filter } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export const StrainList = () => {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<StrainFilterType>({ search: "" });
   const { strains, loading } = useStrains(filter);
+  const [currentPage, setCurrentPage] = useState(1);
+  const strainsPerPage = 9;
+  
+  // Calculate pagination
+  const indexOfLastStrain = currentPage * strainsPerPage;
+  const indexOfFirstStrain = indexOfLastStrain - strainsPerPage;
+  const currentStrains = strains.slice(indexOfFirstStrain, indexOfLastStrain);
+  const totalPages = Math.ceil(strains.length / strainsPerPage);
+  
+  // Pagination logic
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
   
   return (
     <div>
@@ -56,11 +77,45 @@ export const StrainList = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {strains.map((strain) => (
-                <StrainCard key={strain.id} strain={strain} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {currentStrains.map((strain) => (
+                  <StrainCard key={strain.id} strain={strain} />
+                ))}
+              </div>
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination className="mt-8">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => prevPage()}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                      <PaginationItem key={page}>
+                        <PaginationLink 
+                          onClick={() => paginate(page)} 
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => nextPage()}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </>
           )}
         </div>
       </div>

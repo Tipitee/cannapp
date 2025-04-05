@@ -25,6 +25,11 @@ export const DesktopNavBar = () => {
       description: t("strainsDescription")
     },
     {
+      title: t("journal"),
+      href: "/journal",
+      description: t("journalDescription")
+    },
+    {
       title: t("profile"),
       href: "/profile",
       description: t("profileDescription")
