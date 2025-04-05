@@ -9,7 +9,12 @@ export const Navigation = () => {
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
+    // Set mounted state after component mounts in browser
     setMounted(true);
+    return () => {
+      // Clean up mounted state on unmount
+      setMounted(false);
+    };
   }, []);
   
   // Don't render until device detection and client-side mounting are complete

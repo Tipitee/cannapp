@@ -15,6 +15,7 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 import { Home } from "@/components/home/Home";
+import { useLocation } from "react-router-dom";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -22,33 +23,35 @@ const Index = () => {
   const [filter, setFilter] = useState<ClubFilter>({ search: "" });
   const { clubs, loading: clubsLoading } = useClubs(filter);
   const { isReady } = useDevice();
+  const location = useLocation();
 
   useEffect(() => {
     const hideSplash = async () => {
       if (Capacitor.isNativePlatform()) {
-        await SplashScreen.hide();
+        try {
+          await SplashScreen.hide();
+        } catch (e) {
+          console.error("Error hiding splash screen:", e);
+        }
       }
     };
     
     hideSplash();
   }, []);
 
-  // Listen for custom tab change events
+  // Handle tab changes from location state
   useEffect(() => {
-    const handleTabChange = (event: CustomEvent<{ tab: string }>) => {
-      setActiveView(event.detail.tab);
-    };
-
-    window.addEventListener('changeTab', handleTabChange as EventListener);
-    return () => {
-      window.removeEventListener('changeTab', handleTabChange as EventListener);
-    };
-  }, []);
+    if (location.state && location.state.activeTab) {
+      setActiveView(location.state.activeTab);
+      // Clear the state after consuming it
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (isReady) {
-      toast.message(t("welcomeTitle"), {
-        description: t("welcomeMessage"),
+      toast.message(t("welcomeTitle") || "Welcome to German Cannabis Club Finder", {
+        description: t("welcomeMessage") || "Discover cannabis clubs near you",
       });
     }
   }, [isReady, t]);
@@ -61,13 +64,13 @@ const Index = () => {
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent">
-                  {t("appName")}
+                  {t("appName") || "Cannabis Club Finder"}
                 </h1>
               </div>
               <TabsList>
-                <TabsTrigger value="welcome"><HomeIcon className="h-4 w-4 mr-1" />{t("welcome")}</TabsTrigger>
-                <TabsTrigger value="map"><Map className="h-4 w-4 mr-1" />{t("map")}</TabsTrigger>
-                <TabsTrigger value="list"><List className="h-4 w-4 mr-1" />{t("list")}</TabsTrigger>
+                <TabsTrigger value="welcome"><HomeIcon className="h-4 w-4 mr-1" />{t("welcome") || "Welcome"}</TabsTrigger>
+                <TabsTrigger value="map"><Map className="h-4 w-4 mr-1" />{t("map") || "Map"}</TabsTrigger>
+                <TabsTrigger value="list"><List className="h-4 w-4 mr-1" />{t("list") || "List"}</TabsTrigger>
               </TabsList>
               <div className="flex-1 flex justify-end items-center space-x-2">
                 <div className="hidden sm:block">

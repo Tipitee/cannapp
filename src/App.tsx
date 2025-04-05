@@ -29,9 +29,8 @@ const initCapacitor = async () => {
     // Import and initialize plugins only in native platforms
     try {
       const { SplashScreen } = await import("@capacitor/splash-screen");
-      await SplashScreen.show({
-        showDuration: 2000,
-        autoHide: false,
+      await SplashScreen.hide({
+        fadeOutDuration: 500
       });
     } catch (error) {
       console.error("Error initializing Capacitor plugins:", error);
@@ -45,6 +44,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
       retry: 1,
+      refetchOnWindowFocus: false, // Prevent refetching when window gets focus
     },
   },
 });
@@ -61,6 +61,7 @@ function ScrollToTop() {
 }
 
 const App = () => {
+  // Initialize Capacitor on mount
   useEffect(() => {
     initCapacitor();
   }, []);

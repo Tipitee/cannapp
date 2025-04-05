@@ -19,9 +19,14 @@ export const Home = () => {
   
   const handleLocationRequest = () => {
     requestGeolocation();
-    toast.message(t("accessingLocation"), {
-      description: t("locationDescription"),
+    toast.message(t("accessingLocation") || "Accessing Location", {
+      description: t("locationDescription") || "We'll show you clubs near your current location",
     });
+  };
+  
+  const handleChangeTab = (tab: string) => {
+    // Use the navigate API with state to indicate which tab should be active
+    navigate("/", { state: { activeTab: tab } });
   };
   
   const AppCard = ({ title, description, icon: Icon, onClick }: { 
@@ -46,40 +51,40 @@ export const Home = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-3xl font-bold text-center mb-2">{t("welcomeToApp")}</h2>
-        <p className="text-muted-foreground text-center max-w-lg mx-auto">{t("welcomeDescription")}</p>
+        <h2 className="text-3xl font-bold text-center mb-2">{t("welcomeToApp") || "Welcome to Cannabis Club Finder"}</h2>
+        <p className="text-muted-foreground text-center max-w-lg mx-auto">{t("welcomeDescription") || "Discover cannabis clubs, explore strains, and connect with the community."}</p>
         
         <div className="mt-6 flex justify-center">
           <Button onClick={handleLocationRequest} className="bg-green-500 hover:bg-green-600">
-            {t("findNearMe")}
+            {t("findNearMe") || "Find Near Me"}
           </Button>
         </div>
       </div>
       
       <div>
-        <h3 className="text-xl font-semibold mb-4">{t("exploreFeatures")}</h3>
+        <h3 className="text-xl font-semibold mb-4">{t("exploreFeatures") || "Explore Features"}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <AppCard
-            title={t("findClubs")}
-            description={t("findClubsDesc")}
+            title={t("findClubs") || "Find Clubs"}
+            description={t("findClubsDesc") || "Discover cannabis clubs in your area"}
             icon={Map}
-            onClick={() => window.dispatchEvent(new CustomEvent('changeTab', { detail: { tab: 'map' } }))}
+            onClick={() => handleChangeTab('map')}
           />
           <AppCard
-            title={t("exploreStrains")}
-            description={t("exploreStrainsDesc")}
+            title={t("exploreStrains") || "Explore Strains"}
+            description={t("exploreStrainsDesc") || "Browse and learn about different cannabis strains"}
             icon={Leaf}
             onClick={() => navigate('/strains')}
           />
           <AppCard
-            title={t("community")}
-            description={t("communityDesc")}
+            title={t("community") || "Community"}
+            description={t("communityDesc") || "Connect with other cannabis enthusiasts"}
             icon={Users}
             onClick={() => navigate('/community')}
           />
           <AppCard
-            title={t("journal")}
-            description={t("journalDesc")}
+            title={t("journal") || "Journal"}
+            description={t("journalDesc") || "Track your personal cannabis experiences"}
             icon={MessageSquare}
             onClick={() => navigate('/journal')}
           />
@@ -90,9 +95,9 @@ export const Home = () => {
 
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold">{t("nearbyClubs")}</h3>
-          <Button variant="link" onClick={() => window.dispatchEvent(new CustomEvent('changeTab', { detail: { tab: 'map' } }))}>
-            {t("viewMap")}
+          <h3 className="text-xl font-semibold">{t("nearbyClubs") || "Nearby Clubs"}</h3>
+          <Button variant="link" onClick={() => handleChangeTab('map')}>
+            {t("viewMap") || "View Map"}
           </Button>
         </div>
         <div className="h-64 rounded-xl overflow-hidden border">
@@ -104,8 +109,8 @@ export const Home = () => {
         </div>
         
         <div className="mt-4 flex justify-center">
-          <Button variant="outline" asChild>
-            <Link to="/strains">{t("browseStrains")}</Link>
+          <Button variant="outline" onClick={() => navigate("/strains")}>
+            {t("browseStrains") || "Browse Strains"}
           </Button>
         </div>
       </div>
