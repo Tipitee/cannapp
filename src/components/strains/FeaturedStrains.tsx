@@ -45,7 +45,7 @@ export const FeaturedStrains = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">{t("featuredStrains")}</h2>
+        <h2 className="text-2xl font-bold">{t("featuredStrains") || "Featured Strains"}</h2>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={prevSlide}>
             <ChevronLeft className="h-4 w-4" />
@@ -54,7 +54,7 @@ export const FeaturedStrains = () => {
             <ChevronRight className="h-4 w-4" />
           </Button>
           <Button variant="link" asChild>
-            <Link to="/strains">{t("viewAll")}</Link>
+            <Link to="/strains">{t("viewAll") || "View All"}</Link>
           </Button>
         </div>
       </div>

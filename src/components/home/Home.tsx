@@ -5,7 +5,7 @@ import { ClubMap } from "@/components/map/ClubMap";
 import { useClubs } from "@/hooks/use-clubs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FeaturedStrains } from "@/components/strains/FeaturedStrains";
 import { Leaf, Map, Users, BookOpen, MessageSquare } from "lucide-react";
@@ -15,6 +15,7 @@ export const Home = () => {
   const { t } = useLanguage();
   const { clubs } = useClubs({ search: "" });
   const { latitude, longitude, requestGeolocation } = useGeolocation();
+  const navigate = useNavigate();
   
   const handleLocationRequest = () => {
     requestGeolocation();
@@ -68,19 +69,19 @@ export const Home = () => {
             title={t("exploreStrains")}
             description={t("exploreStrainsDesc")}
             icon={Leaf}
-            onClick={() => window.dispatchEvent(new CustomEvent('changeTab', { detail: { tab: 'strains' } }))}
+            onClick={() => navigate('/strains')}
           />
           <AppCard
             title={t("community")}
             description={t("communityDesc")}
             icon={Users}
-            onClick={() => window.location.href = "/community"}
+            onClick={() => navigate('/community')}
           />
           <AppCard
             title={t("journal")}
             description={t("journalDesc")}
             icon={MessageSquare}
-            onClick={() => window.location.href = "/journal"}
+            onClick={() => navigate('/journal')}
           />
         </div>
       </div>
