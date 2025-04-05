@@ -1,10 +1,9 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Strain } from "@/types/strain";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Award, Leaf, Dna, Flask, Info } from "lucide-react";
+import { Award, Leaf, Dna, Beaker, Info } from "lucide-react";
 
 interface StrainDetailTabsProps {
   strain: Strain;
@@ -29,7 +28,7 @@ export const StrainDetailTabs = ({ strain }: StrainDetailTabsProps) => {
           {t("growInfo")}
         </TabsTrigger>
         <TabsTrigger value="terpenes">
-          <Flask className="h-4 w-4 mr-2 hidden sm:inline-block" />
+          <Beaker className="h-4 w-4 mr-2 hidden sm:inline-block" />
           {t("topTerpenes")}
         </TabsTrigger>
         <TabsTrigger value="reviews" className="hidden md:flex">
@@ -186,7 +185,6 @@ export const StrainDetailTabs = ({ strain }: StrainDetailTabsProps) => {
   );
 };
 
-// Helper functions
 function getTerpeneDescription(terpene: string): string {
   const descriptions: Record<string, string> = {
     earthy: "Provides grounding, woody notes and is often associated with calming effects.",

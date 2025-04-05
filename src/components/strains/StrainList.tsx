@@ -5,7 +5,7 @@ import { StrainCard } from "./StrainCard";
 import { StrainFilter } from "./StrainFilter";
 import { StrainFilter as StrainFilterType } from "@/types/strain";
 import { Button } from "@/components/ui/button";
-import { Loader2, Filter, SlidersHorizontal } from "lucide-react";
+import { Loader2, Filter, SlidersHorizontal, Cannabis } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
