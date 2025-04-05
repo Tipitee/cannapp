@@ -32,8 +32,8 @@ export const DesktopNavBar = () => {
       <div className="flex h-16 items-center px-6">
         <div className="flex items-center space-x-4">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="bg-gradient-to-r from-app-primary to-app-accent bg-clip-text text-transparent text-2xl font-bold">
-              ConnectVerse
+            <span className="bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent text-2xl font-bold">
+              Cannabis Club Finder
             </span>
           </Link>
           <nav className="mx-6 flex items-center space-x-6">

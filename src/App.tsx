@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
+import ClubDetail from "./pages/ClubDetail";
 import { Navigation } from "./components/navigation/Navigation";
 import { useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
@@ -45,6 +46,7 @@ const App = () => {
           <Navigation />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/clubs/:id" element={<ClubDetail />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={<Login />} />

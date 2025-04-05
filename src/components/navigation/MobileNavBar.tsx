@@ -1,12 +1,15 @@
 
-import { Home, User, Settings, Menu, X } from "lucide-react";
+import { Home, User, Settings, Menu, X, Map, List } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const MobileNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const isClubDetail = location.pathname.startsWith("/clubs/");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -16,13 +19,39 @@ export const MobileNavBar = () => {
     <>
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 md:hidden">
         <div className="flex items-center justify-around p-2">
-          <NavButton to="/" label="Home">
+          <NavButton to="/" label="Home" active={location.pathname === "/"}>
             <Home className="h-6 w-6" />
           </NavButton>
-          <NavButton to="/profile" label="Profile">
+          {isHomePage && (
+            <>
+              <NavButton 
+                to="/?view=map" 
+                label="Map"
+                onClick={() => {
+                  const event = new CustomEvent('changeTab', { detail: { tab: 'map' } });
+                  window.dispatchEvent(event);
+                  return false; // Prevent default navigation
+                }}
+              >
+                <Map className="h-6 w-6" />
+              </NavButton>
+              <NavButton 
+                to="/?view=list" 
+                label="List"
+                onClick={() => {
+                  const event = new CustomEvent('changeTab', { detail: { tab: 'list' } });
+                  window.dispatchEvent(event);
+                  return false; // Prevent default navigation
+                }}
+              >
+                <List className="h-6 w-6" />
+              </NavButton>
+            </>
+          )}
+          <NavButton to="/profile" label="Profile" active={location.pathname === "/profile"}>
             <User className="h-6 w-6" />
           </NavButton>
-          <NavButton to="/settings" label="Settings">
+          <NavButton to="/settings" label="Settings" active={location.pathname === "/settings"}>
             <Settings className="h-6 w-6" />
           </NavButton>
         </div>
@@ -52,9 +81,10 @@ export const MobileNavBar = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="space-y-6 pt-10">
-            <MobileMenuItem to="/" onClick={toggleMenu}>Home</MobileMenuItem>
-            <MobileMenuItem to="/profile" onClick={toggleMenu}>Profile</MobileMenuItem>
-            <MobileMenuItem to="/settings" onClick={toggleMenu}>Settings</MobileMenuItem>
+            <MobileMenuItem to="/" onClick={toggleMenu} active={location.pathname === "/"}>Home</MobileMenuItem>
+            <MobileMenuItem to="/profile" onClick={toggleMenu} active={location.pathname === "/profile"}>Profile</MobileMenuItem>
+            <MobileMenuItem to="/settings" onClick={toggleMenu} active={location.pathname === "/settings"}>Settings</MobileMenuItem>
+            <MobileMenuItem to="/login" onClick={toggleMenu} active={location.pathname === "/login"}>Login</MobileMenuItem>
           </div>
         </div>
       </div>
@@ -62,17 +92,54 @@ export const MobileNavBar = () => {
   );
 };
 
-const NavButton = ({ children, label, to }: { children: React.ReactNode, label: string, to: string }) => (
-  <Link to={to} className="flex flex-col items-center justify-center py-1">
-    {children}
-    <span className="text-xs mt-1">{label}</span>
-  </Link>
-);
+const NavButton = ({ 
+  children, 
+  label, 
+  to, 
+  active,
+  onClick 
+}: { 
+  children: React.ReactNode, 
+  label: string, 
+  to: string, 
+  active?: boolean,
+  onClick?: () => boolean | void
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      const result = onClick();
+      if (result === false) {
+        e.preventDefault();
+      }
+    }
+  };
 
-const MobileMenuItem = ({ children, to, onClick }: { children: React.ReactNode, to: string, onClick: () => void }) => (
+  return (
+    <Link 
+      to={to} 
+      className={`flex flex-col items-center justify-center py-1 ${active ? "text-green-500" : ""}`}
+      onClick={handleClick}
+    >
+      {children}
+      <span className="text-xs mt-1">{label}</span>
+    </Link>
+  );
+};
+
+const MobileMenuItem = ({ 
+  children, 
+  to, 
+  onClick,
+  active
+}: { 
+  children: React.ReactNode, 
+  to: string, 
+  onClick: () => void,
+  active?: boolean
+}) => (
   <Link 
     to={to} 
-    className="block py-3 px-4 text-lg font-medium border-b border-gray-100 hover:bg-gray-50 rounded-md"
+    className={`block py-3 px-4 text-lg font-medium border-b border-gray-100 hover:bg-gray-50 rounded-md ${active ? "text-green-500" : ""}`}
     onClick={onClick}
   >
     {children}

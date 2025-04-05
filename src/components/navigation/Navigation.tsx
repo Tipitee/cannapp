@@ -12,8 +12,8 @@ export const Navigation = () => {
 
   return (
     <>
-      <DesktopNavBar />
-      <MobileNavBar />
+      {isDesktop ? <DesktopNavBar /> : null}
+      {!isDesktop ? <MobileNavBar /> : null}
     </>
   );
 };
