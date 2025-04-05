@@ -2,18 +2,20 @@
 import { DesktopNavBar } from "./DesktopNavBar";
 import { MobileNavBar } from "./MobileNavBar";
 import { useDevice } from "@/hooks/use-device";
+import { useState, useEffect } from "react";
 
 export const Navigation = () => {
   const { isDesktop, isReady } = useDevice();
-
-  if (!isReady) {
-    return null; // Don't render until device detection is complete
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Don't render until device detection and client-side mounting are complete
+  if (!isReady || !mounted) {
+    return null;
   }
 
-  return (
-    <>
-      {isDesktop ? <DesktopNavBar /> : null}
-      {!isDesktop ? <MobileNavBar /> : null}
-    </>
-  );
+  return isDesktop ? <DesktopNavBar /> : <MobileNavBar />;
 };

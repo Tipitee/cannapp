@@ -15,11 +15,23 @@ const translations: Translations = {
   "strains": { en: "Strains", de: "Sorten" },
   "login": { en: "Login", de: "Anmelden" },
   "nearMe": { en: "Near Me", de: "In meiner Nähe" },
+  "community": { en: "Community", de: "Gemeinschaft" },
+  "welcome": { en: "Welcome", de: "Willkommen" },
+  "journal": { en: "Journal", de: "Tagebuch" },
   
   // Headers & General
   "appName": { en: "Cannabis Club Finder", de: "Cannabis Club Finder" },
   "welcomeTitle": { en: "Welcome to German Cannabis Club Finder", de: "Willkommen beim deutschen Cannabis-Club-Finder" },
   "welcomeMessage": { en: "Discover cannabis clubs near you", de: "Entdecke Cannabis-Clubs in deiner Nähe" },
+  "featuredStrains": { en: "Featured Strains", de: "Ausgewählte Sorten" },
+  "viewAll": { en: "View All", de: "Alle anzeigen" },
+  "nearbyClubs": { en: "Nearby Clubs", de: "Clubs in der Nähe" },
+  "viewMap": { en: "View Map", de: "Karte anzeigen" },
+  "browseStrains": { en: "Browse Strains", de: "Sorten durchsuchen" },
+  "welcomeToApp": { en: "Welcome to Cannabis Club Finder", de: "Willkommen beim Cannabis-Club-Finder" },
+  "welcomeDescription": { en: "Discover cannabis clubs, explore strains, and connect with the community.", de: "Entdecke Cannabis-Clubs, erkunde Sorten und verbinde dich mit der Community." },
+  "exploreFeatures": { en: "Explore Features", de: "Funktionen erkunden" },
+  "findNearMe": { en: "Find Near Me", de: "In meiner Nähe finden" },
   
   // Settings
   "languagePreference": { en: "Language Preference", de: "Spracheinstellung" },
@@ -43,10 +55,19 @@ const translations: Translations = {
   "mood": { en: "Mood", de: "Stimmung" },
   "activity": { en: "Activity", de: "Aktivität" },
   "medicalNeed": { en: "Medical Need", de: "Medizinischer Bedarf" },
-  "journal": { en: "Journal", de: "Tagebuch" },
   "trackEffectiveness": { en: "Track Effectiveness", de: "Wirksamkeit verfolgen" },
   "shareExperiences": { en: "Share Experiences", de: "Erfahrungen teilen" },
   "askQuestions": { en: "Ask Questions", de: "Fragen stellen" },
+  
+  // Home Features
+  "accessingLocation": { en: "Accessing Location", de: "Standort wird abgefragt" },
+  "locationDescription": { en: "We'll show you clubs near your current location", de: "Wir zeigen dir Clubs in deiner Nähe" },
+  "findClubs": { en: "Find Clubs", de: "Clubs finden" },
+  "findClubsDesc": { en: "Discover cannabis clubs in your area", de: "Entdecke Cannabis-Clubs in deiner Umgebung" },
+  "exploreStrains": { en: "Explore Strains", de: "Sorten erkunden" },
+  "exploreStrainsDesc": { en: "Browse and learn about different cannabis strains", de: "Durchsuche und lerne verschiedene Cannabis-Sorten kennen" },
+  "communityDesc": { en: "Connect with other cannabis enthusiasts", de: "Verbinde dich mit anderen Cannabis-Enthusiasten" },
+  "journalDesc": { en: "Track your personal cannabis experiences", de: "Verfolge deine persönlichen Cannabis-Erfahrungen" },
   
   // Strain Effects
   "relaxing": { en: "Relaxing", de: "Entspannend" },
@@ -55,6 +76,20 @@ const translations: Translations = {
   "sleepy": { en: "Sleepy", de: "Schläfrig" },
   "focused": { en: "Focused", de: "Konzentriert" },
   "euphoric": { en: "Euphoric", de: "Euphorisch" },
+  
+  // Actions
+  "openMenu": { en: "Open Menu", de: "Menü öffnen" },
+  "filter": { en: "Filter", de: "Filter" },
+  "filterStrains": { en: "Filter Strains", de: "Sorten filtern" },
+  "reset": { en: "Reset", de: "Zurücksetzen" },
+  "noStrainsFound": { en: "No strains found", de: "Keine Sorten gefunden" },
+  
+  // App-specific
+  "homeDescription": { en: "Dashboard and overview", de: "Dashboard und Überblick" },
+  "strainsDescription": { en: "Explore cannabis varieties", de: "Cannabis-Sorten erkunden" },
+  "journalDescription": { en: "Track your experiences", de: "Verfolge deine Erfahrungen" },
+  "profileDescription": { en: "Manage your account", de: "Verwalte dein Konto" },
+  "settingsDescription": { en: "Customize your app", de: "Passe deine App an" },
 };
 
 interface LanguageContextType {

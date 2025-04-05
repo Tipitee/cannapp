@@ -3,21 +3,25 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import Login from "./pages/Login";
-import ClubDetail from "./pages/ClubDetail";
-import Strains from "./pages/Strains";
-import StrainDetail from "./pages/StrainDetail";
-import Journal from "./pages/Journal";
-import Community from "./pages/Community";
-import { Navigation } from "./components/navigation/Navigation";
-import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Capacitor } from "@capacitor/core";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { lazy, Suspense } from "react";
+
+// Lazily load pages to improve initial load time
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Login = lazy(() => import("./pages/Login"));
+const ClubDetail = lazy(() => import("./pages/ClubDetail"));
+const Strains = lazy(() => import("./pages/Strains"));
+const StrainDetail = lazy(() => import("./pages/StrainDetail"));
+const Journal = lazy(() => import("./pages/Journal"));
+const Community = lazy(() => import("./pages/Community"));
+
+import { Navigation } from "./components/navigation/Navigation";
 
 // Initialize Capacitor plugins when needed
 const initCapacitor = async () => {
@@ -35,7 +39,26 @@ const initCapacitor = async () => {
   }
 };
 
-const queryClient = new QueryClient();
+// Create a stable queryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
+
+// ScrollToTop component to handle scroll position on navigation
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
+  return null;
+}
 
 const App = () => {
   useEffect(() => {
@@ -49,19 +72,26 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Navigation />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/clubs/:id" element={<ClubDetail />} />
-              <Route path="/strains" element={<Strains />} />
-              <Route path="/strains/:id" element={<StrainDetail />} />
-              <Route path="/journal" element={<Journal />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/clubs/:id" element={<ClubDetail />} />
+                <Route path="/strains" element={<Strains />} />
+                <Route path="/strains/:id" element={<StrainDetail />} />
+                <Route path="/journal" element={<Journal />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>

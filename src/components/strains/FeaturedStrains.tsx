@@ -42,15 +42,25 @@ export const FeaturedStrains = () => {
     return null;
   }
   
+  const visibleStrains = strains
+    .slice(currentIndex, currentIndex + itemsToShow)
+    .filter(Boolean); // Ensure no undefined elements
+  
+  if (!visibleStrains.length) {
+    return null;
+  }
+  
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">{t("featuredStrains") || "Featured Strains"}</h2>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={prevSlide}>
+          <Button variant="outline" size="icon" onClick={prevSlide} 
+            aria-label="Previous strain">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" onClick={nextSlide}>
+          <Button variant="outline" size="icon" onClick={nextSlide}
+            aria-label="Next strain">
             <ChevronRight className="h-4 w-4" />
           </Button>
           <Button variant="link" asChild>
@@ -60,11 +70,9 @@ export const FeaturedStrains = () => {
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        {strains
-          .slice(currentIndex, currentIndex + itemsToShow)
-          .map((strain) => (
-            <StrainCard key={strain.id} strain={strain} compact />
-          ))}
+        {visibleStrains.map((strain) => (
+          <StrainCard key={strain.id} strain={strain} compact />
+        ))}
       </div>
     </div>
   );
