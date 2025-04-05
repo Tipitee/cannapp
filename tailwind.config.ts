@@ -65,13 +65,16 @@ export default {
 				},
 				// Custom app colors
 				app: {
-					primary: '#3B82F6',
-					secondary: '#8B5CF6',
-					accent: '#EC4899',
-					muted: '#64748B',
-					background: '#F8FAFC',
-					card: '#FFFFFF',
-					text: '#1E293B',
+					primary: '#00A699',       // Airbnb primary teal
+					secondary: '#FF5A5F',     // Airbnb coral/pink
+					accent: '#484848',        // Dark gray for text
+					muted: '#767676',         // Medium gray for secondary text
+					background: '#F7F7F7',    // Light gray background
+					card: '#FFFFFF',          // White for cards
+					text: '#222222',          // Near black for primary text
+					success: '#008A05',       // Green for success states
+					warning: '#FFB400',       // Yellow/amber for warnings
+					error: '#FF0000',         // Red for errors
 				},
 			},
 			borderRadius: {
@@ -110,6 +113,10 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'slide-up': 'slide-up 0.4s ease-out'
+			},
+			boxShadow: {
+				'airbnb': '0px 6px 16px rgba(0, 0, 0, 0.12)',
+				'uber': '0px 2px 8px rgba(0, 0, 0, 0.15)',
 			}
 		}
 	},
