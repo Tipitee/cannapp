@@ -24,7 +24,7 @@ const Strains = () => {
               <Cannabis className="h-4 w-4" />
               <span className="text-sm font-medium">{t("strains") || "Strains"}</span>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight bg-canna-gradient bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tracking-tight text-app-primary">
               {t("strainExplorer") || "Strain Explorer"}
             </h1>
             <p className="text-muted-foreground max-w-2xl">

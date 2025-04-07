@@ -49,8 +49,7 @@ export const MobileNavBar = () => {
         <div className="flex items-center gap-2">
           <MobileDrawer />
           <div className="flex items-center">
-            <img src="/lovable-uploads/4e1faf83-8ac7-4c73-8d15-9764b0688d4b.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
-            <span className="bg-canna-gradient bg-clip-text text-transparent text-xl font-bold">
+            <span className="text-app-primary text-xl font-bold">
               {t("appName") || "CannaClubMap"}
             </span>
           </div>

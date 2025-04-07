@@ -5,7 +5,7 @@ import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Cannabis } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -41,11 +41,12 @@ export const FeaturedStrains = () => {
     ));
   };
   
+  // Handle empty state
   if (loading) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight">{t("featuredStrains") || "Featured Strains"}</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-app-primary">{t("featuredStrains") || "Featured Strains"}</h2>
           <Button 
             variant="ghost" 
             onClick={handleViewAll}
@@ -79,14 +80,35 @@ export const FeaturedStrains = () => {
     );
   }
 
+  // No strains case - show a better empty state
   if (!strains || !strains.length) {
-    return null;
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold tracking-tight text-app-primary">{t("featuredStrains") || "Featured Strains"}</h2>
+          <Button 
+            variant="ghost" 
+            onClick={handleViewAll}
+            className="font-medium text-primary hover:text-primary/80 hover:bg-transparent p-0"
+          >
+            {t("viewAll") || "View All"} →
+          </Button>
+        </div>
+        
+        <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 text-center">
+          <Cannabis className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">No Featured Strains</h3>
+          <p className="text-gray-500 dark:text-gray-400 mb-4">Explore our strain collection to find your perfect match</p>
+          <Button onClick={handleViewAll}>Browse All Strains</Button>
+        </div>
+      </div>
+    );
   }
   
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">{t("featuredStrains") || "Featured Strains"}</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-app-primary">{t("featuredStrains") || "Featured Strains"}</h2>
         <Button 
           variant="ghost" 
           onClick={handleViewAll}
