@@ -40,10 +40,10 @@ export const Home = () => {
       onClick={onClick}
     >
       <div className="p-6">
-        <div className="rounded-full w-12 h-12 flex items-center justify-center bg-primary/10 text-primary mb-4">
+        <div className="rounded-full w-12 h-12 flex items-center justify-center bg-pink-500/10 text-pink-500 mb-4">
           <Icon className="h-6 w-6" />
         </div>
-        <h3 className="font-semibold text-xl mb-2 group-hover:text-primary transition-colors">{title}</h3>
+        <h3 className="font-semibold text-xl mb-2 group-hover:text-pink-500 transition-colors">{title}</h3>
         <p className="text-muted-foreground">{description}</p>
       </div>
     </div>
@@ -53,7 +53,7 @@ export const Home = () => {
     <div className="space-y-12">
       {/* Hero section */}
       <div className="relative">
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-8 md:p-12 overflow-hidden">
+        <div className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl p-8 md:p-12 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               <path d="M50,2.5L2.5,35v30L50,97.5l47.5-32.5v-30L50,2.5z" stroke="currentColor" strokeWidth="0.5" fill="none"></path>
@@ -64,15 +64,18 @@ export const Home = () => {
             </svg>
           </div>
           <div className="relative z-10 max-w-2xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t("welcomeToApp")}</h2>
-            <p className="text-white/90 text-lg mb-6">{t("welcomeDescription")}</p>
+            <div className="flex items-center mb-4 gap-3">
+              <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-10" />
+              <h2 className="text-3xl md:text-4xl font-bold text-white">{t("welcomeToApp") || "Welcome to CannaClubMap"}</h2>
+            </div>
+            <p className="text-white/90 text-lg mb-6">{t("welcomeDescription") || "Find cannabis clubs near you and explore strains"}</p>
             
             <div className="flex flex-wrap gap-3">
-              <Button onClick={handleLocationRequest} className="bg-white text-emerald-600 hover:bg-white/90 border-0">
+              <Button onClick={handleLocationRequest} className="bg-white text-pink-600 hover:bg-white/90 border-0">
                 <MapPin className="h-4 w-4 mr-2" />
                 {t("findNearMe")}
               </Button>
-              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-emerald-600" onClick={() => navigate('/strains')}>
+              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-pink-600" onClick={() => navigate('/strains')}>
                 <Leaf className="h-4 w-4 mr-2" />
                 {t("exploreStrains")}
               </Button>
@@ -96,7 +99,7 @@ export const Home = () => {
             description={t("exploreStrainsDesc")}
             icon={Leaf}
             onClick={() => navigate('/strains')}
-            className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20"
+            className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950/20 dark:to-purple-950/20"
           />
           <AppCard
             title={t("community")}
@@ -122,7 +125,7 @@ export const Home = () => {
       <div>
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-2xl font-semibold">{t("nearbyClubs")}</h3>
-          <Button variant="ghost" onClick={() => handleChangeTab('map')} className="font-medium text-primary hover:text-primary/80 hover:bg-transparent p-0">
+          <Button variant="ghost" onClick={() => handleChangeTab('map')} className="font-medium text-pink-500 hover:text-pink-600 hover:bg-transparent p-0">
             {t("viewMap")} →
           </Button>
         </div>

@@ -48,7 +48,7 @@ const Index = () => {
 
   useEffect(() => {
     if (isReady) {
-      toast.message(t("welcomeTitle") || "Welcome to German Cannabis Club Finder", {
+      toast.message(t("welcomeTitle") || "Welcome to CannaClubMap", {
         description: t("welcomeMessage") || "Discover cannabis clubs near you",
       });
     }
@@ -66,8 +66,9 @@ const Index = () => {
           <div className="fixed top-16 left-0 right-0 z-50 bg-background border-b px-4 py-2">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent">
-                  {t("appName") || "Cannabis Club Finder"}
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent flex items-center">
+                  <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
+                  {t("appName") || "CannaClubMap"}
                 </h1>
               </div>
               <TabsList>

@@ -68,9 +68,9 @@ export function MobileDrawer() {
       <SheetContent side="left">
         <SheetHeader className="mb-6">
           <SheetTitle className="flex items-center gap-2">
-            <Leaf className="h-5 w-5 text-green-500" />
-            <span className="bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent font-bold">
-              {t("appName")}
+            <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6" />
+            <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent font-bold">
+              {t("appName") || "CannaClubMap"}
             </span>
           </SheetTitle>
         </SheetHeader>
@@ -82,7 +82,7 @@ export function MobileDrawer() {
               variant={item.active ? "default" : "ghost"}
               className={cn(
                 "justify-start",
-                item.active ? "bg-green-500 hover:bg-green-600" : ""
+                item.active ? "bg-pink-500 hover:bg-pink-600" : ""
               )}
               asChild
               onClick={handleLinkClick}

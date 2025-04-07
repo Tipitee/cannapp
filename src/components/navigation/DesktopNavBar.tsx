@@ -54,9 +54,9 @@ export const DesktopNavBar = () => {
       <div className="flex h-16 items-center px-6">
         <div className="flex items-center space-x-4">
           <Link to="/" className="flex items-center space-x-2">
-            <Leaf className="h-6 w-6 text-green-500" />
-            <span className="bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent text-2xl font-bold">
-              {t("appName")}
+            <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-8" />
+            <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent text-2xl font-bold">
+              {t("appName") || "CannaClubMap"}
             </span>
           </Link>
           <nav className="mx-6 flex items-center space-x-6">
@@ -75,7 +75,7 @@ export const DesktopNavBar = () => {
                       : "text-muted-foreground hover:text-primary"
                   )}
                 >
-                  <Icon className={cn("h-4 w-4", isActive ? "text-green-500" : "text-muted-foreground")} />
+                  <Icon className={cn("h-4 w-4", isActive ? "text-pink-500" : "text-muted-foreground")} />
                   <span>{item.title}</span>
                 </Link>
               );

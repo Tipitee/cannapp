@@ -23,7 +23,7 @@ const Strains = () => {
       <div className="space-y-6 animate-fade-in pb-20 md:pb-0">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 dark:bg-pink-950/50 dark:text-pink-400">
               <Cannabis className="h-4 w-4" />
               <span className="text-sm font-medium">{t("strains")}</span>
             </div>

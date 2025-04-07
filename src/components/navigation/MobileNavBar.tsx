@@ -54,9 +54,12 @@ export const MobileNavBar = () => {
       <div className="fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-background bg-opacity-95 backdrop-blur-sm px-4 md:hidden">
         <div className="flex items-center gap-2">
           <MobileDrawer />
-          <span className="bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent text-xl font-bold">
-            {t("appName")}
-          </span>
+          <div className="flex items-center">
+            <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
+            <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent text-xl font-bold">
+              {t("appName") || "CannaClubMap"}
+            </span>
+          </div>
         </div>
       </div>
       
@@ -73,7 +76,7 @@ export const MobileNavBar = () => {
                 : "text-muted-foreground hover:text-primary"
             )}
           >
-            <item.icon className={cn("h-5 w-5", item.active && "text-green-500")} />
+            <item.icon className={cn("h-5 w-5", item.active && "text-pink-500")} />
             <span className="mt-1 text-xs">{item.label}</span>
           </Link>
         ))}
