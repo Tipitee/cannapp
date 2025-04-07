@@ -13,10 +13,15 @@ const Strains = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // The search is already handled by state and passed to StrainList
+  };
+  
   return (
     <PageLayout>
       <div className="space-y-6 animate-fade-in pb-20 md:pb-0">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 pb-6">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
               <Cannabis className="h-4 w-4" />
@@ -29,7 +34,7 @@ const Strains = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input 
@@ -37,6 +42,7 @@ const Strains = () => {
               className="pl-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label={t("searchStrains") || "Search strains"}
             />
           </div>
           
@@ -59,7 +65,7 @@ const Strains = () => {
               </SheetContent>
             </Sheet>
           </div>
-        </div>
+        </form>
         
         <StrainList initialSearch={searchQuery} />
       </div>

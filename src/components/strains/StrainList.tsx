@@ -63,6 +63,23 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
   const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
   const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
   
+  // Create placeholder cards for loading state
+  const renderPlaceholderCards = () => {
+    return Array(strainsPerPage).fill(0).map((_, index) => (
+      <div key={`placeholder-${index}`} className="flex h-full">
+        <div className="w-full bg-gray-50 dark:bg-gray-900 rounded-lg animate-pulse">
+          <div className="h-60 bg-gray-200 dark:bg-gray-800 rounded-t-lg"></div>
+          <div className="p-4">
+            <div className="h-5 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/4 mb-4"></div>
+            <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-full mb-2"></div>
+            <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    ));
+  };
+  
   return (
     <div className="min-h-[300px]">
       <div className="flex flex-col md:flex-row gap-6">
@@ -113,8 +130,11 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
           </div>
 
           {loading ? (
-            <div className="flex justify-center items-center min-h-[300px]">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div>
+              <p className="text-sm text-gray-500 mb-4">{t("loading") || "Loading results..."}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {renderPlaceholderCards()}
+              </div>
             </div>
           ) : strains.length === 0 ? (
             <div className="text-center py-10 bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[300px]">

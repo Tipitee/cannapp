@@ -36,15 +36,20 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
 
   return (
     <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 border-0 shadow card-hover-effect flex flex-col">
-      <div className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative`}>
+      <div 
+        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gray-100 dark:bg-gray-800`}
+        style={{ aspectRatio: '4/3' }}
+      >
         {strain.imageUrl ? (
           <img 
             src={strain.imageUrl} 
             alt={strain.name} 
             className="w-full h-full object-cover transform transition-transform hover:scale-105 duration-500"
+            loading="lazy"
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+          <div className="w-full h-full flex items-center justify-center">
             <span className="text-gray-500">{t("noImage")}</span>
           </div>
         )}

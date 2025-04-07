@@ -45,11 +45,33 @@ export function RelatedStrains({
       setFilteredStrains(filtered.slice(0, 6));
     }
   }, [strains, currentStrainId, effects]);
+
+  // Create placeholder cards for loading state
+  const renderPlaceholderCards = () => {
+    return Array(3).fill(0).map((_, index) => (
+      <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
+        <div className="h-full">
+          <div className="w-full bg-gray-50 dark:bg-gray-900 rounded-lg animate-pulse h-full">
+            <div className="h-48 bg-gray-200 dark:bg-gray-800 rounded-t-lg"></div>
+            <div className="p-3">
+              <div className="h-5 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/4"></div>
+            </div>
+          </div>
+        </div>
+      </CarouselItem>
+    ));
+  };
   
   if (loading) {
     return (
-      <div className="flex justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      <div className="space-y-4 py-4">
+        <h3 className="text-lg font-semibold">{t("similarStrains")}</h3>
+        <Carousel opts={{ align: "start" }} className="w-full">
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {renderPlaceholderCards()}
+          </CarouselContent>
+        </Carousel>
       </div>
     );
   }
