@@ -5,12 +5,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Cannabis, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 
 const Strains = () => {
   const { t } = useLanguage();
-  const [filterOpen, setFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
   const handleSearch = (e: React.FormEvent) => {
@@ -23,13 +21,13 @@ const Strains = () => {
       <div className="space-y-6 animate-fade-in pb-20 md:pb-0">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 dark:bg-pink-950/50 dark:text-pink-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-canna-light-gradient text-pink-700 dark:text-pink-400">
               <Cannabis className="h-4 w-4" />
-              <span className="text-sm font-medium">{t("strains")}</span>
+              <span className="text-sm font-medium">{t("strains") || "Strains"}</span>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight">{t("strainExplorer") || "Strain Explorer"}</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-canna-gradient">{t("strainExplorer") || "Strain Explorer"}</h1>
             <p className="text-muted-foreground max-w-2xl">
-              {t("findYourStrain") || "Find the perfect strain for your needs"}
+              {t("findYourStrain") || "Find the perfect strain for your needs - browse by effects, potency, or type"}
             </p>
           </div>
         </div>
@@ -38,7 +36,7 @@ const Strains = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input 
-              placeholder={`${t("searchPlaceholder") || "Search"}...`}
+              placeholder={t("searchStrains") || "Search strains by name, effect, or type..."}
               className="pl-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

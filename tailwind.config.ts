@@ -63,9 +63,9 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom app colors
+				// Custom app colors updated to match logo background pink gradients
 				app: {
-					primary: '#00A699',       // Airbnb primary teal
+					primary: '#ec4899',       // Pink primary matching logo
 					secondary: '#FF5A5F',     // Airbnb coral/pink
 					accent: '#484848',        // Dark gray for text
 					muted: '#767676',         // Medium gray for secondary text
@@ -117,6 +117,11 @@ export default {
 			boxShadow: {
 				'airbnb': '0px 6px 16px rgba(0, 0, 0, 0.12)',
 				'uber': '0px 2px 8px rgba(0, 0, 0, 0.15)',
+				'canna': '0 6px 20px rgba(236, 72, 153, 0.15)',
+			},
+			backgroundImage: {
+				'canna-gradient': 'linear-gradient(to right, #ec4899, #db2777)',
+				'canna-light-gradient': 'linear-gradient(to right, #fce7f3, #fbcfe8)',
 			}
 		}
 	},

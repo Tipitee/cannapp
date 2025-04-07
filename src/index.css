@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
 
-    --primary: 173 100% 33%;
+    --primary: 339 81% 60%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 355 100% 67%;
@@ -31,7 +31,7 @@
 
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 173 100% 33%;
+    --ring: 339 81% 60%;
 
     --radius: 0.75rem;
 
@@ -62,7 +62,7 @@
     --popover: 24 9.8% 10%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 173 100% 33%;
+    --primary: 339 81% 60%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 355 100% 67%;
@@ -79,7 +79,7 @@
 
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 173 100% 33%;
+    --ring: 339 81% 60%;
     
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -137,6 +137,27 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  
+  /* Custom gradients matching the logo */
+  .bg-canna-gradient {
+    @apply bg-gradient-to-r from-pink-400 to-pink-600;
+  }
+  
+  .text-canna-gradient {
+    @apply bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent;
+  }
+  
+  .bg-canna-light-gradient {
+    @apply bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/20 dark:to-purple-900/20;
+  }
+  
+  .bg-canna-card-gradient {
+    @apply bg-gradient-to-br from-white to-pink-50 dark:from-gray-900 dark:to-pink-950/20 border border-pink-100 dark:border-pink-900/20;
+  }
+  
+  .btn-canna {
+    @apply bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white;
   }
 }
 

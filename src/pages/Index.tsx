@@ -48,8 +48,8 @@ const Index = () => {
 
   useEffect(() => {
     if (isReady) {
-      toast.message(t("welcomeTitle") || "Welcome to CannaClubMap", {
-        description: t("welcomeMessage") || "Discover cannabis clubs near you",
+      toast.message("Welcome to CannaClubMap", {
+        description: "Discover cannabis social clubs near you and explore strains",
       });
     }
   }, [isReady, t]);
@@ -63,12 +63,12 @@ const Index = () => {
     <PageLayout fullWidth className="p-0">
       <div className="min-h-[calc(100vh-4rem)]">
         <Tabs defaultValue="welcome" value={activeView} onValueChange={handleTabChange} className="w-full">
-          <div className="fixed top-16 left-0 right-0 z-50 bg-background border-b px-4 py-2">
+          <div className="fixed top-16 left-0 right-0 z-40 bg-background border-b px-4 py-2">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent flex items-center">
                   <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
-                  {t("appName") || "CannaClubMap"}
+                  CannaClubMap
                 </h1>
               </div>
               <TabsList>

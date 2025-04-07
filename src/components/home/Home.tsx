@@ -18,8 +18,8 @@ export const Home = () => {
   
   const handleLocationRequest = () => {
     requestGeolocation();
-    toast.message(t("accessingLocation") || "Accessing Location", {
-      description: t("locationDescription") || "We'll show you clubs near your current location",
+    toast.message("Accessing Your Location", {
+      description: "We'll show you cannabis clubs near your current location",
     });
   };
   
@@ -36,7 +36,7 @@ export const Home = () => {
     className?: string;
   }) => (
     <div 
-      className={`cursor-pointer group rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 ${className}`} 
+      className={`cursor-pointer group rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 bg-canna-card-gradient ${className}`} 
       onClick={onClick}
     >
       <div className="p-6">
@@ -66,18 +66,18 @@ export const Home = () => {
           <div className="relative z-10 max-w-2xl">
             <div className="flex items-center mb-4 gap-3">
               <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-10" />
-              <h2 className="text-3xl md:text-4xl font-bold text-white">{t("welcomeToApp") || "Welcome to CannaClubMap"}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">Welcome to CannaClubMap</h2>
             </div>
-            <p className="text-white/90 text-lg mb-6">{t("welcomeDescription") || "Find cannabis clubs near you and explore strains"}</p>
+            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you, explore strains, and connect with the community</p>
             
             <div className="flex flex-wrap gap-3">
               <Button onClick={handleLocationRequest} className="bg-white text-pink-600 hover:bg-white/90 border-0">
                 <MapPin className="h-4 w-4 mr-2" />
-                {t("findNearMe")}
+                Find Clubs Near Me
               </Button>
               <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-pink-600" onClick={() => navigate('/strains')}>
                 <Leaf className="h-4 w-4 mr-2" />
-                {t("exploreStrains")}
+                Browse Strains
               </Button>
             </div>
           </div>
@@ -86,30 +86,30 @@ export const Home = () => {
       
       {/* Features section */}
       <div>
-        <h3 className="text-2xl font-semibold mb-6">{t("exploreFeatures")}</h3>
+        <h3 className="text-2xl font-semibold mb-6 text-canna-gradient">Discover CannaClubMap Features</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <AppCard
-            title={t("findClubs")}
-            description={t("findClubsDesc")}
+            title="Find Cannabis Clubs"
+            description="Locate cannabis clubs and lounges near you with our interactive map"
             icon={Map}
             onClick={() => handleChangeTab('map')}
           />
           <AppCard
-            title={t("exploreStrains")}
-            description={t("exploreStrainsDesc")}
+            title="Explore Strains"
+            description="Browse our extensive library of cannabis strains with detailed information"
             icon={Leaf}
             onClick={() => navigate('/strains')}
             className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950/20 dark:to-purple-950/20"
           />
           <AppCard
-            title={t("community")}
-            description={t("communityDesc")}
+            title="Join Community"
+            description="Connect with other cannabis enthusiasts and share experiences"
             icon={Users}
             onClick={() => navigate('/community')}
           />
           <AppCard
-            title={t("journal")}
-            description={t("journalDesc")}
+            title="Track in Journal"
+            description="Keep a personal cannabis journal to record your experiences"
             icon={BookOpen}
             onClick={() => navigate('/journal')}
           />
@@ -124,9 +124,9 @@ export const Home = () => {
       {/* Nearby Clubs section */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-semibold">{t("nearbyClubs")}</h3>
+          <h3 className="text-2xl font-semibold text-canna-gradient">Cannabis Clubs Near You</h3>
           <Button variant="ghost" onClick={() => handleChangeTab('map')} className="font-medium text-pink-500 hover:text-pink-600 hover:bg-transparent p-0">
-            {t("viewMap")} →
+            View Map →
           </Button>
         </div>
         <div className="h-80 rounded-xl overflow-hidden border shadow">
@@ -140,15 +140,15 @@ export const Home = () => {
         <div className="mt-6 flex flex-wrap gap-3 justify-center">
           <Button variant="outline" onClick={() => handleChangeTab('map')} className="gap-2">
             <Search className="h-4 w-4" />
-            {t("findClubs")}
+            Find More Clubs
           </Button>
           <Button variant="outline" onClick={() => navigate("/strains")} className="gap-2">
             <Leaf className="h-4 w-4" />
-            {t("browseStrains")}
+            Browse Strains
           </Button>
           <Button variant="outline" onClick={() => navigate("/journal")} className="gap-2">
             <PlusCircle className="h-4 w-4" />
-            {t("startJournal")}
+            Start Journal
           </Button>
         </div>
       </div>
