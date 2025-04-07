@@ -8,6 +8,8 @@ import { Slider } from "@/components/ui/slider";
 import { StrainFilter as StrainFilterType } from "@/types/strain";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useStrainEffects } from "@/hooks/use-strains";
+import { Badge } from "@/components/ui/badge";
 
 interface StrainFilterProps {
   filter: StrainFilterType;
@@ -16,29 +18,28 @@ interface StrainFilterProps {
 
 export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
   const { t } = useLanguage();
+  const { allEffects, allMedicalUses, allFlavors } = useStrainEffects();
   const [localFilter, setLocalFilter] = useState<StrainFilterType>(filter);
   const [thcRange, setThcRange] = useState<number[]>([0, 30]);
   const [cbdRange, setCbdRange] = useState<number[]>([0, 20]);
+  const [popularEffects, setPopularEffects] = useState<string[]>([]);
   
-  // Effects options
-  const effectOptions = [
-    { value: "relaxing", label: t("relaxing") },
-    { value: "energizing", label: t("energizing") },
-    { value: "creative", label: t("creative") },
-    { value: "sleepy", label: t("sleepy") },
-    { value: "focused", label: t("focused") },
-    { value: "euphoric", label: t("euphoric") },
-  ];
+  // Select most popular effects from all effects
+  useEffect(() => {
+    setPopularEffects(allEffects.slice(0, 6));
+  }, [allEffects]);
   
-  // Medical uses options
-  const medicalOptions = [
-    { value: "stress", label: "Stress" },
-    { value: "anxiety", label: "Anxiety" },
-    { value: "pain", label: "Pain" },
-    { value: "insomnia", label: "Insomnia" },
-    { value: "depression", label: "Depression" },
-    { value: "appetite", label: "Appetite Loss" },
-  ];
+  // Effects options - use the popular ones
+  const effectOptions = popularEffects.map(effect => ({ 
+    value: effect, 
+    label: t(effect) || effect
+  }));
+  
+  // Medical uses options - take first 6
+  const medicalOptions = allMedicalUses.slice(0, 6).map(use => ({
+    value: use,
+    label: t(use) || use.replace('_', ' ')
+  }));
 
   // Apply filters on button click
   const applyFilters = () => {
@@ -113,14 +114,26 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
   };
 
   return (
-    <div className="space-y-4 p-4 bg-white rounded-lg border">
+    <div className="space-y-4 p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
       <div>
-        <Input
-          placeholder={t("filterBy") + "..."}
-          value={localFilter.search || ""}
-          onChange={(e) => setLocalFilter({ ...localFilter, search: e.target.value })}
-          className="mb-4"
-        />
+        <h3 className="font-medium mb-2">{t("popularEffects") || "Popular Effects"}</h3>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {effectOptions.map((effect) => (
+            <Badge
+              key={effect.value}
+              variant={localFilter.effects?.includes(effect.value) ? "default" : "outline"}
+              className={localFilter.effects?.includes(effect.value) 
+                ? "bg-purple-500 hover:bg-purple-600 cursor-pointer" 
+                : "hover:bg-purple-100 dark:hover:bg-purple-900/30 cursor-pointer"}
+              onClick={() => handleEffectChange(
+                effect.value, 
+                !localFilter.effects?.includes(effect.value)
+              )}
+            >
+              {effect.label}
+            </Badge>
+          ))}
+        </div>
       </div>
 
       <Separator />
@@ -133,7 +146,7 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
             variant={localFilter.type === "sativa" ? "default" : "outline"}
             size="sm"
             onClick={() => handleTypeChange("sativa")}
-            className={localFilter.type === "sativa" ? "bg-green-500 hover:bg-green-600" : ""}
+            className={localFilter.type === "sativa" ? "bg-emerald-500 hover:bg-emerald-600" : ""}
           >
             Sativa
           </Button>
@@ -141,7 +154,7 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
             variant={localFilter.type === "indica" ? "default" : "outline"}
             size="sm"
             onClick={() => handleTypeChange("indica")}
-            className={localFilter.type === "indica" ? "bg-purple-500 hover:bg-purple-600" : ""}
+            className={localFilter.type === "indica" ? "bg-indigo-500 hover:bg-indigo-600" : ""}
           >
             Indica
           </Button>
@@ -149,7 +162,7 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
             variant={localFilter.type === "hybrid" ? "default" : "outline"}
             size="sm"
             onClick={() => handleTypeChange("hybrid")}
-            className={localFilter.type === "hybrid" ? "bg-blue-500 hover:bg-blue-600" : ""}
+            className={localFilter.type === "hybrid" ? "bg-amber-500 hover:bg-amber-600" : ""}
           >
             Hybrid
           </Button>
@@ -171,6 +184,7 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
           step={1}
           value={thcRange}
           onValueChange={setThcRange}
+          className="[&>span]:bg-purple-500"
         />
       </div>
       
@@ -187,28 +201,8 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
           step={0.5}
           value={cbdRange}
           onValueChange={setCbdRange}
+          className="[&>span]:bg-purple-500"
         />
-      </div>
-      
-      <Separator />
-      
-      {/* Effects */}
-      <div className="space-y-2">
-        <h3 className="font-medium">{t("effects")}</h3>
-        <div className="grid grid-cols-2 gap-2">
-          {effectOptions.map((effect) => (
-            <div key={effect.value} className="flex items-center space-x-2">
-              <Checkbox
-                id={`effect-${effect.value}`}
-                checked={localFilter.effects?.includes(effect.value) || false}
-                onCheckedChange={(checked) => 
-                  handleEffectChange(effect.value, checked === true)
-                }
-              />
-              <Label htmlFor={`effect-${effect.value}`}>{effect.label}</Label>
-            </div>
-          ))}
-        </div>
       </div>
       
       <Separator />
@@ -225,6 +219,7 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
                 onCheckedChange={(checked) => 
                   handleMedicalUseChange(option.value, checked === true)
                 }
+                className="data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
               />
               <Label htmlFor={`medical-${option.value}`}>{option.label}</Label>
             </div>
@@ -233,7 +228,7 @@ export const StrainFilter = ({ filter, onFilterChange }: StrainFilterProps) => {
       </div>
       
       <div className="flex space-x-2 pt-2">
-        <Button onClick={applyFilters} className="flex-1">{t("applyFilters")}</Button>
+        <Button onClick={applyFilters} className="flex-1 bg-purple-600 hover:bg-purple-700">{t("applyFilters")}</Button>
         <Button variant="outline" onClick={resetFilters}>{t("reset")}</Button>
       </div>
     </div>

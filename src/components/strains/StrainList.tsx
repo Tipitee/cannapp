@@ -16,18 +16,17 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface StrainListProps {
   initialSearch?: string;
+  activeTab?: string;
 }
 
-export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
+export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainListProps) => {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<StrainFilterType>({ search: initialSearch });
   const { strains, loading } = useStrains(filter);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeTab, setActiveTab] = useState("all");
   const [filterOpen, setFilterOpen] = useState(false);
   const strainsPerPage = 9;
   
@@ -93,7 +92,7 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
         {/* Main content */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{t("strainExplorer") || "Strain Explorer"}</h2>
+            <h2 className="text-xl font-bold">{t("strainsFound") || "Strains Found"}</h2>
             
             {/* Mobile filter button */}
             <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
@@ -110,23 +109,6 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
                 </div>
               </SheetContent>
             </Sheet>
-          </div>
-          
-          {/* Strain type tabs */}
-          <div className="mb-6">
-            <Tabs 
-              defaultValue="all" 
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList className="w-full md:w-auto grid grid-cols-4 mb-2">
-                <TabsTrigger value="all">{t("all") || "All"}</TabsTrigger>
-                <TabsTrigger value="sativa">{t("sativa") || "Sativa"}</TabsTrigger>
-                <TabsTrigger value="indica">{t("indica") || "Indica"}</TabsTrigger>
-                <TabsTrigger value="hybrid">{t("hybrid") || "Hybrid"}</TabsTrigger>
-              </TabsList>
-            </Tabs>
           </div>
 
           {loading ? (

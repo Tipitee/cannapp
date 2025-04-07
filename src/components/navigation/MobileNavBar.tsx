@@ -49,7 +49,7 @@ export const MobileNavBar = () => {
         <div className="flex items-center gap-2">
           <MobileDrawer />
           <div className="flex items-center">
-            <span className="text-app-primary text-xl font-bold">
+            <span className="text-purple-600 text-xl font-bold">
               {t("appName") || "CannaClubMap"}
             </span>
           </div>
@@ -69,7 +69,7 @@ export const MobileNavBar = () => {
                 : "text-muted-foreground hover:text-primary"
             )}
           >
-            <item.icon className={cn("h-5 w-5", item.active && "text-app-primary")} />
+            <item.icon className={cn("h-5 w-5", item.active && "text-purple-600")} />
             <span className="mt-1 text-xs">{item.label}</span>
           </Link>
         ))}

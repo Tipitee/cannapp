@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Star } from "lucide-react";
+import { Star, Leaf } from "lucide-react";
 
 interface StrainCardProps {
   strain: Strain;
@@ -37,7 +37,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
   return (
     <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-gray-200 dark:border-gray-800/30 shadow card-hover-effect flex flex-col">
       <div 
-        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800/20`}
+        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-gray-900 to-gray-800`}
         style={{ minHeight: compact ? '12rem' : '15rem' }}
       >
         {strain.imageUrl ? (
@@ -45,16 +45,17 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             <img 
               src={strain.imageUrl} 
               alt={strain.name} 
-              className="w-full h-full object-cover absolute inset-0"
+              className="w-full h-full object-cover absolute inset-0 opacity-80"
               loading="lazy"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800/30 dark:to-gray-700/30">
-            <span className="text-4xl text-app-primary font-medium">{strain.name.charAt(0).toUpperCase()}</span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
+            <Leaf className="h-16 w-16 text-purple-400 opacity-60" />
           </div>
         )}
-        <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)} airbnb-badge`}>
+        <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)}`}>
           {strain.type.charAt(0).toUpperCase() + strain.type.slice(1)}
         </Badge>
         {!compact && (
@@ -66,7 +67,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
         )}
       </div>
       <Link to={`/strains/${strain.id}`} className="flex flex-col flex-grow">
-        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/20`}>
+        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow`}>
           <div>
             <h3 className="font-bold text-lg line-clamp-1">{strain.name}</h3>
             <div className="flex items-center mt-1">
@@ -80,7 +81,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             {!compact && strain.effects.length > 0 && (
               <div className="flex flex-wrap gap-1 my-2">
                 {strain.effects.slice(0, 3).map((effect, index) => (
-                  <Badge key={index} variant="secondary" className="bg-purple-100 text-app-primary hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:bg-purple-800/50">
+                  <Badge key={index} variant="secondary" className="bg-purple-100 text-purple-600 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:bg-purple-800/50">
                     {effect}
                   </Badge>
                 ))}
