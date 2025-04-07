@@ -3,8 +3,8 @@ export interface Strain {
   id: string;
   name: string;
   type: "sativa" | "indica" | "hybrid";
-  thcLevel: number; // percentage
-  cbdLevel: number; // percentage
+  thcLevel: number;
+  cbdLevel: number;
   effects: string[];
   medicalUses: string[];
   flavors: string[];
@@ -21,13 +21,13 @@ export interface StrainReview {
   userName: string;
   rating: number;
   comment: string;
-  effectiveness: number; // 1-5 scale
+  effectiveness: number;
   sideEffects: string[];
   createdAt: string;
 }
 
 export interface StrainFilter {
-  search?: string; // Make search optional
+  search?: string;
   type?: "sativa" | "indica" | "hybrid";
   effects?: string[];
   medicalUses?: string[];
@@ -36,7 +36,7 @@ export interface StrainFilter {
   minCBD?: number;
   maxCBD?: number;
   minRating?: number;
-  limit?: number; // Add this property for pagination/limiting results
+  limit?: number;
 }
 
 export interface JournalEntry {
@@ -45,7 +45,7 @@ export interface JournalEntry {
   userId: string;
   date: string;
   dosage: string;
-  effectiveness: number; // 1-5 scale
+  effectiveness: number;
   notes: string;
   mood: string;
   activity: string;

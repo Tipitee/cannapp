@@ -1,5 +1,5 @@
+
 import { useState, useEffect } from "react";
-import { strainService } from "@/services/strainService";
 import { Strain } from "@/types/strain";
 import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -14,12 +14,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useStrains } from "@/hooks/use-strains";
 
 export const FeaturedStrains = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [strains, setStrains] = useState<Strain[]>([]);
-  const [loading, setLoading] = useState(true);
   const [initialRender, setInitialRender] = useState(true);
   const [mounted, setMounted] = useState(false);
   
@@ -29,29 +28,12 @@ export const FeaturedStrains = () => {
     // This prevents content flash by ensuring skeleton placeholders show first
     setTimeout(() => {
       setInitialRender(false);
-    }, 100);  // Increased delay to ensure smoother transition
+    }, 100);
     return () => setMounted(false);
   }, []);
   
   // Use a separate effect for data loading to prevent flashing
-  useEffect(() => {
-    if (!mounted || initialRender) return;
-    
-    const fetchFeaturedStrains = async () => {
-      try {
-        setLoading(true);
-        // Get 8 strains from our service
-        const data = await strainService.getStrains({ limit: 8 });
-        setStrains(data);
-      } catch (error) {
-        console.error("Error fetching featured strains:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchFeaturedStrains();
-  }, [mounted, initialRender]);
+  const { strains, loading } = useStrains({ limit: 8 }, !initialRender);
   
   const handleViewAll = (e: React.MouseEvent) => {
     e.preventDefault();
