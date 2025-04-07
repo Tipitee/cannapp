@@ -63,7 +63,7 @@ const Index = () => {
     <PageLayout fullWidth className="p-0">
       <div className="min-h-[calc(100vh-4rem)]">
         <Tabs defaultValue="welcome" value={activeView} onValueChange={handleTabChange} className="w-full">
-          <div className="fixed top-16 left-0 right-0 z-10 bg-background border-b px-4 py-2">
+          <div className="fixed top-16 left-0 right-0 z-50 bg-background border-b px-4 py-2">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-700 bg-clip-text text-transparent">
@@ -83,7 +83,7 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="pt-24 pb-20 md:pb-0">
+          <div className="pt-28 pb-20 md:pb-0">
             <TabsContent value="welcome" className="m-0 max-w-screen-xl mx-auto p-4 md:p-8">
               <Home />
             </TabsContent>

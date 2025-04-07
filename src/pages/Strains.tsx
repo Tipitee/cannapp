@@ -2,7 +2,7 @@
 import { PageLayout } from "@/components/layout/PageLayout";
 import { StrainList } from "@/components/strains/StrainList";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Cannabis, Filter, Search, SlidersHorizontal } from "lucide-react";
+import { Cannabis, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -44,26 +44,6 @@ const Strains = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label={t("searchStrains") || "Search strains"}
             />
-          </div>
-          
-          <div className="flex-shrink-0">
-            <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="gap-2 w-full sm:w-auto">
-                  <SlidersHorizontal className="h-4 w-4" />
-                  {t("filter") || "Filter"}
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>{t("filterStrains") || "Filter Strains"}</SheetTitle>
-                  <SheetDescription>
-                    {t("filterBy") || "Filter by various criteria"}
-                  </SheetDescription>
-                </SheetHeader>
-                {/* Filter content would go here */}
-              </SheetContent>
-            </Sheet>
           </div>
         </form>
         

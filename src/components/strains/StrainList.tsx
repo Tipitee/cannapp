@@ -85,21 +85,21 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
       <div className="flex flex-col md:flex-row gap-6">
         {/* Desktop sidebar filter */}
         <div className="hidden md:block w-full md:w-64 lg:w-72 flex-shrink-0">
-          <div className="sticky top-4">
+          <div className="sticky top-24">
             <StrainFilter filter={filter} onFilterChange={setFilter} />
           </div>
         </div>
 
         {/* Main content */}
         <div className="flex-1">
-          <div className="flex justify-between items-center mb-4 md:hidden">
+          <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">{t("strainExplorer") || "Strain Explorer"}</h2>
             
             {/* Mobile filter button */}
             <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <SlidersHorizontal className="h-4 w-4 mr-1" />
+                <Button variant="outline" size="sm" className="md:hidden">
+                  <SlidersHorizontal className="h-4 w-4 mr-2" />
                   {t("filter") || "Filter"}
                 </Button>
               </SheetTrigger>
@@ -151,9 +151,7 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentStrains.map((strain) => (
                   <div key={strain.id} className="flex h-full">
-                    <div className="w-full">
-                      <StrainCard strain={strain} />
-                    </div>
+                    <StrainCard strain={strain} />
                   </div>
                 ))}
               </div>

@@ -4,7 +4,7 @@ import { useStrains } from "@/hooks/use-strains";
 import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Strain } from "@/types/strain";
-import { Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 interface RelatedStrainsProps {
@@ -103,11 +103,15 @@ export function RelatedStrains({
           <CarouselPrevious 
             className="static h-8 w-8 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800" 
             aria-label={t("previousStrain")} 
-          />
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </CarouselPrevious>
           <CarouselNext 
             className="static h-8 w-8 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800" 
             aria-label={t("nextStrain")} 
-          />
+          >
+            <ChevronRight className="h-4 w-4" />
+          </CarouselNext>
         </div>
       </Carousel>
     </div>

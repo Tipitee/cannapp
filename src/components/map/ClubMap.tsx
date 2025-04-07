@@ -103,13 +103,14 @@ export function ClubMap({
   };
 
   return (
-    <div className="relative" style={{ height }}>
+    <div className="relative w-full" style={{ height }}>
       <MapContainer
         center={initialCenter}
         zoom={initialZoom}
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
         ref={mapRef}
+        className="z-10"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
