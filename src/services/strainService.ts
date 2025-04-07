@@ -68,22 +68,24 @@ export const strainService = {
   // Get all strains with optional filtering
   getStrains: async (filters: Record<string, any> = {}) => {
     try {
-      // Use any type to bypass TypeScript restriction
-      const query = supabase.from('strains' as any).select('*') as any;
+      console.log("Fetching strains with filters:", filters);
+      
+      // Use Supabase query
+      let query = supabase.from('strains').select('*');
       
       // Apply search filter if provided
       if (filters.search) {
-        query.ilike('name', `%${filters.search}%`);
+        query = query.ilike('name', `%${filters.search}%`);
       }
       
       // Apply type filter if provided
       if (filters.type) {
-        query.eq('type', filters.type);
+        query = query.eq('type', filters.type);
       }
       
       // Apply limit filter if provided
       if (filters.limit) {
-        query.limit(filters.limit);
+        query = query.limit(filters.limit);
       }
       
       const { data, error } = await query;
@@ -99,22 +101,25 @@ export const strainService = {
         return fallbackMockStrains;
       }
       
+      console.log("Supabase returned strains:", data.length);
+      
       // Map Supabase data to our Strain type
       const mappedStrains: Strain[] = (data as SupabaseStrain[]).map(strain => ({
         id: strain.name.toLowerCase().replace(/\s+/g, '-'),
         name: strain.name,
-        type: (strain.type as "sativa" | "indica" | "hybrid") || "hybrid",
+        type: (strain.type?.toLowerCase() as "sativa" | "indica" | "hybrid") || "hybrid",
         thcLevel: strain.thc_level || 0,
         cbdLevel: 0.1, // Default since we don't have CBD data
         effects: getEffectsFromStrain(strain),
         medicalUses: getMedicalUsesFromStrain(strain),
         flavors: [], // We don't have flavors in the table yet
         description: strain.description || "No description available",
-        imageUrl: strain.img_url || "/strains/placeholder.jpg",
+        imageUrl: strain.img_url || undefined,
         rating: 4.5, // Default rating
         reviewCount: Math.floor(Math.random() * 400) + 50, // Random review count for now
       }));
       
+      console.log("Mapped strains:", mappedStrains.length);
       return mappedStrains;
     } catch (error) {
       console.error("Error fetching strains:", error);
@@ -130,7 +135,7 @@ export const strainService = {
       const nameFromId = id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
       
       // Query Supabase
-      const { data, error } = await (supabase.from('strains' as any).select('*').ilike('name', nameFromId) as any);
+      const { data, error } = await supabase.from('strains').select('*').ilike('name', nameFromId);
       
       if (error || !data || data.length === 0) {
         console.error(`Error fetching strain with ID ${id}:`, error);
@@ -143,14 +148,14 @@ export const strainService = {
       return {
         id: strain.name.toLowerCase().replace(/\s+/g, '-'),
         name: strain.name,
-        type: (strain.type as "sativa" | "indica" | "hybrid") || "hybrid",
+        type: (strain.type?.toLowerCase() as "sativa" | "indica" | "hybrid") || "hybrid",
         thcLevel: strain.thc_level || 0,
         cbdLevel: 0.1,
         effects: getEffectsFromStrain(strain),
         medicalUses: getMedicalUsesFromStrain(strain),
         flavors: [],
         description: strain.description || "No description available",
-        imageUrl: strain.img_url || "/strains/placeholder.jpg",
+        imageUrl: strain.img_url || undefined,
         rating: 4.5,
         reviewCount: Math.floor(Math.random() * 400) + 50,
       };

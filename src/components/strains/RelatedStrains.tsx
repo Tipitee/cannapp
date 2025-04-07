@@ -50,7 +50,7 @@ export function RelatedStrains({
   const renderPlaceholderCards = () => {
     return Array(3).fill(0).map((_, index) => (
       <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
-        <div className="h-full">
+        <div className="h-full w-full">
           <StrainCard 
             strain={{
               id: `loading-${index}`,
@@ -102,7 +102,7 @@ export function RelatedStrains({
         <CarouselContent className="-ml-2 md:-ml-4">
           {filteredStrains.map((strain) => (
             <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
-              <div className="h-full">
+              <div className="h-full w-full">
                 <StrainCard strain={strain} compact />
               </div>
             </CarouselItem>
