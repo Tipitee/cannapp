@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStrains } from "@/hooks/use-strains";
 import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -19,6 +19,12 @@ export const FeaturedStrains = () => {
   const { t } = useLanguage();
   const { strains, loading } = useStrains({ search: "", limit: 8 });
   const navigate = useNavigate();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
   
   const handleViewAll = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -30,30 +36,27 @@ export const FeaturedStrains = () => {
     return Array(4).fill(0).map((_, index) => (
       <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
         <div className="h-full">
-          <StrainCard 
-            strain={{
-              id: `loading-${index}`,
-              name: "Loading...",
-              type: "hybrid",
-              thcLevel: 0,
-              cbdLevel: 0,
-              effects: [],
-              flavors: [],
-              medicalUses: [],
-              description: "",
-              rating: 0,
-              reviewCount: 0,
-            }} 
-            compact 
-            isLoading={true} 
-          />
+          <div className="rounded-lg border border-neutral-200 dark:border-neutral-800 overflow-hidden h-full flex flex-col">
+            <div className="relative w-full pt-[75%] bg-neutral-100 dark:bg-neutral-900">
+              <Skeleton className="absolute inset-0 w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+            </div>
+            <div className="p-4 flex-1 flex flex-col">
+              <Skeleton className="h-5 w-3/4 mb-2 bg-neutral-200 dark:bg-neutral-800" />
+              <Skeleton className="h-4 w-1/2 mb-2 bg-neutral-200 dark:bg-neutral-800" />
+              <Skeleton className="h-4 w-5/6 mb-4 bg-neutral-200 dark:bg-neutral-800" />
+              <div className="mt-auto flex items-center justify-between">
+                <Skeleton className="h-8 w-16 rounded bg-neutral-200 dark:bg-neutral-800" />
+                <Skeleton className="h-8 w-8 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+              </div>
+            </div>
+          </div>
         </div>
       </CarouselItem>
     ));
   };
   
   // Handle empty state
-  if (!loading && (!strains || strains.length === 0)) {
+  if (mounted && !loading && (!strains || strains.length === 0)) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -77,6 +80,7 @@ export const FeaturedStrains = () => {
     );
   }
   
+  // Use min-height to prevent layout shift
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -90,7 +94,7 @@ export const FeaturedStrains = () => {
         </Button>
       </div>
       
-      <div className="relative">
+      <div className="relative min-h-[320px]">
         <Carousel
           opts={{
             align: "start",
@@ -99,7 +103,7 @@ export const FeaturedStrains = () => {
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {loading ? renderPlaceholderCards() : (
+            {!mounted || loading ? renderPlaceholderCards() : (
               strains.map((strain) => (
                 <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                   <div className="h-full">

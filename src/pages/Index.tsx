@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useDevice } from "@/hooks/use-device";
 import { ClubMap } from "@/components/map/ClubMap";
