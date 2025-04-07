@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useDevice } from "@/hooks/use-device";
 import { ClubMap } from "@/components/map/ClubMap";
@@ -15,6 +14,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 import { Home } from "@/components/home/Home";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useClubs } from "@/hooks/use-clubs";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -39,11 +39,9 @@ const Index = () => {
     hideSplash();
   }, []);
 
-  // Handle tab changes from location state
   useEffect(() => {
     if (location.state && location.state.activeTab) {
       setActiveView(location.state.activeTab);
-      // Clear the state after consuming it
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -56,13 +54,8 @@ const Index = () => {
     }
   }, [isReady, t]);
   
-  // Auto-collapse mobile navigation when clicking a section
   const handleTabChange = (value: string) => {
     setActiveView(value);
-    // If you have a mobile drawer state, you could close it here
-    // For example: setMobileDrawerOpen(false);
-    
-    // Use navigate to update the URL without the hash
     navigate('/', { replace: true });
   };
 
