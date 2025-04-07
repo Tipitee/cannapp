@@ -51,13 +51,22 @@ export function RelatedStrains({
     return Array(3).fill(0).map((_, index) => (
       <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
         <div className="h-full">
-          <div className="w-full bg-gray-50 dark:bg-gray-900 rounded-lg animate-pulse h-full">
-            <div className="h-48 bg-gray-200 dark:bg-gray-800 rounded-t-lg"></div>
-            <div className="p-3">
-              <div className="h-5 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/4"></div>
-            </div>
-          </div>
+          <StrainCard 
+            strain={{
+              id: `loading-${index}`,
+              name: "Loading...",
+              type: "hybrid",
+              thcLevel: 0,
+              cbdLevel: 0,
+              effects: [],
+              flavors: [],
+              medicalUses: [],
+              description: "",
+              rating: 0,
+              reviewCount: 0,
+            }} 
+            isLoading={true} 
+          />
         </div>
       </CarouselItem>
     ));
@@ -66,7 +75,7 @@ export function RelatedStrains({
   if (loading) {
     return (
       <div className="space-y-4 py-4">
-        <h3 className="text-lg font-semibold">{t("similarStrains")}</h3>
+        <h3 className="text-lg font-semibold text-white">{t("similarStrains") || "Similar Strains"}</h3>
         <Carousel opts={{ align: "start" }} className="w-full">
           <CarouselContent className="-ml-2 md:-ml-4">
             {renderPlaceholderCards()}
@@ -82,7 +91,7 @@ export function RelatedStrains({
   
   return (
     <div className="space-y-4 py-4">
-      <h3 className="text-lg font-semibold">{t("similarStrains")}</h3>
+      <h3 className="text-xl font-semibold text-white">{t("similarStrains") || "Similar Strains"}</h3>
       
       <Carousel
         opts={{
@@ -101,13 +110,13 @@ export function RelatedStrains({
         </CarouselContent>
         <div className="flex justify-end gap-2 mt-2">
           <CarouselPrevious 
-            className="static h-8 w-8 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800" 
+            className="static h-8 w-8 rounded-full border border-gray-800 bg-gray-900 hover:bg-gray-800" 
             aria-label={t("previousStrain")} 
           >
             <ChevronLeft className="h-4 w-4" />
           </CarouselPrevious>
           <CarouselNext 
-            className="static h-8 w-8 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800" 
+            className="static h-8 w-8 rounded-full border border-gray-800 bg-gray-900 hover:bg-gray-800" 
             aria-label={t("nextStrain")} 
           >
             <ChevronRight className="h-4 w-4" />

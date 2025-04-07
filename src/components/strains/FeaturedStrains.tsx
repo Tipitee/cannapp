@@ -45,17 +45,17 @@ export const FeaturedStrains = () => {
     return Array(4).fill(0).map((_, index) => (
       <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
         <div className="h-full">
-          <div className="rounded-lg border border-neutral-200 dark:border-neutral-800 overflow-hidden h-full flex flex-col">
-            <div className="relative w-full pt-[75%] bg-neutral-100 dark:bg-neutral-900">
-              <Skeleton className="absolute inset-0 w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+          <div className="rounded-lg border border-neutral-800 overflow-hidden h-full flex flex-col">
+            <div className="relative w-full pt-[75%] bg-neutral-900">
+              <Skeleton className="absolute inset-0 w-full h-full bg-neutral-800" />
             </div>
             <div className="p-4 flex-1 flex flex-col">
-              <Skeleton className="h-5 w-3/4 mb-2 bg-neutral-200 dark:bg-neutral-800" />
-              <Skeleton className="h-4 w-1/2 mb-2 bg-neutral-200 dark:bg-neutral-800" />
-              <Skeleton className="h-4 w-5/6 mb-4 bg-neutral-200 dark:bg-neutral-800" />
+              <Skeleton className="h-5 w-3/4 mb-2 bg-neutral-800" />
+              <Skeleton className="h-4 w-1/2 mb-2 bg-neutral-800" />
+              <Skeleton className="h-4 w-5/6 mb-4 bg-neutral-800" />
               <div className="mt-auto flex items-center justify-between">
-                <Skeleton className="h-8 w-16 rounded bg-neutral-200 dark:bg-neutral-800" />
-                <Skeleton className="h-8 w-8 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+                <Skeleton className="h-8 w-16 rounded bg-neutral-800" />
+                <Skeleton className="h-8 w-8 rounded-full bg-neutral-800" />
               </div>
             </div>
           </div>
@@ -69,21 +69,21 @@ export const FeaturedStrains = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight text-app-primary">{t("featuredStrains") || "Featured Strains"}</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-white">{t("featuredStrains") || "Featured Strains"}</h2>
           <Button 
             variant="ghost" 
             onClick={handleViewAll}
-            className="font-medium text-primary hover:text-primary/80 hover:bg-transparent p-0"
+            className="font-medium text-purple-400 hover:text-purple-300 hover:bg-transparent p-0"
           >
             {t("viewAll") || "View All"} →
           </Button>
         </div>
         
-        <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 text-center">
-          <Cannabis className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">No Featured Strains</h3>
-          <p className="text-gray-500 dark:text-gray-400 mb-4">Explore our strain collection to find your perfect match</p>
-          <Button onClick={handleViewAll}>Browse All Strains</Button>
+        <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 text-center">
+          <Cannabis className="h-12 w-12 mx-auto text-gray-700 mb-4" />
+          <h3 className="text-xl font-medium text-gray-300 mb-2">No Featured Strains</h3>
+          <p className="text-gray-500 mb-4">Explore our strain collection to find your perfect match</p>
+          <Button onClick={handleViewAll} className="bg-purple-600 hover:bg-purple-700 text-white">Browse All Strains</Button>
         </div>
       </div>
     );
@@ -92,11 +92,11 @@ export const FeaturedStrains = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight text-app-primary">{t("featuredStrains") || "Featured Strains"}</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-white">{t("featuredStrains") || "Featured Strains"}</h2>
         <Button 
           variant="ghost" 
           onClick={handleViewAll}
-          className="font-medium text-primary hover:text-primary/80 hover:bg-transparent p-0"
+          className="font-medium text-purple-400 hover:text-purple-300 hover:bg-transparent p-0"
         >
           {t("viewAll") || "View All"} →
         </Button>
@@ -123,13 +123,13 @@ export const FeaturedStrains = () => {
           </CarouselContent>
           <div className="hidden md:flex md:items-center md:justify-end md:gap-2 md:absolute md:top-[-50px] md:right-0">
             <CarouselPrevious 
-              className="static h-9 w-9 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800" 
+              className="static h-9 w-9 rounded-full border border-gray-800 bg-gray-900 hover:bg-gray-800" 
               aria-label={t("previousStrain") || "Previous strain"}
             >
               <ChevronLeft className="h-4 w-4" />
             </CarouselPrevious>
             <CarouselNext 
-              className="static h-9 w-9 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-800"
+              className="static h-9 w-9 rounded-full border border-gray-800 bg-gray-900 hover:bg-gray-800"
               aria-label={t("nextStrain") || "Next strain"}
             >
               <ChevronRight className="h-4 w-4" />
