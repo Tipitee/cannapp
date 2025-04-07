@@ -34,25 +34,50 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
     return t("mildTHC") || "Mild THC";
   };
 
+  // Generate a consistent background color based on strain name for missing images
+  const getBackgroundColor = (name: string) => {
+    const colors = [
+      "from-purple-900 to-indigo-900",
+      "from-indigo-900 to-blue-900",
+      "from-emerald-900 to-teal-900",
+      "from-amber-900 to-orange-900",
+      "from-rose-900 to-red-900",
+      "from-fuchsia-900 to-purple-900",
+    ];
+    
+    // Use the string's characters to determine a consistent color
+    const charSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return colors[charSum % colors.length];
+  };
+
   return (
-    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-gray-200 dark:border-gray-800/30 shadow card-hover-effect flex flex-col">
+    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-gray-700 dark:border-gray-800 shadow flex flex-col">
       <div 
         className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-gray-900 to-gray-800`}
-        style={{ minHeight: compact ? '12rem' : '15rem' }}
+        style={{ 
+          minHeight: compact ? '12rem' : '15rem',
+          maxHeight: compact ? '12rem' : '15rem' 
+        }}
       >
         {strain.imageUrl ? (
           <div className="w-full h-full relative">
             <img 
               src={strain.imageUrl} 
               alt={strain.name} 
-              className="w-full h-full object-cover absolute inset-0 opacity-80"
+              className="w-full h-full object-cover absolute inset-0 opacity-90"
               loading="lazy"
+              onError={(e) => {
+                // On error, replace with a decorative element
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement!.classList.add('bg-gradient-to-br', ...getBackgroundColor(strain.name).split(' '));
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
-            <Leaf className="h-16 w-16 text-purple-400 opacity-60" />
+          <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${getBackgroundColor(strain.name)}`}>
+            <Leaf className="h-16 w-16 text-white opacity-30" />
+            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent"></div>
           </div>
         )}
         <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)}`}>
@@ -65,23 +90,29 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             </Badge>
           </div>
         )}
+        <div className="absolute bottom-3 right-3">
+          <div className="flex items-center bg-black/60 rounded-full px-2 py-0.5 text-white text-xs backdrop-blur-sm">
+            <Star className="h-3 w-3 fill-amber-400 stroke-amber-400 mr-1" />
+            <span>{strain.rating.toFixed(1)}</span>
+          </div>
+        </div>
       </div>
       <Link to={`/strains/${strain.id}`} className="flex flex-col flex-grow">
-        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow`}>
+        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gray-800/50`}>
           <div>
-            <h3 className="font-bold text-lg line-clamp-1">{strain.name}</h3>
+            <h3 className="font-bold text-lg line-clamp-1 text-gray-100">{strain.name}</h3>
             <div className="flex items-center mt-1">
               <div className="flex items-center text-amber-500">
                 <Star className="h-4 w-4 fill-current" />
                 <span className="text-sm font-medium ml-1">{strain.rating.toFixed(1)}</span>
               </div>
-              <span className="text-xs text-gray-500 ml-1">({strain.reviewCount})</span>
+              <span className="text-xs text-gray-400 ml-1">({strain.reviewCount})</span>
             </div>
 
             {!compact && strain.effects.length > 0 && (
               <div className="flex flex-wrap gap-1 my-2">
                 {strain.effects.slice(0, 3).map((effect, index) => (
-                  <Badge key={index} variant="secondary" className="bg-purple-100 text-purple-600 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:bg-purple-800/50">
+                  <Badge key={index} variant="secondary" className="bg-purple-900/50 text-purple-200 hover:bg-purple-800/50 dark:bg-purple-900/50 dark:text-purple-200 dark:hover:bg-purple-800/50">
                     {effect}
                   </Badge>
                 ))}
@@ -89,8 +120,8 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             )}
           </div>
           
-          <div className="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800/20">
-            <div className="flex justify-between items-center text-sm">
+          <div className="mt-auto pt-2 border-t border-gray-700 dark:border-gray-700/40">
+            <div className="flex justify-between items-center text-sm text-gray-300">
               <div>
                 <span className="font-medium">THC:</span> {strain.thcLevel}%
               </div>
