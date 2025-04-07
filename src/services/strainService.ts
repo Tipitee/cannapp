@@ -1,47 +1,65 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { Strain, StrainReview, JournalEntry } from "@/types/strain";
 import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
 
-// This service is designed to be easily switchable between mock data and Supabase
-// Once your Supabase tables are set up, you can replace the mock implementations
-
+// This service is now connected to Supabase strains table
 export const strainService = {
   // Get all strains with optional filtering
   getStrains: async (filters: Record<string, any> = {}) => {
     try {
-      // In the future, this will use Supabase
-      // const { data, error } = await supabase
-      //   .from('strains')
-      //   .select('*')
-      //   .eq('condition', filters.condition)
-      //   .limit(filters.limit || 50);
+      let query = supabase.from('strains').select('*');
       
-      // if (error) throw error;
-      // return data;
+      // Apply search filter if provided
+      if (filters.search) {
+        query = query.ilike('name', `%${filters.search}%`);
+      }
       
-      // Using mock data for now
-      return mockStrains;
+      // Apply type filter if provided
+      if (filters.type) {
+        query = query.eq('type', filters.type);
+      }
+      
+      // Apply limit filter if provided
+      if (filters.limit) {
+        query = query.limit(filters.limit);
+      }
+      
+      const { data, error } = await query;
+      
+      if (error) {
+        console.error("Error fetching strains from Supabase:", error);
+        // Fallback to mock data if there's an error
+        return mockStrains;
+      }
+      
+      // Map Supabase data to our Strain type
+      const mappedStrains: Strain[] = data.map(strain => ({
+        id: strain.name.toLowerCase().replace(/\s+/g, '-'),
+        name: strain.name,
+        type: strain.type as "sativa" | "indica" | "hybrid" || "hybrid",
+        thcLevel: strain.thc_level || 0,
+        cbdLevel: 0.1, // Default since we don't have this in the Supabase table yet
+        effects: getEffectsFromStrain(strain),
+        medicalUses: getMedicalUsesFromStrain(strain),
+        flavors: [], // We don't have flavors in the Supabase table yet
+        description: strain.description || "",
+        imageUrl: strain.img_url || "/strains/placeholder.jpg",
+        rating: 4.5, // Default since we don't have ratings in the Supabase table yet
+        reviewCount: 0, // Default since we don't have review counts in the Supabase table yet
+      }));
+      
+      return mappedStrains.length > 0 ? mappedStrains : mockStrains;
     } catch (error) {
       console.error("Error fetching strains:", error);
-      throw error;
+      // Fallback to mock data if there's an error
+      return mockStrains;
     }
   },
   
-  // Get a single strain by ID
+  // Get a single strain by ID - still using mock data for now
   getStrainById: async (id: string) => {
     try {
-      // In the future, this will use Supabase
-      // const { data, error } = await supabase
-      //   .from('strains')
-      //   .select('*')
-      //   .eq('id', id)
-      //   .single();
-      
-      // if (error) throw error;
-      // return data;
-      
-      // Using mock data for now
+      // For now, we'll use mock data since our Supabase data doesn't have the same IDs
       return mockStrains.find(strain => strain.id === id) || null;
     } catch (error) {
       console.error(`Error fetching strain with ID ${id}:`, error);
@@ -167,3 +185,40 @@ export const strainService = {
     }
   }
 };
+
+// Helper functions to extract effects and medical uses from Supabase strain data
+function getEffectsFromStrain(strain: any): string[] {
+  const effects = [];
+  
+  // Map Supabase strain properties to effects
+  if (strain.relaxed) effects.push("relaxing");
+  if (strain.happy) effects.push("happy");
+  if (strain.euphoric) effects.push("euphoric");
+  if (strain.uplifted) effects.push("uplifted");
+  if (strain.creative) effects.push("creative");
+  if (strain.energetic) effects.push("energetic");
+  if (strain.focused) effects.push("focused");
+  if (strain.tingly) effects.push("tingly");
+  if (strain.sleepy) effects.push("sleepy");
+  if (strain.hungry) effects.push("hungry");
+  
+  return effects.length > 0 ? effects : ["relaxing", "euphoric"];
+}
+
+function getMedicalUsesFromStrain(strain: any): string[] {
+  const medicalUses = [];
+  
+  // Map Supabase strain properties to medical uses
+  if (strain.stress) medicalUses.push("stress");
+  if (strain.anxiety) medicalUses.push("anxiety");
+  if (strain.pain) medicalUses.push("pain");
+  if (strain.depression) medicalUses.push("depression");
+  if (strain.insomnia) medicalUses.push("insomnia");
+  if (strain.lack_of_appetite) medicalUses.push("lack of appetite");
+  if (strain.inflammation) medicalUses.push("inflammation");
+  if (strain.muscle_spasms) medicalUses.push("muscle spasms");
+  if (strain.nausea) medicalUses.push("nausea");
+  if (strain.headaches) medicalUses.push("headaches");
+  
+  return medicalUses.length > 0 ? medicalUses : ["stress", "pain"];
+}

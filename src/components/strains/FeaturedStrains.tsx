@@ -27,7 +27,7 @@ export const FeaturedStrains = () => {
     // This prevents content flash by ensuring skeleton placeholders show first
     setTimeout(() => {
       setInitialRender(false);
-    }, 10);
+    }, 100);  // Increased delay to ensure smoother transition
     return () => setMounted(false);
   }, []);
   
