@@ -66,8 +66,7 @@ const Index = () => {
           <div className="fixed top-16 left-0 right-0 z-40 bg-background border-b px-4 py-2">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent flex items-center">
-                  <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">
                   CannaClubMap
                 </h1>
               </div>

@@ -56,7 +56,7 @@ export const DesktopNavBar = () => {
           <Link to="/" className="flex items-center space-x-2">
             <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-8" />
             <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent text-2xl font-bold">
-              {t("appName") || "CannaClubMap"}
+              CannaClubMap
             </span>
           </Link>
           <nav className="mx-6 flex items-center space-x-6">

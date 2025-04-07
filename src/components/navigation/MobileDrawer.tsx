@@ -64,7 +64,7 @@ export function MobileDrawer() {
           <SheetTitle className="flex items-center gap-2">
             <img src="/lovable-uploads/4e1faf83-8ac7-4c73-8d15-9764b0688d4b.png" alt="CannaClubMap Logo" className="h-6" />
             <span className="bg-canna-gradient bg-clip-text text-transparent font-bold">
-              {t("appName") || "CannaClubMap"}
+              CannaClubMap
             </span>
           </SheetTitle>
         </SheetHeader>

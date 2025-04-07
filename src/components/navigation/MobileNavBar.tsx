@@ -50,7 +50,7 @@ export const MobileNavBar = () => {
           <MobileDrawer />
           <div className="flex items-center">
             <span className="text-purple-600 text-xl font-bold">
-              {t("appName") || "CannaClubMap"}
+              CannaClubMap
             </span>
           </div>
         </div>
