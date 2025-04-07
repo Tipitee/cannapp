@@ -28,16 +28,16 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
   };
 
   const getPotencyLabel = (thcLevel: number) => {
-    if (thcLevel >= 20) return "High THC";
-    if (thcLevel >= 15) return "Medium-High THC";
-    if (thcLevel >= 10) return "Medium THC";
-    return "Mild THC";
+    if (thcLevel >= 20) return t("highTHC") || "High THC";
+    if (thcLevel >= 15) return t("mediumHighTHC") || "Medium-High THC";
+    if (thcLevel >= 10) return t("mediumTHC") || "Medium THC";
+    return t("mildTHC") || "Mild THC";
   };
 
   return (
-    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-0 shadow card-hover-effect flex flex-col">
+    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-pink-100 dark:border-pink-900/30 shadow card-hover-effect flex flex-col">
       <div 
-        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gray-100 dark:bg-gray-800`}
+        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-pink-50 to-white dark:from-gray-900 dark:to-pink-950/20`}
         style={{ minHeight: compact ? '12rem' : '15rem' }}
       >
         {strain.imageUrl ? (
@@ -51,7 +51,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30">
-            <span className="text-pink-500 font-medium">{strain.name.charAt(0).toUpperCase()}</span>
+            <span className="text-4xl text-pink-500 font-medium">{strain.name.charAt(0).toUpperCase()}</span>
           </div>
         )}
         <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)} airbnb-badge`}>
@@ -89,7 +89,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
           </div>
           
           <div className="mt-auto pt-2 border-t border-pink-100 dark:border-pink-900/20">
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between items-center text-sm">
               <div>
                 <span className="font-medium">THC:</span> {strain.thcLevel}%
               </div>

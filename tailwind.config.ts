@@ -122,6 +122,7 @@ export default {
 			backgroundImage: {
 				'canna-gradient': 'linear-gradient(to right, #ec4899, #db2777)',
 				'canna-light-gradient': 'linear-gradient(to right, #fce7f3, #fbcfe8)',
+				'canna-bg-gradient': 'linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)',
 			}
 		}
 	},

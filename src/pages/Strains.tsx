@@ -21,11 +21,13 @@ const Strains = () => {
       <div className="space-y-6 animate-fade-in pb-20 md:pb-0">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-canna-light-gradient text-pink-700 dark:text-pink-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400">
               <Cannabis className="h-4 w-4" />
               <span className="text-sm font-medium">{t("strains") || "Strains"}</span>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-canna-gradient">{t("strainExplorer") || "Strain Explorer"}</h1>
+            <h1 className="text-3xl font-bold tracking-tight bg-canna-gradient bg-clip-text text-transparent">
+              {t("strainExplorer") || "Strain Explorer"}
+            </h1>
             <p className="text-muted-foreground max-w-2xl">
               {t("findYourStrain") || "Find the perfect strain for your needs - browse by effects, potency, or type"}
             </p>
@@ -37,7 +39,7 @@ const Strains = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input 
               placeholder={t("searchStrains") || "Search strains by name, effect, or type..."}
-              className="pl-10"
+              className="pl-10 border-pink-200 dark:border-pink-900/30 focus:border-pink-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label={t("searchStrains") || "Search strains"}
