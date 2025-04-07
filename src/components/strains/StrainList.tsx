@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useStrains } from "@/hooks/use-strains";
 import { StrainCard } from "./StrainCard";
@@ -24,10 +25,24 @@ interface StrainListProps {
 export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainListProps) => {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<StrainFilterType>({ search: initialSearch });
-  const { strains, loading } = useStrains(filter);
+  const [initialRender, setInitialRender] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterOpen, setFilterOpen] = useState(false);
   const strainsPerPage = 9;
+  
+  // Force a stable initial state before loading real data
+  useEffect(() => {
+    setMounted(true);
+    // This prevents content flash by ensuring skeleton placeholders show first
+    setTimeout(() => {
+      setInitialRender(false);
+    }, 10);
+    return () => setMounted(false);
+  }, []);
+  
+  // Use a separate effect for data loading to prevent flashing
+  const { strains, loading } = useStrains(filter, !initialRender);
   
   // Update filter when initialSearch changes
   useEffect(() => {
@@ -117,7 +132,7 @@ export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainList
             </Sheet>
           </div>
 
-          {loading ? (
+          {!mounted || initialRender || loading ? (
             <div>
               <p className="text-sm text-gray-500 mb-4">{t("loading") || "Loading results..."}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

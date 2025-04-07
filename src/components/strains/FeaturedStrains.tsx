@@ -17,14 +17,25 @@ import {
 
 export const FeaturedStrains = () => {
   const { t } = useLanguage();
-  const { strains, loading } = useStrains({ search: "", limit: 8 });
   const navigate = useNavigate();
+  const [initialRender, setInitialRender] = useState(true);
   const [mounted, setMounted] = useState(false);
   
+  // Force a stable initial state before loading real data
   useEffect(() => {
     setMounted(true);
+    // This prevents content flash by ensuring skeleton placeholders show first
+    setTimeout(() => {
+      setInitialRender(false);
+    }, 10);
     return () => setMounted(false);
   }, []);
+  
+  // Use a separate effect for data loading to prevent flashing
+  const { strains, loading } = useStrains({ 
+    search: "", 
+    limit: 8 
+  }, !initialRender); // Only start loading after initial render
   
   const handleViewAll = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -80,7 +91,6 @@ export const FeaturedStrains = () => {
     );
   }
   
-  // Use min-height to prevent layout shift
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -103,7 +113,7 @@ export const FeaturedStrains = () => {
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {!mounted || loading ? renderPlaceholderCards() : (
+            {!mounted || initialRender || loading ? renderPlaceholderCards() : (
               strains.map((strain) => (
                 <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                   <div className="h-full">

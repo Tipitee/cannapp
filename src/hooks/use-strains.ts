@@ -5,12 +5,17 @@ import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-export function useStrains(filter: StrainFilter = {}) {
+export function useStrains(filter: StrainFilter = {}, shouldLoad: boolean = true) {
   const [strains, setStrains] = useState<Strain[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Don't load data until explicitly told to
+    if (!shouldLoad) return;
+    
+    let isMounted = true;
+    
     // For now, we use mock data but structure the code to easily migrate to Supabase
     const fetchStrains = async () => {
       try {
@@ -18,7 +23,10 @@ export function useStrains(filter: StrainFilter = {}) {
         
         // In the future, this will fetch from Supabase
         // For now, we use mock data with a simulated delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        
+        // Only update state if component is still mounted
+        if (!isMounted) return;
         
         // Apply filters
         let filteredStrains = [...mockStrains];
@@ -80,18 +88,28 @@ export function useStrains(filter: StrainFilter = {}) {
           filteredStrains = filteredStrains.slice(0, filter.limit);
         }
 
-        setStrains(filteredStrains);
-        setError(null);
+        if (isMounted) {
+          setStrains(filteredStrains);
+          setError(null);
+        }
       } catch (err) {
-        setError("Failed to fetch strains");
-        console.error(err);
+        if (isMounted) {
+          setError("Failed to fetch strains");
+          console.error(err);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchStrains();
-  }, [filter]);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [filter, shouldLoad]);
 
   return { strains, loading, error };
 }
