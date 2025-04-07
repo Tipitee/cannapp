@@ -60,27 +60,27 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             </div>
           )}
         </div>
-        <CardContent className={`p-4 ${compact ? 'space-y-2' : 'space-y-3'} flex-grow flex flex-col`}>
-          <div className="space-y-1">
+        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow`}>
+          <div>
             <h3 className="font-bold text-lg line-clamp-1">{strain.name}</h3>
-            <div className="flex items-center">
+            <div className="flex items-center mt-1">
               <div className="flex items-center text-amber-500">
                 <Star className="h-4 w-4 fill-current" />
                 <span className="text-sm font-medium ml-1">{strain.rating.toFixed(1)}</span>
               </div>
               <span className="text-xs text-gray-500 ml-1">({strain.reviewCount})</span>
             </div>
-          </div>
 
-          {!compact && (
-            <div className="flex flex-wrap gap-1 my-2">
-              {strain.effects.slice(0, 3).map((effect, index) => (
-                <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
-                  {t(effect)}
-                </Badge>
-              ))}
-            </div>
-          )}
+            {!compact && strain.effects.length > 0 && (
+              <div className="flex flex-wrap gap-1 my-2">
+                {strain.effects.slice(0, 3).map((effect, index) => (
+                  <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
+                    {t(effect)}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
           
           <div className="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
             <div className="flex justify-between text-sm">

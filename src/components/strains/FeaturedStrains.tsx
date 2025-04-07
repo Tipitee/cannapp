@@ -55,7 +55,7 @@ export const FeaturedStrains = () => {
           align: "start",
           loop: true,
         }}
-        className="w-full"
+        className="w-full relative"
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {strains.map((strain) => (

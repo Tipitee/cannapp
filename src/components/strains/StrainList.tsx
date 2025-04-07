@@ -27,12 +27,24 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
   const [filter, setFilter] = useState<StrainFilterType>({ search: initialSearch });
   const { strains, loading } = useStrains(filter);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeTab, setActiveTab] = useState("all");
   const strainsPerPage = 9;
   
   // Update filter when initialSearch changes
   useEffect(() => {
     setFilter(prev => ({ ...prev, search: initialSearch }));
   }, [initialSearch]);
+  
+  // Handle tab changes
+  useEffect(() => {
+    if (activeTab === "all") {
+      setFilter(prev => ({ ...prev, type: undefined }));
+    } else {
+      setFilter(prev => ({ ...prev, type: activeTab as "sativa" | "indica" | "hybrid" }));
+    }
+    // Reset to first page when changing tabs
+    setCurrentPage(1);
+  }, [activeTab]);
   
   // Calculate pagination
   const indexOfLastStrain = currentPage * strainsPerPage;
@@ -84,17 +96,18 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
           
           {/* Strain type tabs */}
           <div className="mb-6">
-            <Tabs defaultValue="all" className="w-full">
+            <Tabs 
+              defaultValue="all" 
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <TabsList className="w-full md:w-auto grid grid-cols-4 mb-2">
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="sativa">Sativa</TabsTrigger>
                 <TabsTrigger value="indica">Indica</TabsTrigger>
                 <TabsTrigger value="hybrid">Hybrid</TabsTrigger>
               </TabsList>
-              <TabsContent value="all"></TabsContent>
-              <TabsContent value="sativa"></TabsContent>
-              <TabsContent value="indica"></TabsContent>
-              <TabsContent value="hybrid"></TabsContent>
             </Tabs>
           </div>
 
