@@ -40,7 +40,6 @@ export const FeaturedStrains = () => {
               effects: [],
               flavors: [],
               medicalUses: [],
-              negativeEffects: [],
               description: "",
               rating: 0,
               reviewCount: 0,

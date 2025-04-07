@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Star, Leaf } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface StrainCardProps {
   strain: Strain;
@@ -54,7 +55,7 @@ export const StrainCard = ({ strain, compact = false, isLoading = false }: Strai
   // If loading, return a placeholder card with the same dimensions
   if (isLoading) {
     return (
-      <Card className="h-full w-full overflow-hidden border-gray-700 dark:border-gray-800 shadow flex flex-col">
+      <Card className="h-full w-full overflow-hidden border-gray-800 shadow flex flex-col bg-gray-900/80">
         <div 
           className={`${compact ? 'h-48' : 'h-60'} bg-gray-900 overflow-hidden flex-shrink-0 relative`}
           style={{ 
@@ -67,22 +68,22 @@ export const StrainCard = ({ strain, compact = false, isLoading = false }: Strai
           </div>
           
           <div className="absolute top-3 right-3">
-            <div className="h-6 w-16 rounded-full bg-gray-800 animate-pulse"></div>
+            <Skeleton className="h-6 w-16 rounded-full bg-gray-800/60" />
           </div>
           
           <div className="absolute bottom-3 right-3">
-            <div className="h-5 w-10 rounded-full bg-gray-800 animate-pulse"></div>
+            <Skeleton className="h-5 w-10 rounded-full bg-gray-800/60" />
           </div>
         </div>
-        <div className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gray-800/50`}>
+        <div className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gray-800/90`}>
           <div>
-            <div className="h-6 bg-gray-700/50 rounded w-3/4 mb-2 animate-pulse"></div>
-            <div className="h-4 bg-gray-700/30 rounded w-1/4 mb-2 animate-pulse"></div>
+            <Skeleton className="h-6 bg-gray-700/50 rounded w-3/4 mb-2" />
+            <Skeleton className="h-4 bg-gray-700/30 rounded w-1/4 mb-2" />
             
             {!compact && (
               <div className="flex flex-wrap gap-1 my-2">
                 {[1, 2, 3].map((_, index) => (
-                  <div key={index} className="h-5 bg-gray-700/30 rounded-full w-16 animate-pulse"></div>
+                  <Skeleton key={index} className="h-5 bg-gray-700/30 rounded-full w-16" />
                 ))}
               </div>
             )}
@@ -90,8 +91,8 @@ export const StrainCard = ({ strain, compact = false, isLoading = false }: Strai
           
           <div className="mt-auto pt-2 border-t border-gray-700/30">
             <div className="flex justify-between items-center">
-              <div className="h-4 bg-gray-700/30 rounded w-1/4 animate-pulse"></div>
-              <div className="h-4 bg-gray-700/30 rounded w-1/4 animate-pulse"></div>
+              <Skeleton className="h-4 bg-gray-700/30 rounded w-1/4" />
+              <Skeleton className="h-4 bg-gray-700/30 rounded w-1/4" />
             </div>
           </div>
         </div>
@@ -100,7 +101,7 @@ export const StrainCard = ({ strain, compact = false, isLoading = false }: Strai
   }
 
   return (
-    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-gray-700 dark:border-gray-800 shadow flex flex-col">
+    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-gray-800 shadow flex flex-col">
       <div 
         className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-gray-900 to-gray-800`}
         style={{ 
@@ -147,7 +148,7 @@ export const StrainCard = ({ strain, compact = false, isLoading = false }: Strai
         </div>
       </div>
       <Link to={`/strains/${strain.id}`} className="flex flex-col flex-grow">
-        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gray-800/50`}>
+        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gray-800/90`}>
           <div>
             <h3 className="font-bold text-lg line-clamp-1 text-gray-100">{strain.name}</h3>
             <div className="flex items-center mt-1">

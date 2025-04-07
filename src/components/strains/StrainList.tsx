@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useStrains } from "@/hooks/use-strains";
 import { StrainCard } from "./StrainCard";
@@ -76,7 +75,6 @@ export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainList
             effects: [],
             flavors: [],
             medicalUses: [],
-            negativeEffects: [],
             description: "",
             rating: 0,
             reviewCount: 0,
