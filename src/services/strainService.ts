@@ -2,26 +2,58 @@ import { supabase } from "@/integrations/supabase/client";
 import { Strain, StrainReview, JournalEntry } from "@/types/strain";
 import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
 
+// Interface to represent the raw strain data from Supabase
+interface SupabaseStrain {
+  name: string;
+  type?: string;
+  thc_level?: number;
+  description?: string;
+  img_url?: string;
+  relaxed?: string;
+  happy?: string;
+  euphoric?: string;
+  uplifted?: string;
+  creative?: string;
+  energetic?: string;
+  focused?: string;
+  tingly?: string;
+  sleepy?: string;
+  hungry?: string;
+  stress?: string;
+  anxiety?: string;
+  pain?: string;
+  depression?: string;
+  insomnia?: string;
+  lack_of_appetite?: string;
+  inflammation?: string;
+  muscle_spasms?: string;
+  headaches?: string;
+  nausea?: string;
+  [key: string]: any; // Allow for additional properties
+}
+
 // This service is now connected to Supabase strains table
 export const strainService = {
   // Get all strains with optional filtering
   getStrains: async (filters: Record<string, any> = {}) => {
     try {
-      let query = supabase.from('strains').select('*');
+      // Use the any type to bypass TypeScript restriction since the strains table
+      // isn't in the auto-generated TypeScript definitions
+      const query = supabase.from('strains' as any).select('*') as any;
       
       // Apply search filter if provided
       if (filters.search) {
-        query = query.ilike('name', `%${filters.search}%`);
+        query.ilike('name', `%${filters.search}%`);
       }
       
       // Apply type filter if provided
       if (filters.type) {
-        query = query.eq('type', filters.type);
+        query.eq('type', filters.type);
       }
       
       // Apply limit filter if provided
       if (filters.limit) {
-        query = query.limit(filters.limit);
+        query.limit(filters.limit);
       }
       
       const { data, error } = await query;
@@ -33,10 +65,10 @@ export const strainService = {
       }
       
       // Map Supabase data to our Strain type
-      const mappedStrains: Strain[] = data.map(strain => ({
+      const mappedStrains: Strain[] = (data as SupabaseStrain[]).map(strain => ({
         id: strain.name.toLowerCase().replace(/\s+/g, '-'),
         name: strain.name,
-        type: strain.type as "sativa" | "indica" | "hybrid" || "hybrid",
+        type: (strain.type as "sativa" | "indica" | "hybrid") || "hybrid",
         thcLevel: strain.thc_level || 0,
         cbdLevel: 0.1, // Default since we don't have this in the Supabase table yet
         effects: getEffectsFromStrain(strain),
@@ -187,7 +219,7 @@ export const strainService = {
 };
 
 // Helper functions to extract effects and medical uses from Supabase strain data
-function getEffectsFromStrain(strain: any): string[] {
+function getEffectsFromStrain(strain: SupabaseStrain): string[] {
   const effects = [];
   
   // Map Supabase strain properties to effects
@@ -205,7 +237,7 @@ function getEffectsFromStrain(strain: any): string[] {
   return effects.length > 0 ? effects : ["relaxing", "euphoric"];
 }
 
-function getMedicalUsesFromStrain(strain: any): string[] {
+function getMedicalUsesFromStrain(strain: SupabaseStrain): string[] {
   const medicalUses = [];
   
   // Map Supabase strain properties to medical uses
