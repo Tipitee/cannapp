@@ -4,15 +4,12 @@ import { Strain, StrainFilter, StrainReview } from "@/types/strain";
 import { strainService } from "@/services/strainService";
 import { toast } from "sonner";
 
-export function useStrains(filter: StrainFilter = {}, shouldLoad: boolean = true) {
+export function useStrains(filter: StrainFilter = {}) {
   const [strains, setStrains] = useState<Strain[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Don't load data until explicitly told to
-    if (!shouldLoad) return;
-    
     let isMounted = true;
     
     const fetchStrains = async () => {
@@ -44,7 +41,7 @@ export function useStrains(filter: StrainFilter = {}, shouldLoad: boolean = true
     return () => {
       isMounted = false;
     };
-  }, [filter, shouldLoad]);
+  }, [filter]);
 
   return { strains, loading, error };
 }

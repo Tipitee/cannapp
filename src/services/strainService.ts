@@ -32,7 +32,7 @@ interface SupabaseStrain {
   [key: string]: any; // Allow for additional properties
 }
 
-// Fallback mock data
+// Fallback mock data with correct properties for display
 const fallbackMockStrains: Strain[] = [
   {
     id: "og-kush",
@@ -44,7 +44,7 @@ const fallbackMockStrains: Strain[] = [
     medicalUses: ["stress", "pain", "insomnia"],
     flavors: ["earthy", "pine", "woody"],
     description: "OG Kush is a legendary strain with a strong, complex aroma and effect.",
-    imageUrl: "/strains/placeholder.jpg",
+    imageUrl: "",
     rating: 4.8,
     reviewCount: 423,
   },
@@ -58,7 +58,7 @@ const fallbackMockStrains: Strain[] = [
     medicalUses: ["depression", "pain", "fatigue"],
     flavors: ["berry", "sweet", "herbal"],
     description: "Blue Dream is a sativa-dominant hybrid known for its balanced effects.",
-    imageUrl: "/strains/placeholder.jpg",
+    imageUrl: "",
     rating: 4.7,
     reviewCount: 387,
   }
@@ -119,7 +119,7 @@ export const strainService = {
         reviewCount: Math.floor(Math.random() * 400) + 50, // Random review count for now
       }));
       
-      console.log("Mapped strains:", mappedStrains.length);
+      console.log("Mapped strains:", mappedStrains);
       return mappedStrains;
     } catch (error) {
       console.error("Error fetching strains:", error);
@@ -186,16 +186,16 @@ function getEffectsFromStrain(strain: SupabaseStrain): string[] {
   const effects = [];
   
   // Map Supabase strain properties to effects
-  if (strain.relaxed) effects.push("relaxing");
-  if (strain.happy) effects.push("happy");
-  if (strain.euphoric) effects.push("euphoric");
-  if (strain.uplifted) effects.push("uplifted");
-  if (strain.creative) effects.push("creative");
-  if (strain.energetic) effects.push("energetic");
-  if (strain.focused) effects.push("focused");
-  if (strain.tingly) effects.push("tingly");
-  if (strain.sleepy) effects.push("sleepy");
-  if (strain.hungry) effects.push("hungry");
+  if (strain.relaxed === "true") effects.push("relaxing");
+  if (strain.happy === "true") effects.push("happy");
+  if (strain.euphoric === "true") effects.push("euphoric");
+  if (strain.uplifted === "true") effects.push("uplifted");
+  if (strain.creative === "true") effects.push("creative");
+  if (strain.energetic === "true") effects.push("energetic");
+  if (strain.focused === "true") effects.push("focused");
+  if (strain.tingly === "true") effects.push("tingly");
+  if (strain.sleepy === "true") effects.push("sleepy");
+  if (strain.hungry === "true") effects.push("hungry");
   
   return effects.length > 0 ? effects : ["relaxing", "euphoric"];
 }
@@ -204,16 +204,16 @@ function getMedicalUsesFromStrain(strain: SupabaseStrain): string[] {
   const medicalUses = [];
   
   // Map Supabase strain properties to medical uses
-  if (strain.stress) medicalUses.push("stress");
-  if (strain.anxiety) medicalUses.push("anxiety");
-  if (strain.pain) medicalUses.push("pain");
-  if (strain.depression) medicalUses.push("depression");
-  if (strain.insomnia) medicalUses.push("insomnia");
-  if (strain.lack_of_appetite) medicalUses.push("lack of appetite");
-  if (strain.inflammation) medicalUses.push("inflammation");
-  if (strain.muscle_spasms) medicalUses.push("muscle spasms");
-  if (strain.nausea) medicalUses.push("nausea");
-  if (strain.headaches) medicalUses.push("headaches");
+  if (strain.stress === "true") medicalUses.push("stress");
+  if (strain.anxiety === "true") medicalUses.push("anxiety");
+  if (strain.pain === "true") medicalUses.push("pain");
+  if (strain.depression === "true") medicalUses.push("depression");
+  if (strain.insomnia === "true") medicalUses.push("insomnia");
+  if (strain.lack_of_appetite === "true") medicalUses.push("lack of appetite");
+  if (strain.inflammation === "true") medicalUses.push("inflammation");
+  if (strain.muscle_spasms === "true") medicalUses.push("muscle spasms");
+  if (strain.nausea === "true") medicalUses.push("nausea");
+  if (strain.headaches === "true") medicalUses.push("headaches");
   
   return medicalUses.length > 0 ? medicalUses : ["stress", "pain"];
 }

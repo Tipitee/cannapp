@@ -1,12 +1,10 @@
 
 import { useState, useEffect } from "react";
-import { Strain } from "@/types/strain";
 import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Cannabis } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Carousel,
   CarouselContent,
@@ -19,21 +17,9 @@ import { useStrains } from "@/hooks/use-strains";
 export const FeaturedStrains = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [initialRender, setInitialRender] = useState(true);
-  const [mounted, setMounted] = useState(false);
   
-  // Force a stable initial state before loading real data
-  useEffect(() => {
-    setMounted(true);
-    // This prevents content flash by ensuring skeleton placeholders show first
-    setTimeout(() => {
-      setInitialRender(false);
-    }, 100);
-    return () => setMounted(false);
-  }, []);
-  
-  // Use a separate effect for data loading to prevent flashing
-  const { strains, loading } = useStrains({ limit: 8 }, !initialRender);
+  // Directly load strains without initial state management for better performance
+  const { strains, loading } = useStrains({ limit: 8 });
   
   const handleViewAll = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -67,7 +53,7 @@ export const FeaturedStrains = () => {
   };
   
   // Handle empty state
-  if (mounted && !loading && (!strains || strains.length === 0)) {
+  if (!loading && (!strains || strains.length === 0)) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -113,7 +99,7 @@ export const FeaturedStrains = () => {
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {!mounted || initialRender || loading ? renderPlaceholderCards() : (
+            {loading ? renderPlaceholderCards() : (
               strains.map((strain) => (
                 <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                   <div className="h-full w-full">
@@ -123,7 +109,7 @@ export const FeaturedStrains = () => {
               ))
             )}
           </CarouselContent>
-          <div className="hidden md:flex md:items-center md:justify-end md:gap-2 md:absolute md:top-[-50px] md:right-0">
+          <div className="flex md:items-center justify-end gap-2 mt-2">
             <CarouselPrevious 
               className="static h-9 w-9 rounded-full border border-gray-800 bg-gray-900 hover:bg-gray-800" 
               aria-label={t("previousStrain") || "Previous strain"}

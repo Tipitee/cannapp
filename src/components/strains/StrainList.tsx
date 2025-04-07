@@ -25,24 +25,12 @@ interface StrainListProps {
 export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainListProps) => {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<StrainFilterType>({ search: initialSearch });
-  const [initialRender, setInitialRender] = useState(true);
-  const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterOpen, setFilterOpen] = useState(false);
   const strainsPerPage = 9;
   
-  // Force a stable initial state before loading real data
-  useEffect(() => {
-    setMounted(true);
-    // This prevents content flash by ensuring skeleton placeholders show first
-    setTimeout(() => {
-      setInitialRender(false);
-    }, 10);
-    return () => setMounted(false);
-  }, []);
-  
-  // Use a separate effect for data loading to prevent flashing
-  const { strains, loading } = useStrains(filter, !initialRender);
+  // Use strains hook without initial delay for better user experience
+  const { strains, loading } = useStrains(filter);
   
   // Update filter when initialSearch changes
   useEffect(() => {
@@ -113,7 +101,7 @@ export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainList
         {/* Main content */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{t("strainsFound") || "Strains Found"}</h2>
+            <h2 className="text-xl font-bold text-white">{t("strainsFound") || "Strains Found"}</h2>
             
             {/* Mobile filter button */}
             <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
@@ -123,34 +111,34 @@ export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainList
                   {t("filter") || "Filter"}
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-4/5">
+              <SheetContent side="right" className="w-4/5 bg-gray-900 border-gray-800">
                 <div className="py-6">
-                  <h3 className="text-lg font-bold mb-4">{t("filterStrains") || "Filter Strains"}</h3>
+                  <h3 className="text-lg font-bold mb-4 text-white">{t("filterStrains") || "Filter Strains"}</h3>
                   <StrainFilter filter={filter} onFilterChange={setFilter} />
                 </div>
               </SheetContent>
             </Sheet>
           </div>
 
-          {!mounted || initialRender || loading ? (
+          {loading ? (
             <div>
-              <p className="text-sm text-gray-500 mb-4">{t("loading") || "Loading results..."}</p>
+              <p className="text-sm text-gray-400 mb-4">{t("loading") || "Loading results..."}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {renderPlaceholderCards()}
               </div>
             </div>
           ) : strains.length === 0 ? (
-            <div className="text-center py-10 bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[300px]">
-              <CannabisIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-              <p className="text-lg text-gray-500 font-medium">{t("noStrainsFound") || "No strains found"}</p>
-              <p className="text-gray-400 mt-1 mb-4">{t("tryDifferentSearch") || "Try a different search or filter"}</p>
-              <Button variant="outline" onClick={() => setFilter({ search: "" })} className="mt-4">
+            <div className="text-center py-10 bg-gray-900 rounded-lg min-h-[300px] border border-gray-800">
+              <CannabisIcon className="h-12 w-12 mx-auto text-gray-700 mb-4" />
+              <p className="text-lg text-gray-300 font-medium">{t("noStrainsFound") || "No strains found"}</p>
+              <p className="text-gray-500 mt-1 mb-4">{t("tryDifferentSearch") || "Try a different search or filter"}</p>
+              <Button variant="outline" onClick={() => setFilter({ search: "" })} className="mt-4 border-gray-700 text-gray-300">
                 {t("reset") || "Reset"}
               </Button>
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-500 mb-4">{`${strains.length} ${t("results") || "results"}`}</p>
+              <p className="text-sm text-gray-400 mb-4">{`${strains.length} ${t("results") || "results"}`}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentStrains.map((strain) => (
                   <div key={strain.id} className="flex h-full">
