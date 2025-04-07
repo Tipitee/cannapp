@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
-import { Home, Leaf, BookOpen, User, Users } from "lucide-react";
+import { Home, Leaf, BookOpen, User } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { MobileDrawer } from "./MobileDrawer";
 import { useState } from "react";
@@ -32,12 +32,6 @@ export const MobileNavBar = () => {
       active: location.pathname.includes("/journal"),
     },
     {
-      label: t("community"),
-      href: "/community",
-      icon: Users,
-      active: location.pathname.includes("/community"),
-    },
-    {
       label: t("profile"),
       href: "/profile",
       icon: User,
@@ -55,8 +49,8 @@ export const MobileNavBar = () => {
         <div className="flex items-center gap-2">
           <MobileDrawer />
           <div className="flex items-center">
-            <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
-            <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent text-xl font-bold">
+            <img src="/lovable-uploads/4e1faf83-8ac7-4c73-8d15-9764b0688d4b.png" alt="CannaClubMap Logo" className="h-6 mr-2" />
+            <span className="bg-canna-gradient bg-clip-text text-transparent text-xl font-bold">
               {t("appName") || "CannaClubMap"}
             </span>
           </div>
@@ -76,7 +70,7 @@ export const MobileNavBar = () => {
                 : "text-muted-foreground hover:text-primary"
             )}
           >
-            <item.icon className={cn("h-5 w-5", item.active && "text-pink-500")} />
+            <item.icon className={cn("h-5 w-5", item.active && "text-app-primary")} />
             <span className="mt-1 text-xs">{item.label}</span>
           </Link>
         ))}

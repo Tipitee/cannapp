@@ -63,18 +63,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Updated app colors to match logo background (purple/grey)
+				// Updated app colors to match logo background (dark grey/purple)
 				app: {
-					primary: '#7E69AB',       // Purple primary matching logo
-					secondary: '#6E59A5',     // Secondary purple
-					accent: '#403E43',        // Dark grey for text
-					muted: '#8A898C',         // Medium grey for secondary text
-					background: '#F6F6F7',    // Light grey background
-					card: '#FFFFFF',          // White for cards
-					text: '#222222',          // Near black for primary text
-					success: '#008A05',       // Green for success states
-					warning: '#FFB400',       // Yellow/amber for warnings
-					error: '#FF0000',         // Red for errors
+					primary: '#6B5B95',      // Deep purple matching logo 
+					secondary: '#5D4F84',    // Darker purple
+					accent: '#33303A',       // Dark grey for text
+					muted: '#7A7581',        // Medium grey for secondary text
+					background: '#232129',   // Dark grey background matching logo
+					card: '#2A282E',         // Slightly lighter grey for cards
+					text: '#E9E8ED',         // Light grey/white for primary text
+					success: '#008A05',      // Keep green for success states
+					warning: '#FFB400',      // Keep yellow/amber for warnings
+					error: '#FF0000',        // Keep red for errors
 				},
 			},
 			borderRadius: {
@@ -117,12 +117,12 @@ export default {
 			boxShadow: {
 				'airbnb': '0px 6px 16px rgba(0, 0, 0, 0.12)',
 				'uber': '0px 2px 8px rgba(0, 0, 0, 0.15)',
-				'canna': '0 6px 20px rgba(126, 105, 171, 0.15)',
+				'canna': '0 6px 20px rgba(107, 91, 149, 0.25)',
 			},
 			backgroundImage: {
-				'canna-gradient': 'linear-gradient(to right, #7E69AB, #6E59A5)',
-				'canna-light-gradient': 'linear-gradient(to right, #f1f1f4, #e9e8ed)',
-				'canna-bg-gradient': 'linear-gradient(135deg, #f6f6f7 0%, #e9e8ed 100%)',
+				'canna-gradient': 'linear-gradient(to right, #6B5B95, #5D4F84)',
+				'canna-light-gradient': 'linear-gradient(to right, #33303A, #232129)',
+				'canna-bg-gradient': 'linear-gradient(135deg, #232129 0%, #33303A 100%)',
 			}
 		}
 	},

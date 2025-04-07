@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Leaf, BookOpen, User, Users, Settings, LogIn } from "lucide-react";
+import { Menu, Home, Leaf, BookOpen, User, Settings, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
@@ -34,12 +34,6 @@ export function MobileDrawer() {
       active: location.pathname.includes("/journal")
     },
     {
-      title: t("community"),
-      href: "/community",
-      icon: Users,
-      active: location.pathname.includes("/community")
-    },
-    {
       title: t("profile"),
       href: "/profile",
       icon: User,
@@ -68,8 +62,8 @@ export function MobileDrawer() {
       <SheetContent side="left">
         <SheetHeader className="mb-6">
           <SheetTitle className="flex items-center gap-2">
-            <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-6" />
-            <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent font-bold">
+            <img src="/lovable-uploads/4e1faf83-8ac7-4c73-8d15-9764b0688d4b.png" alt="CannaClubMap Logo" className="h-6" />
+            <span className="bg-canna-gradient bg-clip-text text-transparent font-bold">
               {t("appName") || "CannaClubMap"}
             </span>
           </SheetTitle>
@@ -82,7 +76,7 @@ export function MobileDrawer() {
               variant={item.active ? "default" : "ghost"}
               className={cn(
                 "justify-start",
-                item.active ? "bg-pink-500 hover:bg-pink-600" : ""
+                item.active ? "bg-app-primary hover:bg-app-secondary" : ""
               )}
               asChild
               onClick={handleLinkClick}
