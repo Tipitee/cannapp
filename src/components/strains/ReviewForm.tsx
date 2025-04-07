@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { useStrainEffects } from "@/hooks/use-strains";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
@@ -167,7 +166,7 @@ export function ReviewForm({ strainId, onSubmit, onCancel }: ReviewFormProps) {
               {t("cancel")}
             </Button>
           )}
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting} className="bg-app-primary hover:bg-app-secondary">
             {isSubmitting ? t("submitting") : t("submitReview")}
           </Button>
         </div>

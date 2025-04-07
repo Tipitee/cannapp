@@ -35,9 +35,9 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
   };
 
   return (
-    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-pink-100 dark:border-pink-900/30 shadow card-hover-effect flex flex-col">
+    <Card className="h-full w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-gray-200 dark:border-gray-800/30 shadow card-hover-effect flex flex-col">
       <div 
-        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-pink-50 to-white dark:from-gray-900 dark:to-pink-950/20`}
+        className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800/20`}
         style={{ minHeight: compact ? '12rem' : '15rem' }}
       >
         {strain.imageUrl ? (
@@ -50,8 +50,8 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             />
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30">
-            <span className="text-4xl text-pink-500 font-medium">{strain.name.charAt(0).toUpperCase()}</span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800/30 dark:to-gray-700/30">
+            <span className="text-4xl text-app-primary font-medium">{strain.name.charAt(0).toUpperCase()}</span>
           </div>
         )}
         <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)} airbnb-badge`}>
@@ -66,7 +66,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
         )}
       </div>
       <Link to={`/strains/${strain.id}`} className="flex flex-col flex-grow">
-        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gradient-to-b from-white to-pink-50/50 dark:from-gray-900 dark:to-pink-950/20`}>
+        <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/20`}>
           <div>
             <h3 className="font-bold text-lg line-clamp-1">{strain.name}</h3>
             <div className="flex items-center mt-1">
@@ -80,7 +80,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             {!compact && strain.effects.length > 0 && (
               <div className="flex flex-wrap gap-1 my-2">
                 {strain.effects.slice(0, 3).map((effect, index) => (
-                  <Badge key={index} variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200 dark:bg-pink-900/30 dark:text-pink-300 dark:hover:bg-pink-800/50">
+                  <Badge key={index} variant="secondary" className="bg-purple-100 text-app-primary hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:bg-purple-800/50">
                     {effect}
                   </Badge>
                 ))}
@@ -88,7 +88,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             )}
           </div>
           
-          <div className="mt-auto pt-2 border-t border-pink-100 dark:border-pink-900/20">
+          <div className="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800/20">
             <div className="flex justify-between items-center text-sm">
               <div>
                 <span className="font-medium">THC:</span> {strain.thcLevel}%

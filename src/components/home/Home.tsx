@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FeaturedStrains } from "@/components/strains/FeaturedStrains";
-import { Leaf, Map, Users, BookOpen, MessageSquare, Search, MapPin, PlusCircle } from "lucide-react";
+import { Leaf, Map, BookOpen, Search, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
 export const Home = () => {
@@ -40,10 +40,10 @@ export const Home = () => {
       onClick={onClick}
     >
       <div className="p-6">
-        <div className="rounded-full w-12 h-12 flex items-center justify-center bg-pink-500/10 text-pink-500 mb-4">
+        <div className="rounded-full w-12 h-12 flex items-center justify-center bg-app-primary/10 text-app-primary mb-4">
           <Icon className="h-6 w-6" />
         </div>
-        <h3 className="font-semibold text-xl mb-2 group-hover:text-pink-500 transition-colors">{title}</h3>
+        <h3 className="font-semibold text-xl mb-2 group-hover:text-app-primary transition-colors">{title}</h3>
         <p className="text-muted-foreground">{description}</p>
       </div>
     </div>
@@ -53,7 +53,7 @@ export const Home = () => {
     <div className="space-y-12">
       {/* Hero section */}
       <div className="relative">
-        <div className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl p-8 md:p-12 overflow-hidden">
+        <div className="bg-gradient-to-r from-app-primary to-app-secondary rounded-3xl p-8 md:p-12 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               <path d="M50,2.5L2.5,35v30L50,97.5l47.5-32.5v-30L50,2.5z" stroke="currentColor" strokeWidth="0.5" fill="none"></path>
@@ -68,14 +68,14 @@ export const Home = () => {
               <img src="/lovable-uploads/f5f3ec12-79d0-4a71-b0da-2902bd23ce66.png" alt="CannaClubMap Logo" className="h-10" />
               <h2 className="text-3xl md:text-4xl font-bold text-white">Welcome to CannaClubMap</h2>
             </div>
-            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you, explore strains, and connect with the community</p>
+            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you and explore strains with our comprehensive guide</p>
             
             <div className="flex flex-wrap gap-3">
-              <Button onClick={handleLocationRequest} className="bg-white text-pink-600 hover:bg-white/90 border-0">
+              <Button onClick={handleLocationRequest} className="bg-white text-app-primary hover:bg-white/90 border-0">
                 <MapPin className="h-4 w-4 mr-2" />
                 Find Clubs Near Me
               </Button>
-              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-pink-600" onClick={() => navigate('/strains')}>
+              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-app-primary" onClick={() => navigate('/strains')}>
                 <Leaf className="h-4 w-4 mr-2" />
                 Browse Strains
               </Button>
@@ -86,8 +86,8 @@ export const Home = () => {
       
       {/* Features section */}
       <div>
-        <h3 className="text-2xl font-semibold mb-6 text-canna-gradient">Discover CannaClubMap Features</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h3 className="text-2xl font-semibold mb-6 bg-canna-gradient bg-clip-text text-transparent">Discover CannaClubMap Features</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <AppCard
             title="Find Cannabis Clubs"
             description="Locate cannabis clubs and lounges near you with our interactive map"
@@ -99,13 +99,7 @@ export const Home = () => {
             description="Browse our extensive library of cannabis strains with detailed information"
             icon={Leaf}
             onClick={() => navigate('/strains')}
-            className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950/20 dark:to-purple-950/20"
-          />
-          <AppCard
-            title="Join Community"
-            description="Connect with other cannabis enthusiasts and share experiences"
-            icon={Users}
-            onClick={() => navigate('/community')}
+            className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800/20"
           />
           <AppCard
             title="Track in Journal"
@@ -124,8 +118,8 @@ export const Home = () => {
       {/* Nearby Clubs section */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-semibold text-canna-gradient">Cannabis Clubs Near You</h3>
-          <Button variant="ghost" onClick={() => handleChangeTab('map')} className="font-medium text-pink-500 hover:text-pink-600 hover:bg-transparent p-0">
+          <h3 className="text-2xl font-semibold bg-canna-gradient bg-clip-text text-transparent">Cannabis Clubs Near You</h3>
+          <Button variant="ghost" onClick={() => handleChangeTab('map')} className="font-medium text-app-primary hover:text-app-secondary hover:bg-transparent p-0">
             View Map →
           </Button>
         </div>
@@ -147,8 +141,8 @@ export const Home = () => {
             Browse Strains
           </Button>
           <Button variant="outline" onClick={() => navigate("/journal")} className="gap-2">
-            <PlusCircle className="h-4 w-4" />
-            Start Journal
+            <BookOpen className="h-4 w-4" />
+            View Journal
           </Button>
         </div>
       </div>

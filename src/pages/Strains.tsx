@@ -3,7 +3,6 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { StrainList } from "@/components/strains/StrainList";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Cannabis, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
@@ -21,7 +20,7 @@ const Strains = () => {
       <div className="space-y-6 animate-fade-in pb-20 md:pb-0">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-app-primary dark:text-app-primary">
               <Cannabis className="h-4 w-4" />
               <span className="text-sm font-medium">{t("strains") || "Strains"}</span>
             </div>
@@ -39,7 +38,7 @@ const Strains = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input 
               placeholder={t("searchStrains") || "Search strains by name, effect, or type..."}
-              className="pl-10 border-pink-200 dark:border-pink-900/30 focus:border-pink-500"
+              className="pl-10 border-gray-200 dark:border-gray-800/30 focus:border-app-primary"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label={t("searchStrains") || "Search strains"}

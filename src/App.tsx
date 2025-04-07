@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,7 +18,6 @@ const ClubDetail = lazy(() => import("./pages/ClubDetail"));
 const Strains = lazy(() => import("./pages/Strains"));
 const StrainDetail = lazy(() => import("./pages/StrainDetail"));
 const Journal = lazy(() => import("./pages/Journal"));
-const Community = lazy(() => import("./pages/Community"));
 
 import { Navigation } from "./components/navigation/Navigation";
 
@@ -91,7 +91,6 @@ const App = () => {
                 <Route path="/strains" element={<Strains />} />
                 <Route path="/strains/:id" element={<StrainDetail />} />
                 <Route path="/journal" element={<Journal />} />
-                <Route path="/community" element={<Community />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/login" element={<Login />} />

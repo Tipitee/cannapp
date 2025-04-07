@@ -59,7 +59,7 @@ export function StrainJournal({ strain, entries = [] }: StrainJournalProps) {
                 }}
                 modifiersStyles={{
                   highlighted: {
-                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    backgroundColor: 'rgba(126, 105, 171, 0.1)',
                     fontWeight: 'bold'
                   }
                 }}
@@ -111,7 +111,7 @@ export function StrainJournal({ strain, entries = [] }: StrainJournalProps) {
             </div>
             
             <div className="flex justify-center">
-              <Button>
+              <Button className="bg-app-primary hover:bg-app-secondary">
                 {t("addNewEntry")}
               </Button>
             </div>
@@ -152,7 +152,7 @@ export function StrainJournal({ strain, entries = [] }: StrainJournalProps) {
               )}
               
               <div className="flex justify-center">
-                <Button>
+                <Button className="bg-app-primary hover:bg-app-secondary">
                   {t("addNewEntry")}
                 </Button>
               </div>

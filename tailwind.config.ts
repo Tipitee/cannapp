@@ -63,13 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom app colors updated to match logo background pink gradients
+				// Updated app colors to match logo background (purple/grey)
 				app: {
-					primary: '#ec4899',       // Pink primary matching logo
-					secondary: '#FF5A5F',     // Airbnb coral/pink
-					accent: '#484848',        // Dark gray for text
-					muted: '#767676',         // Medium gray for secondary text
-					background: '#F7F7F7',    // Light gray background
+					primary: '#7E69AB',       // Purple primary matching logo
+					secondary: '#6E59A5',     // Secondary purple
+					accent: '#403E43',        // Dark grey for text
+					muted: '#8A898C',         // Medium grey for secondary text
+					background: '#F6F6F7',    // Light grey background
 					card: '#FFFFFF',          // White for cards
 					text: '#222222',          // Near black for primary text
 					success: '#008A05',       // Green for success states
@@ -117,12 +117,12 @@ export default {
 			boxShadow: {
 				'airbnb': '0px 6px 16px rgba(0, 0, 0, 0.12)',
 				'uber': '0px 2px 8px rgba(0, 0, 0, 0.15)',
-				'canna': '0 6px 20px rgba(236, 72, 153, 0.15)',
+				'canna': '0 6px 20px rgba(126, 105, 171, 0.15)',
 			},
 			backgroundImage: {
-				'canna-gradient': 'linear-gradient(to right, #ec4899, #db2777)',
-				'canna-light-gradient': 'linear-gradient(to right, #fce7f3, #fbcfe8)',
-				'canna-bg-gradient': 'linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)',
+				'canna-gradient': 'linear-gradient(to right, #7E69AB, #6E59A5)',
+				'canna-light-gradient': 'linear-gradient(to right, #f1f1f4, #e9e8ed)',
+				'canna-bg-gradient': 'linear-gradient(135deg, #f6f6f7 0%, #e9e8ed 100%)',
 			}
 		}
 	},

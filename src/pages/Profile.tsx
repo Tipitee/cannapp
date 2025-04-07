@@ -21,47 +21,35 @@ const Profile = () => {
           <Button variant="outline" size="sm">Edit Profile</Button>
         </div>
 
-        <Tabs defaultValue="activity" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs defaultValue="details" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="posts">Posts</TabsTrigger>
             <TabsTrigger value="details">Details</TabsTrigger>
           </TabsList>
           <TabsContent value="activity" className="space-y-4 mt-4">
             <Card>
               <CardHeader>
                 <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Your latest interactions</CardDescription>
+                <CardDescription>Your latest interactions with CannaClubMap</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <ActivityItem 
-                    title="Posted a new update" 
+                    title="Updated profile information" 
                     timestamp="2 hours ago"
-                    description="Shared thoughts on cross-platform development" 
+                    description="Changed your personal details" 
                   />
                   <ActivityItem 
-                    title="Commented on a post" 
+                    title="Viewed Blue Dream strain" 
                     timestamp="Yesterday"
-                    description="Replied to 'Best practices for React Native'" 
+                    description="Browsed strain information and reviews" 
                   />
                   <ActivityItem 
-                    title="Updated profile picture" 
+                    title="Added journal entry" 
                     timestamp="3 days ago"
-                    description="Changed your avatar image" 
+                    description="Recorded your experience with Gelato strain" 
                   />
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="posts" className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Posts</CardTitle>
-                <CardDescription>Content you've shared</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-center py-8">No posts yet</p>
               </CardContent>
             </Card>
           </TabsContent>
