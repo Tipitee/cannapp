@@ -1,10 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { useDevice } from "@/hooks/use-device";
 import { ClubMap } from "@/components/map/ClubMap";
 import { ClubList } from "@/components/clubs/ClubList";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { ClubFilter } from "@/types/club";
 import { toast } from "sonner";
 import { Map, List, Home as HomeIcon } from "lucide-react";
@@ -83,13 +83,13 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="pt-24">
+          <div className="pt-24 pb-20 md:pb-0">
             <TabsContent value="welcome" className="m-0 max-w-screen-xl mx-auto p-4 md:p-8">
               <Home />
             </TabsContent>
             
             <TabsContent value="map" className="m-0">
-              <div className="w-full h-[calc(100vh-8rem)] max-h-[80vh]">
+              <div className="w-full h-[calc(100vh-12rem)] md:h-[calc(100vh-8rem)] max-h-[80vh]">
                 <ClubMap 
                   clubs={clubs} 
                   height="100%"

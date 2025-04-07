@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Home, Leaf, BookOpen, User, Users, Settings, LogIn } from "lucide-react";
@@ -11,6 +12,7 @@ import { useLocation } from "react-router-dom";
 export function MobileDrawer() {
   const { t } = useLanguage();
   const location = useLocation();
+  const [open, setOpen] = useState(false);
   
   const navItems = [
     {
@@ -51,8 +53,12 @@ export function MobileDrawer() {
     },
   ];
 
+  const handleLinkClick = () => {
+    setOpen(false);
+  };
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="md:hidden">
           <Menu className="h-5 w-5" />
@@ -79,6 +85,7 @@ export function MobileDrawer() {
                 item.active ? "bg-green-500 hover:bg-green-600" : ""
               )}
               asChild
+              onClick={handleLinkClick}
             >
               <Link to={item.href} className="flex items-center gap-2">
                 <item.icon className="h-5 w-5" />
@@ -88,7 +95,7 @@ export function MobileDrawer() {
           ))}
           
           <div className="border-t my-4 pt-4">
-            <Button variant="outline" className="w-full justify-start" asChild>
+            <Button variant="outline" className="w-full justify-start" asChild onClick={handleLinkClick}>
               <Link to="/login" className="flex items-center gap-2">
                 <LogIn className="h-5 w-5" />
                 {t("login")}

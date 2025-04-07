@@ -5,7 +5,7 @@ import { StrainCard } from "./StrainCard";
 import { StrainFilter } from "./StrainFilter";
 import { StrainFilter as StrainFilterType } from "@/types/strain";
 import { Button } from "@/components/ui/button";
-import { Loader2, Filter, SlidersHorizontal, Cannabis as CannabisIcon } from "lucide-react";
+import { Loader2, SlidersHorizontal, Cannabis as CannabisIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
@@ -28,6 +28,7 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
   const { strains, loading } = useStrains(filter);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("all");
+  const [filterOpen, setFilterOpen] = useState(false);
   const strainsPerPage = 9;
   
   // Update filter when initialSearch changes
@@ -63,7 +64,7 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
   const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
   
   return (
-    <div>
+    <div className="min-h-[300px]">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Desktop sidebar filter */}
         <div className="hidden md:block w-full md:w-64 lg:w-72 flex-shrink-0">
@@ -75,19 +76,19 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
         {/* Main content */}
         <div className="flex-1">
           <div className="flex justify-between items-center mb-4 md:hidden">
-            <h2 className="text-xl font-bold">{t("strainExplorer")}</h2>
+            <h2 className="text-xl font-bold">{t("strainExplorer") || "Strain Explorer"}</h2>
             
             {/* Mobile filter button */}
-            <Sheet>
+            <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="sm">
                   <SlidersHorizontal className="h-4 w-4 mr-1" />
-                  {t("filter")}
+                  {t("filter") || "Filter"}
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-4/5">
                 <div className="py-6">
-                  <h3 className="text-lg font-bold mb-4">{t("filterStrains")}</h3>
+                  <h3 className="text-lg font-bold mb-4">{t("filterStrains") || "Filter Strains"}</h3>
                   <StrainFilter filter={filter} onFilterChange={setFilter} />
                 </div>
               </SheetContent>
@@ -103,34 +104,36 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
               className="w-full"
             >
               <TabsList className="w-full md:w-auto grid grid-cols-4 mb-2">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="sativa">Sativa</TabsTrigger>
-                <TabsTrigger value="indica">Indica</TabsTrigger>
-                <TabsTrigger value="hybrid">Hybrid</TabsTrigger>
+                <TabsTrigger value="all">{t("all") || "All"}</TabsTrigger>
+                <TabsTrigger value="sativa">{t("sativa") || "Sativa"}</TabsTrigger>
+                <TabsTrigger value="indica">{t("indica") || "Indica"}</TabsTrigger>
+                <TabsTrigger value="hybrid">{t("hybrid") || "Hybrid"}</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
 
           {loading ? (
-            <div className="flex justify-center items-center h-64">
+            <div className="flex justify-center items-center min-h-[300px]">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : strains.length === 0 ? (
-            <div className="text-center py-10 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <div className="text-center py-10 bg-gray-50 dark:bg-gray-900 rounded-lg min-h-[300px]">
               <CannabisIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-              <p className="text-lg text-gray-500 font-medium">{t("noStrainsFound")}</p>
-              <p className="text-gray-400 mt-1 mb-4">{t("tryDifferentSearch")}</p>
+              <p className="text-lg text-gray-500 font-medium">{t("noStrainsFound") || "No strains found"}</p>
+              <p className="text-gray-400 mt-1 mb-4">{t("tryDifferentSearch") || "Try a different search or filter"}</p>
               <Button variant="outline" onClick={() => setFilter({ search: "" })} className="mt-4">
-                {t("reset")}
+                {t("reset") || "Reset"}
               </Button>
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-500 mb-4">{`${strains.length} ${t("results")}`}</p>
+              <p className="text-sm text-gray-500 mb-4">{`${strains.length} ${t("results") || "results"}`}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentStrains.map((strain) => (
-                  <div key={strain.id} className="h-full">
-                    <StrainCard strain={strain} />
+                  <div key={strain.id} className="flex h-full">
+                    <div className="w-full">
+                      <StrainCard strain={strain} />
+                    </div>
                   </div>
                 ))}
               </div>

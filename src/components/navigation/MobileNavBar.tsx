@@ -2,13 +2,15 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
-import { Home, Leaf, BookOpen, User, Menu, Users } from "lucide-react";
+import { Home, Leaf, BookOpen, User, Users } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { MobileDrawer } from "./MobileDrawer";
+import { useState } from "react";
 
 export const MobileNavBar = () => {
   const location = useLocation();
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState(location.pathname);
 
   const navItems = [
     {
@@ -43,6 +45,10 @@ export const MobileNavBar = () => {
     },
   ];
 
+  const handleNavClick = (href: string) => {
+    setActiveTab(href);
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-background bg-opacity-95 backdrop-blur-sm px-4 md:hidden">
@@ -59,6 +65,7 @@ export const MobileNavBar = () => {
           <Link
             key={item.href}
             to={item.href}
+            onClick={() => handleNavClick(item.href)}
             className={cn(
               "flex flex-1 flex-col items-center justify-center text-center",
               item.active
