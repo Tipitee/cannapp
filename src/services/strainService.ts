@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { Strain, StrainReview, JournalEntry } from "@/types/strain";
 import { mockStrains, mockStrainReviews } from "@/data/mockStrains";

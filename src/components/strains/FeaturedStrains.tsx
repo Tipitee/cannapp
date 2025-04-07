@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from "react";
-import { useStrains } from "@/hooks/use-strains";
+import { strainService } from "@/services/strainService";
+import { Strain } from "@/types/strain";
 import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ import {
 export const FeaturedStrains = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [strains, setStrains] = useState<Strain[]>([]);
+  const [loading, setLoading] = useState(true);
   const [initialRender, setInitialRender] = useState(true);
   const [mounted, setMounted] = useState(false);
   
@@ -32,10 +34,24 @@ export const FeaturedStrains = () => {
   }, []);
   
   // Use a separate effect for data loading to prevent flashing
-  const { strains, loading } = useStrains({ 
-    search: "", 
-    limit: 8 
-  }, !initialRender); // Only start loading after initial render
+  useEffect(() => {
+    if (!mounted || initialRender) return;
+    
+    const fetchFeaturedStrains = async () => {
+      try {
+        setLoading(true);
+        // Get 8 strains from our service
+        const data = await strainService.getStrains({ limit: 8 });
+        setStrains(data);
+      } catch (error) {
+        console.error("Error fetching featured strains:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchFeaturedStrains();
+  }, [mounted, initialRender]);
   
   const handleViewAll = (e: React.MouseEvent) => {
     e.preventDefault();

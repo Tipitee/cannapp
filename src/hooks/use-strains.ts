@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { Strain, StrainFilter, StrainReview } from "@/types/strain";
-import { mockStrains, mockStrainReviews } from "@/data/mockStrains";
-import { supabase } from "@/integrations/supabase/client";
+import { strainService } from "@/services/strainService";
 import { toast } from "sonner";
 
 export function useStrains(filter: StrainFilter = {}, shouldLoad: boolean = true) {
@@ -16,82 +14,18 @@ export function useStrains(filter: StrainFilter = {}, shouldLoad: boolean = true
     
     let isMounted = true;
     
-    // For now, we use mock data but structure the code to easily migrate to Supabase
     const fetchStrains = async () => {
       try {
         setLoading(true);
         
-        // In the future, this will fetch from Supabase
-        // For now, we use mock data with a simulated delay
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        // Fetch from Supabase using the strainService
+        const data = await strainService.getStrains(filter);
         
         // Only update state if component is still mounted
         if (!isMounted) return;
         
-        // Apply filters
-        let filteredStrains = [...mockStrains];
-        
-        // Search filter
-        if (filter.search) {
-          const searchLower = filter.search.toLowerCase();
-          filteredStrains = filteredStrains.filter(
-            (strain) => 
-              strain.name.toLowerCase().includes(searchLower) ||
-              strain.description.toLowerCase().includes(searchLower) ||
-              strain.effects.some(effect => effect.toLowerCase().includes(searchLower)) ||
-              strain.medicalUses.some(use => use.toLowerCase().includes(searchLower))
-          );
-        }
-        
-        // Type filter
-        if (filter.type) {
-          filteredStrains = filteredStrains.filter(strain => strain.type === filter.type);
-        }
-        
-        // Effects filter
-        if (filter.effects && filter.effects.length > 0) {
-          filteredStrains = filteredStrains.filter(strain => 
-            filter.effects!.every(effect => strain.effects.includes(effect))
-          );
-        }
-        
-        // Medical uses filter
-        if (filter.medicalUses && filter.medicalUses.length > 0) {
-          filteredStrains = filteredStrains.filter(strain => 
-            filter.medicalUses!.some(use => strain.medicalUses.includes(use))
-          );
-        }
-        
-        // THC level filters
-        if (filter.minTHC !== undefined) {
-          filteredStrains = filteredStrains.filter(strain => strain.thcLevel >= filter.minTHC!);
-        }
-        if (filter.maxTHC !== undefined) {
-          filteredStrains = filteredStrains.filter(strain => strain.thcLevel <= filter.maxTHC!);
-        }
-        
-        // CBD level filters
-        if (filter.minCBD !== undefined) {
-          filteredStrains = filteredStrains.filter(strain => strain.cbdLevel >= filter.minCBD!);
-        }
-        if (filter.maxCBD !== undefined) {
-          filteredStrains = filteredStrains.filter(strain => strain.cbdLevel <= filter.maxCBD!);
-        }
-        
-        // Rating filter
-        if (filter.minRating !== undefined) {
-          filteredStrains = filteredStrains.filter(strain => strain.rating >= filter.minRating!);
-        }
-
-        // Apply limit if specified
-        if (filter.limit !== undefined && filter.limit > 0) {
-          filteredStrains = filteredStrains.slice(0, filter.limit);
-        }
-
-        if (isMounted) {
-          setStrains(filteredStrains);
-          setError(null);
-        }
+        setStrains(data);
+        setError(null);
       } catch (err) {
         if (isMounted) {
           setError("Failed to fetch strains");
@@ -132,12 +66,9 @@ export function useStrainDetail(id: string | undefined) {
       try {
         setLoading(true);
         
-        // In the future, this will fetch from Supabase
-        // For now, use mock data with simulated delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        
-        const foundStrain = mockStrains.find(s => s.id === id) || null;
-        const strainReviews = mockStrainReviews.filter(r => r.strainId === id);
+        // Use strainService to fetch strain details and reviews
+        const foundStrain = await strainService.getStrainById(id);
+        const strainReviews = await strainService.getStrainReviews(id);
         
         setStrain(foundStrain);
         setReviews(strainReviews);
@@ -156,21 +87,15 @@ export function useStrainDetail(id: string | undefined) {
   // Function to add a review
   const addReview = async (review: Omit<StrainReview, 'id' | 'createdAt'>) => {
     try {
-      if (!strain) return;
+      if (!strain) return false;
       
-      // In the future, this will use Supabase
-      // For now, create a mock review
-      const newReview: StrainReview = {
-        id: `review-${Date.now()}`,
-        strainId: strain.id,
-        createdAt: new Date().toISOString(),
-        ...review
-      };
+      // Use strainService to create a new review
+      const newReview = await strainService.createReview(review);
       
       // Add to local state
       setReviews(prev => [newReview, ...prev]);
       
-      // Update mock strain review count
+      // Update strain review count and rating
       const updatedStrain = {
         ...strain,
         reviewCount: strain.reviewCount + 1,
