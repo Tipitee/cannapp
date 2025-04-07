@@ -66,15 +66,23 @@ export const StrainList = ({ initialSearch = "", activeTab = "all" }: StrainList
   const renderPlaceholderCards = () => {
     return Array(strainsPerPage).fill(0).map((_, index) => (
       <div key={`placeholder-${index}`} className="flex h-full">
-        <div className="w-full bg-gray-50 dark:bg-gray-900 rounded-lg animate-pulse">
-          <div className="h-60 bg-gray-200 dark:bg-gray-800 rounded-t-lg"></div>
-          <div className="p-4">
-            <div className="h-5 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-2"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/4 mb-4"></div>
-            <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-full mb-2"></div>
-            <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-5/6"></div>
-          </div>
-        </div>
+        <StrainCard 
+          strain={{
+            id: `loading-${index}`,
+            name: "Loading...",
+            type: "hybrid",
+            thcLevel: 0,
+            cbdLevel: 0,
+            effects: [],
+            flavors: [],
+            medicalUses: [],
+            negativeEffects: [],
+            description: "",
+            rating: 0,
+            reviewCount: 0,
+          }} 
+          isLoading={true} 
+        />
       </div>
     ));
   };
