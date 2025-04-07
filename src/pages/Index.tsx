@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useDevice } from "@/hooks/use-device";
 import { ClubMap } from "@/components/map/ClubMap";
 import { ClubList } from "@/components/clubs/ClubList";
-import { useClubs } from "@/hooks/use-clubs";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 import { Home } from "@/components/home/Home";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -24,6 +23,7 @@ const Index = () => {
   const { clubs, loading: clubsLoading } = useClubs(filter);
   const { isReady } = useDevice();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const hideSplash = async () => {
@@ -55,11 +55,21 @@ const Index = () => {
       });
     }
   }, [isReady, t]);
+  
+  // Auto-collapse mobile navigation when clicking a section
+  const handleTabChange = (value: string) => {
+    setActiveView(value);
+    // If you have a mobile drawer state, you could close it here
+    // For example: setMobileDrawerOpen(false);
+    
+    // Use navigate to update the URL without the hash
+    navigate('/', { replace: true });
+  };
 
   return (
     <PageLayout fullWidth className="p-0">
       <div className="min-h-[calc(100vh-4rem)]">
-        <Tabs defaultValue="welcome" value={activeView} onValueChange={setActiveView} className="w-full">
+        <Tabs defaultValue="welcome" value={activeView} onValueChange={handleTabChange} className="w-full">
           <div className="fixed top-16 left-0 right-0 z-10 bg-background border-b px-4 py-2">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
               <div className="flex-1">
@@ -86,10 +96,12 @@ const Index = () => {
             </TabsContent>
             
             <TabsContent value="map" className="m-0">
-              <ClubMap 
-                clubs={clubs} 
-                height="calc(100vh - 8rem)"
-              />
+              <div className="w-full h-[calc(100vh-8rem)] max-h-[80vh]">
+                <ClubMap 
+                  clubs={clubs} 
+                  height="100%"
+                />
+              </div>
             </TabsContent>
             
             <TabsContent value="list" className="m-0 max-w-screen-xl mx-auto p-4 md:p-8">

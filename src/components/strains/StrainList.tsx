@@ -5,7 +5,7 @@ import { StrainCard } from "./StrainCard";
 import { StrainFilter } from "./StrainFilter";
 import { StrainFilter as StrainFilterType } from "@/types/strain";
 import { Button } from "@/components/ui/button";
-import { Loader2, Filter, SlidersHorizontal, Cannabis } from "lucide-react";
+import { Loader2, Filter, SlidersHorizontal, Cannabis as CannabisIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
@@ -117,7 +117,7 @@ export const StrainList = ({ initialSearch = "" }: StrainListProps) => {
             </div>
           ) : strains.length === 0 ? (
             <div className="text-center py-10 bg-gray-50 dark:bg-gray-900 rounded-lg">
-              <Cannabis className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+              <CannabisIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
               <p className="text-lg text-gray-500 font-medium">{t("noStrainsFound")}</p>
               <p className="text-gray-400 mt-1 mb-4">{t("tryDifferentSearch")}</p>
               <Button variant="outline" onClick={() => setFilter({ search: "" })} className="mt-4">

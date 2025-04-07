@@ -35,31 +35,31 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
   };
 
   return (
-    <Link to={`/strains/${strain.id}`} className="block h-full">
-      <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 border-0 shadow card-hover-effect">
-        <div className={`relative ${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0`}>
-          {strain.imageUrl ? (
-            <img 
-              src={strain.imageUrl} 
-              alt={strain.name} 
-              className="w-full h-full object-cover transform transition-transform hover:scale-105 duration-500"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-              <span className="text-gray-500">{t("noImage")}</span>
-            </div>
-          )}
-          <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)} airbnb-badge`}>
-            {strain.type.charAt(0).toUpperCase() + strain.type.slice(1)}
-          </Badge>
-          {!compact && (
-            <div className="absolute bottom-3 left-3">
-              <Badge variant="outline" className="bg-black/60 text-white border-0 backdrop-blur-sm">
-                {getPotencyLabel(strain.thcLevel)}
-              </Badge>
-            </div>
-          )}
-        </div>
+    <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 border-0 shadow card-hover-effect flex flex-col">
+      <div className={`${compact ? 'h-48' : 'h-60'} overflow-hidden flex-shrink-0 relative`}>
+        {strain.imageUrl ? (
+          <img 
+            src={strain.imageUrl} 
+            alt={strain.name} 
+            className="w-full h-full object-cover transform transition-transform hover:scale-105 duration-500"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+            <span className="text-gray-500">{t("noImage")}</span>
+          </div>
+        )}
+        <Badge className={`absolute top-3 right-3 ${getStrainTypeColor(strain.type)} airbnb-badge`}>
+          {strain.type.charAt(0).toUpperCase() + strain.type.slice(1)}
+        </Badge>
+        {!compact && (
+          <div className="absolute bottom-3 left-3">
+            <Badge variant="outline" className="bg-black/60 text-white border-0 backdrop-blur-sm">
+              {getPotencyLabel(strain.thcLevel)}
+            </Badge>
+          </div>
+        )}
+      </div>
+      <Link to={`/strains/${strain.id}`} className="flex flex-col flex-grow">
         <CardContent className={`${compact ? 'p-3' : 'p-4'} flex flex-col justify-between flex-grow`}>
           <div>
             <h3 className="font-bold text-lg line-clamp-1">{strain.name}</h3>
@@ -93,7 +93,7 @@ export const StrainCard = ({ strain, compact = false }: StrainCardProps) => {
             </div>
           </div>
         </CardContent>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };
