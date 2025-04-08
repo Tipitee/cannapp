@@ -1,9 +1,10 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useState, useEffect, Suspense, lazy, ErrorBoundary } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { Capacitor } from "@capacitor/core";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import ErrorBoundary from "./components/error/ErrorBoundary";
