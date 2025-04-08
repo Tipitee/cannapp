@@ -53,13 +53,13 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
           let thcLevel = strain.thc_level;
           if (typeof strain.thc_level === 'string') {
             // Handle ranges like "18–22%" or "18-22%"
-            const thcMatch = strain.thc_level.match(/(\d+)[-–](\d+)/);
+            const thcMatch = strain.thc_level.toString().match(/(\d+)[-–](\d+)/);
             if (thcMatch) {
               // Use the average of the range
               thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
             } else {
               // Extract just the number
-              const numMatch = strain.thc_level.match(/(\d+)/);
+              const numMatch = strain.thc_level.toString().match(/(\d+)/);
               if (numMatch) {
                 thcLevel = parseInt(numMatch[1]);
               }
@@ -135,13 +135,13 @@ export const useStrain = (name: string) => {
           let thcLevel = data.thc_level;
           if (typeof data.thc_level === 'string') {
             // Handle ranges like "18–22%" or "18-22%"
-            const thcMatch = data.thc_level.match(/(\d+)[-–](\d+)/);
+            const thcMatch = data.thc_level.toString().match(/(\d+)[-–](\d+)/);
             if (thcMatch) {
               // Use the average of the range
               thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
             } else {
               // Extract just the number
-              const numMatch = data.thc_level.match(/(\d+)/);
+              const numMatch = data.thc_level.toString().match(/(\d+)/);
               if (numMatch) {
                 thcLevel = parseInt(numMatch[1]);
               }
