@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { ClubMap } from "@/components/map/ClubMap";
@@ -63,7 +62,8 @@ export const Home = () => {
   const getFeaturedStrains = () => {
     if (strainsLoading || !strains.length) return [];
     
-    const typeMap = new Map();
+    // Fix: Properly initialize the Map with type parameters
+    const typeMap = new Map<string, boolean>();
     const featured = [];
     
     // Try to select one of each type if available
