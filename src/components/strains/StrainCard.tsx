@@ -67,7 +67,7 @@ export function StrainCard({ strain }: StrainCardProps) {
     }
     
     // Already formatted string (e.g. "15%")
-    if (typeof strain.thc_level === 'string' && String(strain.thc_level).includes('%')) {
+    if (typeof strain.thc_level === 'string' && String(strain.thc_level).indexOf('%') !== -1) {
       return strain.thc_level;
     }
     
@@ -79,9 +79,9 @@ export function StrainCard({ strain }: StrainCardProps) {
   const getTypeColor = () => {
     const type = strain.type?.toLowerCase() || '';
     
-    if (type.includes('sativa')) return 'bg-green-500';
-    if (type.includes('indica')) return 'bg-purple-500';
-    if (type.includes('hybrid')) return 'bg-orange-500';
+    if (type.indexOf('sativa') !== -1) return 'bg-green-500';
+    if (type.indexOf('indica') !== -1) return 'bg-purple-500';
+    if (type.indexOf('hybrid') !== -1) return 'bg-orange-500';
     return 'bg-gray-500';
   };
 

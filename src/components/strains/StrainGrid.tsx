@@ -95,7 +95,7 @@ Expected columns:
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {strains.map((strain) => (
-        <StrainCard key={strain.name} strain={strain} />
+        <StrainCard key={strain.name || Math.random().toString()} strain={strain} />
       ))}
     </div>
   );
