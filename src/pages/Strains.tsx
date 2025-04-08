@@ -70,6 +70,11 @@ const Strains = () => {
                     handleFilterChange(newFilter);
                   }} />
                 </div>
+                <div className="absolute bottom-6 left-6 right-6">
+                  <SheetClose asChild>
+                    <Button className="w-full">Apply Filters</Button>
+                  </SheetClose>
+                </div>
               </SheetContent>
             </Sheet>
           </div>
