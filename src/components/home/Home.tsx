@@ -63,7 +63,7 @@ export const Home = () => {
   const getFeaturedStrains = () => {
     if (strainsLoading || !strains.length) return [];
     
-    // Fix: Use Map class instead of the Map icon
+    // Fix: Use JavaScript's Map class instead of the Lucide Map icon
     const typeMap = new Map<string, boolean>();
     const featured = [];
     
