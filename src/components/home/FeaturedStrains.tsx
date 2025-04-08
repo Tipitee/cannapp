@@ -47,6 +47,42 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
     return 'bg-gray-500';
   };
   
+  // Find the top effect for each strain
+  const getTopEffect = (strain: Strain) => {
+    if (!strain) return null;
+    
+    // List of all possible effects
+    const effectKeys = [
+      'stress', 'pain', 'depression', 'anxiety', 'insomnia', 'hungry', 'talkative',
+      'headache', 'ptsd', 'creative', 'energetic', 'fatigue', 'focused', 'giggly',
+      'lack_of_appetite', 'nausea', 'headaches', 'bipolar_disorder', 'cancer',
+      'tingly', 'cramps', 'aroused', 'gastrointestinal_disorder', 'inflammation',
+      'muscle_spasms', 'eye_pressure', 'migraines', 'asthma', 'anorexia', 'arthritis',
+      'add/adhd', 'muscular_dystrophy', 'hypertension', 'glaucoma', 'pms', 'seizures',
+      'spasticity', 'spinal_cord_injury', 'fibromyalgia', 'crohn\'s_disease',
+      'phantom_limb_pain', 'epilepsy', 'multiple_sclerosis', 'parkinson\'s',
+      'tourette\'s_syndrome', 'alzheimer\'s', 'hiv/aids', 'tinnitus'
+    ];
+    
+    // Find the effect with highest value
+    let maxEffect = null;
+    let maxValue = -1;
+    
+    effectKeys.forEach(effect => {
+      // Type-safe access
+      const effectValue = strain[effect as keyof Strain];
+      if (typeof effectValue === 'number' && effectValue > maxValue) {
+        maxValue = effectValue;
+        maxEffect = effect;
+      }
+    });
+    
+    // Return formatted top effect or fallback
+    return maxValue > 0 ? 
+      maxEffect?.replaceAll('_', ' ') : 
+      'No effects data';
+  };
+  
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -82,6 +118,9 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
                   <Badge variant="secondary" className="text-xs">
                     THC: {formatThcLevel(strain.thc_level)}
                   </Badge>
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground">
+                  {getTopEffect(strain)}
                 </div>
               </CardContent>
             </Link>

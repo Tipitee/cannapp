@@ -8,8 +8,10 @@ import { useState, useEffect, Suspense, lazy } from "react";
 import { Capacitor } from "@capacitor/core";
 import { LanguageProvider } from "./contexts/LanguageContext";
 
-// Lazily load pages to improve initial load time
-const Index = lazy(() => import("./pages/Index"));
+// Import Index page statically to avoid dynamic import errors
+import Index from "./pages/Index";
+
+// Only lazy load other pages
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
