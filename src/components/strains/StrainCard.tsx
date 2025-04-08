@@ -95,6 +95,19 @@ export function StrainCard({ strain }: StrainCardProps) {
     return words.slice(0, 10).join(' ') + '... ';
   };
 
+  // Function to humanize effect names for display
+  const humanizeEffectName = (name: string) => {
+    return name
+      .replace(/_/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+      // Handle special cases
+      .replace('Add Adhd', 'ADD/ADHD')
+      .replace('Hiv Aids', 'HIV/AIDS')
+      .replace('Ptsd', 'PTSD');
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <Link to={`/strains/${encodeURIComponent(strain.name || '')}`} className="block">
@@ -134,7 +147,7 @@ export function StrainCard({ strain }: StrainCardProps) {
           {topEffects.length > 0 ? (
             topEffects.map(effect => (
               <Badge key={effect} variant="outline" className="capitalize">
-                {effect}
+                {humanizeEffectName(effect)}
               </Badge>
             ))
           ) : (
