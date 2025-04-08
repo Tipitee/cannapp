@@ -12,17 +12,25 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
   useEffect(() => {
     const fetchStrains = async () => {
       setLoading(true);
+      setError(null);
       
       try {
         let query = supabase.from("strains").select("*");
         
         // Apply filters
         if (filter.search) {
-          query = query.ilike("name", `%${filter.search}%`);
+          query = query.or(`name.ilike.%${filter.search}%,description.ilike.%${filter.search}%`);
         }
         
         if (filter.type && filter.type !== "all") {
-          query = query.eq("type", filter.type);
+          // Handle different type formats (e.g., "Sativa", "Sativa-dominant", etc.)
+          if (filter.type === "sativa") {
+            query = query.or(`type.ilike.%sativa%`);
+          } else if (filter.type === "indica") {
+            query = query.or(`type.ilike.%indica%`);
+          } else if (filter.type === "hybrid") {
+            query = query.or(`type.ilike.%hybrid%`);
+          }
         }
         
         if (filter.minThc !== undefined) {
@@ -39,17 +47,45 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
         
         let resultData = data || [];
         
+        // Transform data if needed to match expected format
+        const transformedData = resultData.map(strain => {
+          // Extract potential THC percentage from string values like "18-22%"
+          let thcLevel = strain.thc_level;
+          if (typeof strain.thc_level === 'string') {
+            // Handle ranges like "18–22%" or "18-22%"
+            const thcMatch = strain.thc_level.match(/(\d+)[-–](\d+)/);
+            if (thcMatch) {
+              // Use the average of the range
+              thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
+            } else {
+              // Extract just the number
+              const numMatch = strain.thc_level.match(/(\d+)/);
+              if (numMatch) {
+                thcLevel = parseInt(numMatch[1]);
+              }
+            }
+          }
+          
+          return {
+            ...strain,
+            thc_level: thcLevel,
+          };
+        });
+        
         // Additional filtering for effects (client-side because of the complexity)
         if (filter.effects && filter.effects.length > 0) {
-          resultData = resultData.filter(strain => {
+          const filteredData = transformedData.filter(strain => {
             return filter.effects!.some(effect => {
+              // Check if the effect exists in effects, flavors, or description fields
               const effectValue = strain[effect as keyof Strain];
-              return effectValue && effectValue !== '0' && effectValue !== '';
+              const descriptionMatch = strain.description?.toLowerCase().includes(effect.toLowerCase());
+              return (effectValue && effectValue !== '0' && effectValue !== '') || descriptionMatch;
             });
           });
+          setStrains(filteredData);
+        } else {
+          setStrains(transformedData);
         }
-        
-        setStrains(resultData);
       } catch (err) {
         console.error("Error fetching strains:", err);
         setError(err as Error);
@@ -81,6 +117,8 @@ export const useStrain = (name: string) => {
       }
 
       setLoading(true);
+      setError(null);
+      
       try {
         const { data, error: apiError } = await supabase
           .from("strains")
@@ -93,7 +131,27 @@ export const useStrain = (name: string) => {
         if (!data) {
           throw new Error("Strain not found");
         } else {
-          setStrain(data);
+          // Transform data if needed
+          let thcLevel = data.thc_level;
+          if (typeof data.thc_level === 'string') {
+            // Handle ranges like "18–22%" or "18-22%"
+            const thcMatch = data.thc_level.match(/(\d+)[-–](\d+)/);
+            if (thcMatch) {
+              // Use the average of the range
+              thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
+            } else {
+              // Extract just the number
+              const numMatch = data.thc_level.match(/(\d+)/);
+              if (numMatch) {
+                thcLevel = parseInt(numMatch[1]);
+              }
+            }
+          }
+          
+          setStrain({
+            ...data,
+            thc_level: thcLevel,
+          });
         }
       } catch (err) {
         console.error("Error fetching strain:", err);

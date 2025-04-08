@@ -2,14 +2,15 @@
 import { Strain } from "@/types/strain";
 import { StrainCard } from "./StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Loader2 } from "lucide-react";
+import { Loader2, Database, AlertCircle } from "lucide-react";
 
 interface StrainGridProps {
   strains: Strain[];
   loading: boolean;
+  error: Error | null;
 }
 
-export function StrainGrid({ strains, loading }: StrainGridProps) {
+export function StrainGrid({ strains, loading, error }: StrainGridProps) {
   const { t } = useLanguage();
   
   if (loading) {
@@ -34,11 +35,23 @@ export function StrainGrid({ strains, loading }: StrainGridProps) {
     );
   }
 
+  if (error) {
+    return (
+      <div className="text-center py-12 border border-red-200 bg-red-50 rounded-lg">
+        <div className="flex justify-center mb-4">
+          <AlertCircle className="h-8 w-8 text-red-500" />
+        </div>
+        <h3 className="text-xl font-medium mb-2">{t("errorLoadingStrains") || "Error Loading Strains"}</h3>
+        <p className="text-muted-foreground">{error.message}</p>
+      </div>
+    );
+  }
+
   if (strains.length === 0) {
     return (
       <div className="text-center py-12 border border-dashed rounded-lg">
         <div className="flex justify-center mb-4">
-          <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
+          <Database className="h-8 w-8 text-muted-foreground" />
         </div>
         <h3 className="text-xl font-medium mb-2">{t("noStrainsFound") || "No strains found in the database"}</h3>
         <p className="text-muted-foreground">{t("checkSupabaseConnection") || "Please check your Supabase connection and ensure the strains table is populated"}</p>
