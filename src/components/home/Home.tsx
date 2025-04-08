@@ -6,12 +6,16 @@ import { useClubs } from "@/hooks/use-clubs";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Map, BookOpen, Search, MapPin } from "lucide-react";
+import { Map, BookOpen, Search, MapPin, Leaf, Filter } from "lucide-react";
 import { toast } from "sonner";
+import { useStrains } from "@/hooks/use-strains";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export const Home = () => {
   const { t } = useLanguage();
   const { clubs } = useClubs({ search: "" });
+  const { strains, loading: strainsLoading } = useStrains({ type: "all" });
   const { latitude, longitude, requestGeolocation } = useGeolocation();
   const navigate = useNavigate();
   
@@ -48,6 +52,41 @@ export const Home = () => {
     </div>
   );
   
+  // Get up to 4 featured strains with different types
+  const getFeaturedStrains = () => {
+    if (strainsLoading || !strains.length) return [];
+    
+    const typeMap = new Map();
+    const featured = [];
+    
+    // Try to select one of each type if available
+    for (const strain of strains) {
+      const type = strain.type?.toLowerCase() || 'unknown';
+      
+      if (!typeMap.has(type) && featured.length < 4) {
+        typeMap.set(type, true);
+        featured.push(strain);
+      }
+      
+      if (featured.length === 4) break;
+    }
+    
+    // If we don't have 4 yet, add more strains
+    if (featured.length < 4) {
+      for (const strain of strains) {
+        if (!featured.includes(strain) && featured.length < 4) {
+          featured.push(strain);
+        }
+        
+        if (featured.length === 4) break;
+      }
+    }
+    
+    return featured;
+  };
+  
+  const featuredStrains = getFeaturedStrains();
+  
   return (
     <div className="space-y-12">
       {/* Hero section */}
@@ -64,16 +103,16 @@ export const Home = () => {
           </div>
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Welcome to CannaClubMap</h2>
-            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you with our comprehensive guide</p>
+            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you and discover perfect strains for your needs</p>
             
             <div className="flex flex-wrap gap-3">
               <Button onClick={() => navigate('/clubs')} className="bg-white text-app-primary hover:bg-white/90 border-0">
                 <Map className="h-4 w-4 mr-2" />
                 Find Clubs
               </Button>
-              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-app-primary" onClick={() => navigate('/journal')}>
-                <BookOpen className="h-4 w-4 mr-2" />
-                My Journal
+              <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-app-primary" onClick={() => navigate('/strains')}>
+                <Leaf className="h-4 w-4 mr-2" />
+                Explore Strains
               </Button>
             </div>
           </div>
@@ -83,7 +122,7 @@ export const Home = () => {
       {/* Features section */}
       <div>
         <h3 className="text-2xl font-semibold mb-6 text-app-primary">App Features</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <AppCard
             title="Find Clubs"
             description="Locate cannabis clubs near you with our interactive map"
@@ -96,21 +135,76 @@ export const Home = () => {
             icon={BookOpen}
             onClick={() => navigate('/journal')}
           />
+          <AppCard
+            title="Explore Strains"
+            description="Discover cannabis strains with detailed profiles and effects"
+            icon={Leaf}
+            onClick={() => navigate('/strains')}
+          />
         </div>
       </div>
 
-      {/* Nearby Clubs section */}
-      <div>
-        <div className="mt-6 flex flex-wrap gap-3 justify-center">
-          <Button variant="outline" onClick={() => navigate("/clubs")} className="gap-2">
-            <MapPin className="h-4 w-4" />
-            Find Clubs
-          </Button>
-          <Button variant="outline" onClick={() => navigate("/journal")} className="gap-2">
-            <BookOpen className="h-4 w-4" />
-            View Journal
-          </Button>
+      {/* Featured Strains section */}
+      {featuredStrains.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-semibold text-app-primary">Featured Strains</h3>
+            <Button variant="outline" onClick={() => navigate('/strains')} className="gap-2">
+              <Leaf className="h-4 w-4" />
+              View All Strains
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {featuredStrains.map((strain, index) => (
+              <Card key={index} className="overflow-hidden hover:shadow-md transition-all">
+                <Link to={`/strains/${strain.name}`}>
+                  <div className="aspect-square bg-muted overflow-hidden">
+                    {strain.img_url ? (
+                      <img 
+                        src={strain.img_url} 
+                        alt={strain.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900">
+                        <span className="text-4xl">🌿</span>
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-4">
+                    <h4 className="font-medium text-md truncate">{strain.name}</h4>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge variant="outline" className="capitalize">
+                        {strain.type || "Unknown"}
+                      </Badge>
+                      {strain.thc_level && (
+                        <Badge variant="secondary" className="text-xs">
+                          THC: {strain.thc_level.toFixed(1)}%
+                        </Badge>
+                      )}
+                    </div>
+                  </CardContent>
+                </Link>
+              </Card>
+            ))}
+          </div>
         </div>
+      )}
+
+      {/* Navigation buttons */}
+      <div className="mt-6 flex flex-wrap gap-3 justify-center">
+        <Button variant="outline" onClick={() => navigate("/clubs")} className="gap-2">
+          <MapPin className="h-4 w-4" />
+          Find Clubs
+        </Button>
+        <Button variant="outline" onClick={() => navigate("/journal")} className="gap-2">
+          <BookOpen className="h-4 w-4" />
+          View Journal
+        </Button>
+        <Button variant="outline" onClick={() => navigate("/strains")} className="gap-2">
+          <Leaf className="h-4 w-4" />
+          Explore Strains
+        </Button>
       </div>
     </div>
   );

@@ -16,6 +16,8 @@ const Settings = lazy(() => import("./pages/Settings"));
 const Login = lazy(() => import("./pages/Login"));
 const ClubDetail = lazy(() => import("./pages/ClubDetail"));
 const Journal = lazy(() => import("./pages/Journal"));
+const Strains = lazy(() => import("./pages/Strains"));
+const StrainDetail = lazy(() => import("./pages/StrainDetail"));
 
 import { Navigation } from "./components/navigation/Navigation";
 
@@ -90,6 +92,8 @@ const App = () => {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/strains" element={<Strains />} />
+                <Route path="/strains/:name" element={<StrainDetail />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
