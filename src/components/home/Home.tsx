@@ -12,6 +12,34 @@ import { useStrains } from "@/hooks/use-strains";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+// Define AppCard component outside of Home component
+const AppCard = ({ 
+  title, 
+  description, 
+  icon: Icon, 
+  onClick, 
+  className 
+}: { 
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  onClick: () => void;
+  className?: string;
+}) => (
+  <div 
+    className={`cursor-pointer group rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-app-card dark:to-app-background ${className}`} 
+    onClick={onClick}
+  >
+    <div className="p-6">
+      <div className="rounded-full w-12 h-12 flex items-center justify-center bg-app-primary/10 text-app-primary mb-4">
+        <Icon className="h-6 w-6" />
+      </div>
+      <h3 className="font-semibold text-xl mb-2 group-hover:text-app-primary transition-colors">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+  </div>
+);
+
 export const Home = () => {
   const { t } = useLanguage();
   const { clubs } = useClubs({ search: "" });
@@ -30,28 +58,6 @@ export const Home = () => {
     // Use the navigate API with state to indicate which tab should be active
     navigate("/", { state: { activeTab: tab } });
   };
-  
-  // Define the AppCard component properly as a functional component
-  const AppCard = ({ title, description, icon: Icon, onClick, className }: { 
-    title: string;
-    description: string;
-    icon: React.ComponentType<any>;
-    onClick: () => void;
-    className?: string;
-  }) => (
-    <div 
-      className={`cursor-pointer group rounded-xl border shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-app-card dark:to-app-background ${className}`} 
-      onClick={onClick}
-    >
-      <div className="p-6">
-        <div className="rounded-full w-12 h-12 flex items-center justify-center bg-app-primary/10 text-app-primary mb-4">
-          <Icon className="h-6 w-6" />
-        </div>
-        <h3 className="font-semibold text-xl mb-2 group-hover:text-app-primary transition-colors">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
-      </div>
-    </div>
-  );
   
   // Get up to 4 featured strains with different types
   const getFeaturedStrains = () => {
