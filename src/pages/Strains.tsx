@@ -6,7 +6,7 @@ import { StrainFilters } from "@/components/strains/StrainFilters";
 import { useStrains } from "@/hooks/use-strains";
 import { StrainFilterProps } from "@/types/strain";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Filter, Leaf } from "lucide-react";
+import { Filter, Leaf, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -16,15 +16,24 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { toast } from "sonner";
 
 const Strains = () => {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<StrainFilterProps>({});
-  const { strains, loading } = useStrains(filter);
+  const { strains, loading, error } = useStrains(filter);
 
   const handleFilterChange = (newFilter: StrainFilterProps) => {
     setFilter(newFilter);
   };
+
+  // Display a toast if there's an error
+  if (error && !loading) {
+    toast.error("Error loading strains", {
+      description: "Please check your Supabase connection",
+      duration: 5000,
+    });
+  }
 
   return (
     <PageLayout>
@@ -39,6 +48,16 @@ const Strains = () => {
         </p>
       </div>
 
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6 flex items-center gap-3">
+          <AlertTriangle className="h-5 w-5" />
+          <div>
+            <h3 className="font-medium">Failed to connect to database</h3>
+            <p className="text-sm">Make sure your Supabase service is running and the strains table exists.</p>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
         <div className="hidden lg:block">
           <div className="sticky top-20">
@@ -51,7 +70,7 @@ const Strains = () => {
           {/* Mobile filters */}
           <div className="flex lg:hidden justify-between items-center mb-4">
             <h2 className="text-lg font-medium">
-              {strains.length} {t("strainsFound") || "strains found"}
+              {loading ? "Loading..." : `${strains.length} ${t("strainsFound") || "strains found"}`}
             </h2>
             
             <Sheet>

@@ -2,6 +2,7 @@
 import { Strain } from "@/types/strain";
 import { StrainCard } from "./StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Loader2 } from "lucide-react";
 
 interface StrainGridProps {
   strains: Strain[];
@@ -35,9 +36,12 @@ export function StrainGrid({ strains, loading }: StrainGridProps) {
 
   if (strains.length === 0) {
     return (
-      <div className="text-center py-12">
-        <h3 className="text-xl font-medium mb-2">{t("noStrainsFound") || "No strains found"}</h3>
-        <p className="text-muted-foreground">{t("tryDifferentFilters") || "Try different filters or search terms"}</p>
+      <div className="text-center py-12 border border-dashed rounded-lg">
+        <div className="flex justify-center mb-4">
+          <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
+        </div>
+        <h3 className="text-xl font-medium mb-2">{t("noStrainsFound") || "No strains found in the database"}</h3>
+        <p className="text-muted-foreground">{t("checkSupabaseConnection") || "Please check your Supabase connection and ensure the strains table is populated"}</p>
       </div>
     );
   }
