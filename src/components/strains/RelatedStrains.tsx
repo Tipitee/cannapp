@@ -29,6 +29,7 @@ export function RelatedStrains({
   // Filter out current strain and find similar strains
   useEffect(() => {
     if (strains && strains.length > 0) {
+      console.log(`Filtering related strains. Total strains: ${strains.length}, Current ID: ${currentStrainId}`);
       let filtered = strains.filter(strain => strain.id !== currentStrainId);
       
       // If we have effects, prioritize strains with similar effects
@@ -43,6 +44,7 @@ export function RelatedStrains({
       
       // Limit to 6 strains
       setFilteredStrains(filtered.slice(0, 6));
+      console.log(`Found ${filtered.slice(0, 6).length} related strains`);
     }
   }, [strains, currentStrainId, effects]);
 

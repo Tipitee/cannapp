@@ -50,14 +50,30 @@ export const strainService = {
     try {
       console.log("Fetching strains with filters:", filters);
       
-      // Direct Supabase query with minimal processing
-      const { data, error } = await supabase
-        .from('strains')
-        .select('*');
+      // Build Supabase query with clearer filtering
+      let query = supabase.from('strains').select('*');
+      
+      // Apply search filter if provided
+      if (filters.search && typeof filters.search === 'string' && filters.search.trim() !== '') {
+        query = query.ilike('name', `%${filters.search.trim()}%`);
+      }
+      
+      // Apply type filter if provided
+      if (filters.type && typeof filters.type === 'string' && filters.type !== 'all') {
+        query = query.eq('type', filters.type.toLowerCase());
+      }
+      
+      // Apply limit filter if provided
+      if (filters.limit && typeof filters.limit === 'number') {
+        query = query.limit(filters.limit);
+      }
+      
+      const { data, error } = await query;
       
       if (error) {
         console.error("Error fetching strains from Supabase:", error);
-        // Fallback to mock data if there's an error
+        // Log the actual error
+        console.log("Falling back to mock data due to error:", error.message);
         return fallbackMockStrains;
       }
       
@@ -67,6 +83,7 @@ export const strainService = {
       }
       
       console.log("Supabase returned strains:", data.length);
+      console.log("Sample strain data:", data[0]);
       
       // Map Supabase data to our Strain type
       const mappedStrains: Strain[] = (data as SupabaseStrain[]).map(strain => ({
@@ -99,18 +116,26 @@ export const strainService = {
       // Try to find the strain by constructing a name from the ID
       const nameFromId = id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
       
-      // Direct Supabase query
+      console.log(`Fetching strain with name '${nameFromId}'`);
+      
+      // Supabase query
       const { data, error } = await supabase
         .from('strains')
         .select('*')
         .ilike('name', nameFromId);
       
-      if (error || !data || data.length === 0) {
+      if (error) {
         console.error(`Error fetching strain with ID ${id}:`, error);
-        // Fallback to mock data
+        console.log("Falling back to mock data due to error:", error.message);
         return fallbackMockStrains.find(s => s.id === id) || fallbackMockStrains[0];
       }
       
+      if (!data || data.length === 0) {
+        console.log(`No strain found with name '${nameFromId}', using fallback data`);
+        return fallbackMockStrains.find(s => s.id === id) || fallbackMockStrains[0];
+      }
+      
+      console.log(`Found strain in database:`, data[0]);
       const strain = data[0] as SupabaseStrain;
       
       return {

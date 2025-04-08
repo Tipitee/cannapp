@@ -20,7 +20,7 @@ export function useStrains(filter: StrainFilter = {}) {
         const cleanFilter = { ...filter };
         Object.keys(cleanFilter).forEach((key) => {
           // @ts-ignore
-          if (cleanFilter[key] === undefined || cleanFilter[key] === "undefined") {
+          if (cleanFilter[key] === undefined || cleanFilter[key] === "undefined" || cleanFilter[key] === "") {
             // @ts-ignore
             delete cleanFilter[key];
           }
@@ -76,10 +76,13 @@ export function useStrainDetail(id: string | undefined) {
     const fetchStrainDetail = async () => {
       try {
         setLoading(true);
+        console.log(`Fetching strain details for ID: ${id}`);
         
         // Use strainService to fetch strain details and reviews
         const foundStrain = await strainService.getStrainById(id);
         const strainReviews = await strainService.getStrainReviews(id);
+        
+        console.log("Strain details fetched:", foundStrain ? foundStrain.name : "not found");
         
         setStrain(foundStrain);
         setReviews(strainReviews);
