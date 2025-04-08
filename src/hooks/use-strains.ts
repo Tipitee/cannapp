@@ -41,6 +41,9 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
           query = query.lte("thc_level", filter.maxThc);
         }
         
+        // Add order by to ensure consistent results
+        query = query.order('name', { ascending: true });
+        
         const { data, error: apiError } = await query;
         
         if (apiError) {
@@ -53,10 +56,23 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
         
         // Transform data if needed to match expected format
         const transformedData = resultData.map(strain => {
-          // Extract potential THC percentage from string values like "18-22%"
-          let thcLevel = strain.thc_level;
+          // Map database field names that might be different than our interface
+          // For example, handles cases like 'add/adhd' in DB vs 'add_adhd' in interface
+          const mappedStrain: Strain = {
+            ...strain,
+            name: strain.name || "Unknown Strain",
+            type: strain.type || "Unknown",
+            description: strain.description || "",
+            
+            // Handle the most common fields with potential format issues
+            add_adhd: strain['add/adhd'],
+            hiv_aids: strain['hiv/aids'],
+            parkinsons: strain["parkinson's"],
+            tourettes_syndrome: strain["tourette's_syndrome"],
+            alzheimers: strain["alzheimer's"],
+          };
           
-          // Make sure thc_level exists before trying to use string methods on it
+          // Extract potential THC percentage from string values like "18-22%"
           if (strain.thc_level !== null && strain.thc_level !== undefined) {
             try {
               const thcStr = String(strain.thc_level);
@@ -65,28 +81,25 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
               const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
               if (thcMatch) {
                 // Use the average of the range
-                thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
+                mappedStrain.thc_level = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
               } else {
                 // Extract just the number
                 const numMatch = thcStr.match(/(\d+)/);
                 if (numMatch) {
-                  thcLevel = parseInt(numMatch[1]);
+                  mappedStrain.thc_level = parseInt(numMatch[1]);
+                } else {
+                  // Keep original if no pattern matches
+                  mappedStrain.thc_level = strain.thc_level;
                 }
               }
             } catch (e) {
               console.warn("Error parsing THC level:", e);
               // If there's any error parsing, keep the original value
+              mappedStrain.thc_level = strain.thc_level;
             }
           }
           
-          // Ensure all strain data has the required properties
-          return {
-            ...strain,
-            name: strain.name || "Unknown Strain",
-            thc_level: thcLevel,
-            type: strain.type || "Unknown",
-            description: strain.description || ""
-          };
+          return mappedStrain;
         });
         
         // Additional filtering for effects (client-side because of the complexity)
@@ -94,7 +107,7 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
           const filteredData = transformedData.filter(strain => {
             return filter.effects!.some(effect => {
               // Check if the effect exists in effects, flavors, or description fields
-              const effectKey = effect as keyof Strain;
+              const effectKey = effect.replace(/\s/g, '_') as keyof Strain;
               const effectValue = strain[effectKey];
               const descriptionMatch = strain.description?.toLowerCase().includes(effect.toLowerCase());
               return (effectValue && effectValue !== '0' && effectValue !== '') || descriptionMatch;
@@ -154,10 +167,22 @@ export const useStrain = (name: string) => {
         if (!data) {
           throw new Error("Strain not found");
         } else {
-          // Transform data if needed
-          let thcLevel = data.thc_level;
+          // Map database field names that might be different than our interface
+          const mappedStrain: Strain = {
+            ...data,
+            name: data.name || "Unknown Strain",
+            type: data.type || "Unknown",
+            description: data.description || "",
+            
+            // Handle the most common fields with potential format issues
+            add_adhd: data['add/adhd'],
+            hiv_aids: data['hiv/aids'],
+            parkinsons: data["parkinson's"],
+            tourettes_syndrome: data["tourette's_syndrome"],
+            alzheimers: data["alzheimer's"],
+          };
           
-          // Make sure thc_level exists before trying to use string methods on it
+          // Transform THC level if needed
           if (data.thc_level !== null && data.thc_level !== undefined) {
             try {
               const thcStr = String(data.thc_level);
@@ -166,28 +191,25 @@ export const useStrain = (name: string) => {
               const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
               if (thcMatch) {
                 // Use the average of the range
-                thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
+                mappedStrain.thc_level = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
               } else {
                 // Extract just the number
                 const numMatch = thcStr.match(/(\d+)/);
                 if (numMatch) {
-                  thcLevel = parseInt(numMatch[1]);
+                  mappedStrain.thc_level = parseInt(numMatch[1]);
+                } else {
+                  // Keep original if no pattern matches
+                  mappedStrain.thc_level = data.thc_level;
                 }
               }
             } catch (e) {
               console.warn("Error parsing THC level:", e);
               // If there's any error parsing, keep the original value
+              mappedStrain.thc_level = data.thc_level;
             }
           }
           
-          // Ensure all needed properties exist
-          setStrain({
-            ...data,
-            name: data.name || "Unknown Strain",
-            thc_level: thcLevel,
-            type: data.type || "Unknown",
-            description: data.description || ""
-          });
+          setStrain(mappedStrain);
         }
       } catch (err) {
         console.error("Error fetching strain:", err);

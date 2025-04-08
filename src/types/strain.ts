@@ -1,3 +1,4 @@
+
 export interface Strain {
   name: string;
   type?: string;
@@ -74,6 +75,9 @@ export interface Strain {
   // Arrays for effects and terpenes
   effects?: string[] | null;
   terpenes?: string[] | null;
+  
+  // Optional ID for database operations
+  id?: string;
 }
 
 export type StrainType = 'all' | 'sativa' | 'indica' | 'hybrid';
