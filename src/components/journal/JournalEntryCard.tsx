@@ -1,13 +1,13 @@
 
-import { JournalEntry, Strain } from "@/types/strain";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
+import { JournalEntry } from "@/types/journal";
 
 interface JournalEntryCardProps {
   entry: JournalEntry;
-  strain?: Strain;
+  strain?: { name: string }; // Simplified strain type
 }
 
 export const JournalEntryCard = ({ entry, strain }: JournalEntryCardProps) => {

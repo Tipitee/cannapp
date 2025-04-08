@@ -6,9 +6,9 @@ import { JournalEntryForm } from "@/components/journal/JournalEntryForm";
 import { JournalEntryCard } from "@/components/journal/JournalEntryCard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { JournalEntry } from "@/types/strain";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, BookOpen } from "lucide-react";
+import { JournalEntry } from "@/types/journal";
 
 // Mock data - would come from an API in a real app
 const mockJournalEntries: JournalEntry[] = [
