@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, Notebook, UserCircle, Settings, LogIn, Leaf } from "lucide-react";
+import { Home, BookOpen, Notebook, UserCircle, Settings, LogIn } from "lucide-react";
 
 interface NavItem {
   title: string;
@@ -22,12 +22,6 @@ export const DesktopNavBar = () => {
       href: "/",
       description: t("homeDescription"),
       icon: Home
-    },
-    {
-      title: t("strains"),
-      href: "/strains",
-      description: t("strainsDescription"),
-      icon: Leaf
     },
     {
       title: t("journal"),

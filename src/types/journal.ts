@@ -9,5 +9,5 @@ export interface JournalEntry {
   mood?: string;
   activity?: string;
   sideEffects?: string[];
-  strainId?: string; // Keep reference to strainId for future compatibility
+  // Removed strainId as we've eliminated strains from the application
 }

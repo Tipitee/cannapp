@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
-import { Home, Leaf, BookOpen, User } from "lucide-react";
+import { Home, BookOpen, User } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { MobileDrawer } from "./MobileDrawer";
 import { useState } from "react";
@@ -18,12 +18,6 @@ export const MobileNavBar = () => {
       href: "/",
       icon: Home,
       active: location.pathname === "/",
-    },
-    {
-      label: t("strains"),
-      href: "/strains",
-      icon: Leaf,
-      active: location.pathname.includes("/strains"),
     },
     {
       label: t("journal"),

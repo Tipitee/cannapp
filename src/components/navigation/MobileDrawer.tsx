@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Leaf, BookOpen, User, Settings, LogIn } from "lucide-react";
+import { Menu, Home, BookOpen, User, Settings, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
@@ -20,12 +20,6 @@ export function MobileDrawer() {
       href: "/",
       icon: Home,
       active: location.pathname === "/"
-    },
-    {
-      title: t("strains"),
-      href: "/strains",
-      icon: Leaf,
-      active: location.pathname.includes("/strains")
     },
     {
       title: t("journal"),

@@ -83,7 +83,7 @@ export const Home = () => {
       {/* Features section */}
       <div>
         <h3 className="text-2xl font-semibold mb-6 text-app-primary">App Features</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <AppCard
             title="Find Clubs"
             description="Locate cannabis clubs near you with our interactive map"
@@ -95,12 +95,6 @@ export const Home = () => {
             description="Keep a personal cannabis journal to record your experiences"
             icon={BookOpen}
             onClick={() => navigate('/journal')}
-          />
-          <AppCard
-            title="Find Perfect Match"
-            description="Discover clubs based on your preferences and needs"
-            icon={Search}
-            onClick={() => navigate('/clubs')}
           />
         </div>
       </div>

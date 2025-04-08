@@ -7,10 +7,9 @@ import { JournalEntry } from "@/types/journal";
 
 interface JournalEntryCardProps {
   entry: JournalEntry;
-  strain?: { name: string }; // Simplified strain type
 }
 
-export const JournalEntryCard = ({ entry, strain }: JournalEntryCardProps) => {
+export const JournalEntryCard = ({ entry }: JournalEntryCardProps) => {
   const { t } = useLanguage();
 
   const formatDate = (dateString: string) => {
@@ -50,7 +49,6 @@ export const JournalEntryCard = ({ entry, strain }: JournalEntryCardProps) => {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{formatDate(entry.date)}</CardTitle>
-          <Badge>{strain?.name || t('unknownStrain')}</Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
