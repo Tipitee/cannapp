@@ -51,15 +51,19 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
         const transformedData = resultData.map(strain => {
           // Extract potential THC percentage from string values like "18-22%"
           let thcLevel = strain.thc_level;
-          if (typeof strain.thc_level === 'string') {
+          
+          // Make sure thc_level exists before trying to use string methods on it
+          if (strain.thc_level !== null && strain.thc_level !== undefined) {
+            const thcStr = String(strain.thc_level);
+            
             // Handle ranges like "18–22%" or "18-22%"
-            const thcMatch = strain.thc_level.toString().match(/(\d+)[-–](\d+)/);
+            const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
             if (thcMatch) {
               // Use the average of the range
               thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
             } else {
               // Extract just the number
-              const numMatch = strain.thc_level.toString().match(/(\d+)/);
+              const numMatch = thcStr.match(/(\d+)/);
               if (numMatch) {
                 thcLevel = parseInt(numMatch[1]);
               }
@@ -133,15 +137,19 @@ export const useStrain = (name: string) => {
         } else {
           // Transform data if needed
           let thcLevel = data.thc_level;
-          if (typeof data.thc_level === 'string') {
+          
+          // Make sure thc_level exists before trying to use string methods on it
+          if (data.thc_level !== null && data.thc_level !== undefined) {
+            const thcStr = String(data.thc_level);
+            
             // Handle ranges like "18–22%" or "18-22%"
-            const thcMatch = data.thc_level.toString().match(/(\d+)[-–](\d+)/);
+            const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
             if (thcMatch) {
               // Use the average of the range
               thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
             } else {
               // Extract just the number
-              const numMatch = data.thc_level.toString().match(/(\d+)/);
+              const numMatch = thcStr.match(/(\d+)/);
               if (numMatch) {
                 thcLevel = parseInt(numMatch[1]);
               }
