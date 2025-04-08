@@ -58,8 +58,8 @@ export const strainService = {
         query = query.ilike('name', `%${filters.search}%`);
       }
       
-      // Apply type filter if provided
-      if (filters.type && filters.type !== "undefined") {
+      // Apply type filter if provided (ensure it's a string and not undefined)
+      if (filters.type && typeof filters.type === 'string' && filters.type !== 'undefined' && filters.type !== 'all') {
         query = query.eq('type', filters.type);
       }
       

@@ -16,14 +16,25 @@ export function useStrains(filter: StrainFilter = {}) {
       try {
         setLoading(true);
         
-        console.log("Fetching strains with filters:", filter);
+        // Clean up the filter to make sure we don't send undefined values
+        const cleanFilter = { ...filter };
+        Object.keys(cleanFilter).forEach((key) => {
+          // @ts-ignore
+          if (cleanFilter[key] === undefined || cleanFilter[key] === "undefined") {
+            // @ts-ignore
+            delete cleanFilter[key];
+          }
+        });
+        
+        console.log("Fetching strains with cleaned filters:", cleanFilter);
         
         // Fetch from Supabase using the strainService
-        const data = await strainService.getStrains(filter);
+        const data = await strainService.getStrains(cleanFilter);
         
         // Only update state if component is still mounted
         if (!isMounted) return;
         
+        console.log(`Setting ${data.length} strains from service`);
         setStrains(data);
         setError(null);
       } catch (err) {
