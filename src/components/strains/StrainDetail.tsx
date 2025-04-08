@@ -150,7 +150,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
                 {effects.map(({ name, strength }) => (
                   <div key={name} className="flex items-center justify-between border rounded p-2">
                     <span className="capitalize">{name.replace(/_/g, ' ')}</span>
-                    <Badge variant="secondary">{strength || "?"}</Badge>
+                    <Badge variant="secondary">{String(strength) || "?"}</Badge>
                   </div>
                 ))}
               </div>
@@ -168,7 +168,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
                 {medical.map(({ name, strength }) => (
                   <div key={name} className="flex items-center justify-between border rounded p-2">
                     <span className="capitalize">{name.replace(/_/g, ' ')}</span>
-                    <Badge variant="secondary">{strength || "?"}</Badge>
+                    <Badge variant="secondary">{String(strength) || "?"}</Badge>
                   </div>
                 ))}
               </div>
@@ -186,7 +186,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
                 {sideEffects.map(({ name, strength }) => (
                   <div key={name} className="flex items-center justify-between border rounded p-2">
                     <span className="capitalize">{name.replace(/_/g, ' ')}</span>
-                    <Badge variant="secondary">{strength || "?"}</Badge>
+                    <Badge variant="secondary">{String(strength) || "?"}</Badge>
                   </div>
                 ))}
               </div>

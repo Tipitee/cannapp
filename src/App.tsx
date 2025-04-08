@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect, Suspense, lazy, ErrorBoundary } from "react";
 import { Capacitor } from "@capacitor/core";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import ErrorBoundary from "./components/error/ErrorBoundary";
 
 // Import Index page statically to avoid dynamic import errors
 import Index from "./pages/Index";
@@ -78,15 +78,6 @@ function ErrorFallback({ error, resetErrorBoundary }: { error: Error, resetError
   );
 }
 
-// Wrapper for ErrorBoundary as it's not imported from React anymore
-function ErrorBoundaryWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => window.location.reload()}>
-      {children}
-    </ErrorBoundary>
-  );
-}
-
 const App = () => {
   const [appReady, setAppReady] = useState(false);
   
@@ -114,7 +105,7 @@ const App = () => {
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
               </div>
             }>
-              <ErrorBoundaryWrapper>
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/clubs/:id" element={<ClubDetail />} />
@@ -126,7 +117,7 @@ const App = () => {
                   <Route path="/strains/:name" element={<StrainDetail />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </ErrorBoundaryWrapper>
+              </ErrorBoundary>
             </Suspense>
           </BrowserRouter>
         </TooltipProvider>
