@@ -115,7 +115,7 @@ export const Home = () => {
             
             <div className="flex flex-wrap gap-3">
               <Button onClick={() => navigate('/clubs')} className="bg-white text-app-primary hover:bg-white/90 border-0">
-                <Map className="h-4 w-4 mr-2" />
+                <MapIcon className="h-4 w-4 mr-2" />
                 Find Clubs
               </Button>
               <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-app-primary" onClick={() => navigate('/strains')}>
