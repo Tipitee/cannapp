@@ -6,8 +6,7 @@ import { useClubs } from "@/hooks/use-clubs";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { FeaturedStrains } from "@/components/strains/FeaturedStrains";
-import { Leaf, Map, BookOpen, Search, MapPin } from "lucide-react";
+import { Map, BookOpen, Search, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
 export const Home = () => {
@@ -65,12 +64,12 @@ export const Home = () => {
           </div>
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Welcome to CannaClubMap</h2>
-            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you and explore strains with our comprehensive guide</p>
+            <p className="text-white/90 text-lg mb-6">Find cannabis social clubs near you with our comprehensive guide</p>
             
             <div className="flex flex-wrap gap-3">
-              <Button onClick={() => navigate('/strains')} className="bg-white text-app-primary hover:bg-white/90 border-0">
-                <Leaf className="h-4 w-4 mr-2" />
-                Browse Strains
+              <Button onClick={() => navigate('/clubs')} className="bg-white text-app-primary hover:bg-white/90 border-0">
+                <Map className="h-4 w-4 mr-2" />
+                Find Clubs
               </Button>
               <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-app-primary" onClick={() => navigate('/journal')}>
                 <BookOpen className="h-4 w-4 mr-2" />
@@ -84,12 +83,12 @@ export const Home = () => {
       {/* Features section */}
       <div>
         <h3 className="text-2xl font-semibold mb-6 text-app-primary">App Features</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <AppCard
-            title="Explore Strains"
-            description="Browse our extensive library of cannabis strains with detailed information"
-            icon={Leaf}
-            onClick={() => navigate('/strains')}
+            title="Find Clubs"
+            description="Locate cannabis clubs near you with our interactive map"
+            icon={Map}
+            onClick={() => navigate('/clubs')}
           />
           <AppCard
             title="Track in Journal"
@@ -99,24 +98,19 @@ export const Home = () => {
           />
           <AppCard
             title="Find Perfect Match"
-            description="Discover strains based on your preferences and needs"
+            description="Discover clubs based on your preferences and needs"
             icon={Search}
-            onClick={() => navigate('/strains')}
+            onClick={() => navigate('/clubs')}
           />
         </div>
-      </div>
-
-      {/* Featured Strains section */}
-      <div className="pt-4">
-        <FeaturedStrains />
       </div>
 
       {/* Nearby Clubs section */}
       <div>
         <div className="mt-6 flex flex-wrap gap-3 justify-center">
-          <Button variant="outline" onClick={() => navigate("/strains")} className="gap-2">
-            <Leaf className="h-4 w-4" />
-            Browse Strains
+          <Button variant="outline" onClick={() => navigate("/clubs")} className="gap-2">
+            <MapPin className="h-4 w-4" />
+            Find Clubs
           </Button>
           <Button variant="outline" onClick={() => navigate("/journal")} className="gap-2">
             <BookOpen className="h-4 w-4" />
