@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { ClubMap } from "@/components/map/ClubMap";
@@ -5,7 +6,7 @@ import { useClubs } from "@/hooks/use-clubs";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Map, BookOpen, Search, MapPin, Leaf, Filter } from "lucide-react";
+import { Map as MapIcon, BookOpen, Search, MapPin, Leaf, Filter } from "lucide-react";
 import { toast } from "sonner";
 import { useStrains } from "@/hooks/use-strains";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,7 +63,7 @@ export const Home = () => {
   const getFeaturedStrains = () => {
     if (strainsLoading || !strains.length) return [];
     
-    // Fix: Properly initialize the Map with type parameters
+    // Fix: Use Map class instead of the Map icon
     const typeMap = new Map<string, boolean>();
     const featured = [];
     
@@ -133,7 +134,7 @@ export const Home = () => {
           <AppCard
             title="Find Clubs"
             description="Locate cannabis clubs near you with our interactive map"
-            icon={Map}
+            icon={MapIcon}
             onClick={() => navigate('/clubs')}
           />
           <AppCard
