@@ -4,6 +4,7 @@ import { StrainCard } from "./StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Loader2, Database, AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 
 interface StrainGridProps {
   strains: Strain[];
@@ -44,6 +45,14 @@ export function StrainGrid({ strains, loading, error }: StrainGridProps) {
         <AlertDescription className="mt-2">
           <p className="mb-2">{error.message}</p>
           <p className="text-sm">Please check your Supabase connection and ensure the strains table exists with proper permissions.</p>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </Button>
         </AlertDescription>
       </Alert>
     );
@@ -57,6 +66,13 @@ export function StrainGrid({ strains, loading, error }: StrainGridProps) {
         </div>
         <h3 className="text-xl font-medium mb-2">{t("noStrainsFound") || "No strains found in the database"}</h3>
         <p className="text-muted-foreground mb-4">{t("checkSupabaseConnection") || "Please check your Supabase connection and ensure the strains table is populated with data"}</p>
+        <Alert variant="outline" className="mt-6 mx-auto max-w-2xl">
+          <AlertTitle>Setup Guide</AlertTitle>
+          <AlertDescription className="mt-2">
+            <p className="mb-2">Make sure you have created the strains table and added at least one row of data.</p>
+            <p className="mb-2">Also verify that you have enabled public access to this table if you're not using authentication.</p>
+          </AlertDescription>
+        </Alert>
         <pre className="text-xs text-left bg-muted p-4 rounded-md mt-4 max-w-2xl mx-auto overflow-auto">
           <code>
             {`
