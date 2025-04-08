@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Loader2, Database, AlertCircle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface StrainGridProps {
   strains: Strain[];
@@ -66,7 +67,7 @@ export function StrainGrid({ strains, loading, error }: StrainGridProps) {
         </div>
         <h3 className="text-xl font-medium mb-2">{t("noStrainsFound") || "No strains found in the database"}</h3>
         <p className="text-muted-foreground mb-4">{t("checkSupabaseConnection") || "Please check your Supabase connection and ensure the strains table is populated with data"}</p>
-        <Alert variant="outline" className="mt-6 mx-auto max-w-2xl">
+        <Alert className="mt-6 mx-auto max-w-2xl border">
           <AlertTitle>Setup Guide</AlertTitle>
           <AlertDescription className="mt-2">
             <p className="mb-2">Make sure you have created the strains table and added at least one row of data.</p>
