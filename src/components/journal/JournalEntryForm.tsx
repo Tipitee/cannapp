@@ -12,59 +12,72 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Loader2 } from "lucide-react";
+import { JournalEntry } from "@/types/journal";
 
 const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  strain: z.string().optional(),
-  rating: z.string().min(1, {
-    message: "Please select a rating.",
-  }),
-  effects: z.string().min(5, {
-    message: "Effects must be at least 5 characters.",
-  }),
+  date: z.string().min(1, { message: "Date is required" }),
+  dosage: z.string().min(1, { message: "Dosage is required" }),
+  effectiveness: z.number().min(1).max(5),
   notes: z.string().optional(),
+  mood: z.string().optional(),
+  activity: z.string().optional(),
+  sideEffects: z.array(z.string()).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 const defaultValues: FormValues = {
-  title: "",
-  strain: "",
-  rating: "",
-  effects: "",
+  date: new Date().toISOString().substring(0, 10),
+  dosage: "",
+  effectiveness: 3,
   notes: "",
+  mood: "",
+  activity: "",
+  sideEffects: [],
 };
 
-const effectOptions = [
-  "Relaxed", 
-  "Happy", 
-  "Uplifted", 
-  "Creative", 
-  "Focused",
-  "Energetic", 
-  "Sleepy", 
-  "Hungry", 
-  "Talkative", 
-  "Euphoric"
+const moodOptions = [
+  "happy", 
+  "relaxed", 
+  "creative", 
+  "energetic", 
+  "focused",
+  "sleepy", 
+  "neutral"
+];
+
+const sideEffectOptions = [
+  "dry_mouth", 
+  "dry_eyes", 
+  "hunger", 
+  "paranoia", 
+  "anxiety",
+  "dizziness", 
+  "headache", 
+  "fatigue"
 ];
 
 export interface JournalEntryFormProps {
-  onSave?: (data: FormValues) => void;
-  initialData?: FormValues;
+  onSave?: (data: JournalEntry) => void;
+  onCancel?: () => void;
+  initialData?: Partial<JournalEntry>;
 }
 
 export const JournalEntryForm = ({ 
   onSave,
-  initialData = defaultValues
+  onCancel,
+  initialData = {}
 }: JournalEntryFormProps) => {
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedSideEffects, setSelectedSideEffects] = useState<string[]>(initialData.sideEffects || []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      ...defaultValues,
+      ...initialData,
+    },
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -74,17 +87,30 @@ export const JournalEntryForm = ({
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      const journalEntry: JournalEntry = {
+        id: initialData.id || Date.now().toString(),
+        userId: initialData.userId || "user123",
+        date: data.date,
+        dosage: data.dosage,
+        effectiveness: data.effectiveness,
+        notes: data.notes,
+        mood: data.mood,
+        activity: data.activity,
+        sideEffects: selectedSideEffects,
+      };
+      
       if (onSave) {
-        onSave(data);
+        onSave(journalEntry);
       }
       
       toast.success(t("journalEntrySaved"), {
         description: t("journalEntrySavedDesc"),
       });
 
-      // Clear form if not editing
-      if (!initialData.title) {
+      // Reset form if not editing
+      if (!initialData.id) {
         form.reset(defaultValues);
+        setSelectedSideEffects([]);
       }
     } catch (error) {
       toast.error(t("errorSavingJournalEntry"), {
@@ -95,22 +121,30 @@ export const JournalEntryForm = ({
     }
   };
 
+  const toggleSideEffect = (effect: string) => {
+    setSelectedSideEffects(prev => 
+      prev.includes(effect)
+        ? prev.filter(item => item !== effect)
+        : [...prev, effect]
+    );
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{initialData.title ? t("editJournalEntry") : t("newJournalEntry")}</CardTitle>
+        <CardTitle>{initialData.id ? t("editJournalEntry") : t("newJournalEntry")}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="title"
+              name="date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("title")}</FormLabel>
+                  <FormLabel>{t("date")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("journalTitlePlaceholder")} {...field} />
+                    <Input type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,12 +153,12 @@ export const JournalEntryForm = ({
 
             <FormField
               control={form.control}
-              name="strain"
+              name="dosage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("strain")}</FormLabel>
+                  <FormLabel>{t("dosage")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("strainPlaceholder")} {...field} />
+                    <Input placeholder={t("dosagePlaceholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -133,17 +167,17 @@ export const JournalEntryForm = ({
 
             <FormField
               control={form.control}
-              name="rating"
+              name="effectiveness"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("rating")}</FormLabel>
+                  <FormLabel>{t("effectiveness")}</FormLabel>
                   <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value}
+                    onValueChange={(value) => field.onChange(parseInt(value))} 
+                    defaultValue={field.value.toString()}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("selectRating")} />
+                        <SelectValue placeholder={t("selectEffectiveness")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -161,20 +195,62 @@ export const JournalEntryForm = ({
 
             <FormField
               control={form.control}
-              name="effects"
+              name="mood"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("effects")}</FormLabel>
+                  <FormLabel>{t("mood")}</FormLabel>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("selectMood")} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {moodOptions.map((mood) => (
+                        <SelectItem key={mood} value={mood}>
+                          {t(mood)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="activity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("activity")}</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder={t("effectsPlaceholder")} 
-                      {...field} 
-                    />
+                    <Input placeholder={t("activityPlaceholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div>
+              <FormLabel>{t("sideEffects")}</FormLabel>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {sideEffectOptions.map((effect) => (
+                  <Button
+                    key={effect}
+                    type="button"
+                    variant={selectedSideEffects.includes(effect) ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleSideEffect(effect)}
+                  >
+                    {t(effect)}
+                  </Button>
+                ))}
+              </div>
+            </div>
 
             <FormField
               control={form.control}
@@ -193,34 +269,19 @@ export const JournalEntryForm = ({
               )}
             />
 
-            <div className="flex flex-wrap gap-2 my-4">
-              {effectOptions.map((effect) => (
-                <Button
-                  key={effect}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    const currentEffects = form.getValues("effects");
-                    const newEffects = currentEffects 
-                      ? `${currentEffects}, ${effect}` 
-                      : effect;
-                    form.setValue("effects", newEffects);
-                  }}
-                >
-                  {effect}
+            <CardFooter className="px-0 pt-4 flex gap-2 justify-between">
+              {onCancel && (
+                <Button type="button" variant="outline" onClick={onCancel}>
+                  {t("cancel")}
                 </Button>
-              ))}
-            </div>
-
-            <CardFooter className="px-0">
+              )}
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     {t("saving")}
                   </>
-                ) : initialData.title ? t("updateEntry") : t("saveEntry")}
+                ) : initialData.id ? t("updateEntry") : t("saveEntry")}
               </Button>
             </CardFooter>
           </form>
