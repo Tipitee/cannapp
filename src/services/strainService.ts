@@ -50,25 +50,10 @@ export const strainService = {
     try {
       console.log("Fetching strains with filters:", filters);
       
-      // Use Supabase query
-      let query = supabase.from('strains').select('*');
-      
-      // Apply search filter if provided
-      if (filters.search) {
-        query = query.ilike('name', `%${filters.search}%`);
-      }
-      
-      // Apply type filter if provided (ensure it's a string and not undefined)
-      if (filters.type && typeof filters.type === 'string' && filters.type !== 'undefined' && filters.type !== 'all') {
-        query = query.eq('type', filters.type);
-      }
-      
-      // Apply limit filter if provided
-      if (filters.limit) {
-        query = query.limit(filters.limit);
-      }
-      
-      const { data, error } = await query;
+      // Direct Supabase query with minimal processing
+      const { data, error } = await supabase
+        .from('strains')
+        .select('*');
       
       if (error) {
         console.error("Error fetching strains from Supabase:", error);
@@ -114,8 +99,11 @@ export const strainService = {
       // Try to find the strain by constructing a name from the ID
       const nameFromId = id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
       
-      // Query Supabase
-      const { data, error } = await supabase.from('strains').select('*').ilike('name', nameFromId);
+      // Direct Supabase query
+      const { data, error } = await supabase
+        .from('strains')
+        .select('*')
+        .ilike('name', nameFromId);
       
       if (error || !data || data.length === 0) {
         console.error(`Error fetching strain with ID ${id}:`, error);
