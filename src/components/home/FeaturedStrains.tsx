@@ -28,7 +28,7 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
     }
     
     // Already formatted string (e.g. "15%")
-    if (typeof thcLevel === 'string' && thcLevel.includes('%')) {
+    if (typeof thcLevel === 'string' && String(thcLevel).indexOf('%') !== -1) {
       return thcLevel;
     }
     
@@ -41,9 +41,9 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
     if (!type) return "bg-gray-500";
     
     const typeLower = type.toLowerCase();
-    if (typeLower.includes('sativa')) return 'bg-green-500';
-    if (typeLower.includes('indica')) return 'bg-purple-500';
-    if (typeLower.includes('hybrid')) return 'bg-orange-500';
+    if (typeLower.indexOf('sativa') !== -1) return 'bg-green-500';
+    if (typeLower.indexOf('indica') !== -1) return 'bg-purple-500';
+    if (typeLower.indexOf('hybrid') !== -1) return 'bg-orange-500';
     return 'bg-gray-500';
   };
   
@@ -58,10 +58,10 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
       'lack_of_appetite', 'nausea', 'headaches', 'bipolar_disorder', 'cancer',
       'tingly', 'cramps', 'aroused', 'gastrointestinal_disorder', 'inflammation',
       'muscle_spasms', 'eye_pressure', 'migraines', 'asthma', 'anorexia', 'arthritis',
-      'add/adhd', 'muscular_dystrophy', 'hypertension', 'glaucoma', 'pms', 'seizures',
-      'spasticity', 'spinal_cord_injury', 'fibromyalgia', 'crohn\'s_disease',
-      'phantom_limb_pain', 'epilepsy', 'multiple_sclerosis', 'parkinson\'s',
-      'tourette\'s_syndrome', 'alzheimer\'s', 'hiv/aids', 'tinnitus'
+      'add_adhd', 'muscular_dystrophy', 'hypertension', 'glaucoma', 'pms', 'seizures',
+      'spasticity', 'spinal_cord_injury', 'fibromyalgia', 'phantom_limb_pain',
+      'epilepsy', 'multiple_sclerosis', 'parkinsons', 'tourettes_syndrome', 'alzheimers',
+      'hiv_aids', 'tinnitus'
     ];
     
     // Find the effect with highest value
@@ -71,15 +71,18 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
     effectKeys.forEach(effect => {
       // Type-safe access
       const effectValue = strain[effect as keyof Strain];
-      if (typeof effectValue === 'number' && effectValue > maxValue) {
-        maxValue = effectValue;
-        maxEffect = effect;
+      if (typeof effectValue === 'string' || typeof effectValue === 'number') {
+        const numValue = parseFloat(String(effectValue));
+        if (!isNaN(numValue) && numValue > maxValue) {
+          maxValue = numValue;
+          maxEffect = effect;
+        }
       }
     });
     
     // Return formatted top effect or fallback
     return maxValue > 0 ? 
-      maxEffect?.replaceAll('_', ' ') : 
+      maxEffect?.replace(/_/g, ' ') : 
       'No effects data';
   };
   

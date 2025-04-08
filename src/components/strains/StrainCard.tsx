@@ -67,7 +67,7 @@ export function StrainCard({ strain }: StrainCardProps) {
     }
     
     // Already formatted string (e.g. "15%")
-    if (typeof strain.thc_level === 'string' && strain.thc_level.includes('%')) {
+    if (typeof strain.thc_level === 'string' && String(strain.thc_level).includes('%')) {
       return strain.thc_level;
     }
     
