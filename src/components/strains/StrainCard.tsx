@@ -27,17 +27,17 @@ export function StrainCard({ strain }: StrainCardProps) {
 
     return Object.entries(effectsMap)
       .filter(([_, value]) => value && value !== '0')
-      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .sort((a, b) => Number(b[1] || '0') - Number(a[1] || '0'))
       .slice(0, 3)
       .map(([key]) => key);
   };
   
   const topEffects = getTopEffects();
   
-  // Format THC levels for display
+  // Format THC levels for display with fallback
   const formatThcLevel = () => {
-    if (!strain.thc_level) return "Unknown";
-    return `${strain.thc_level.toFixed(1)}%`;
+    if (strain.thc_level === undefined || strain.thc_level === null) return "?";
+    return `${parseFloat(String(strain.thc_level)).toFixed(1)}%`;
   };
   
   const getTypeColor = () => {
@@ -84,11 +84,15 @@ export function StrainCard({ strain }: StrainCardProps) {
         </CardContent>
         
         <CardFooter className="px-4 pb-4 pt-0 flex flex-wrap gap-2">
-          {topEffects.map(effect => (
-            <Badge key={effect} variant="outline" className="capitalize">
-              {effect}
-            </Badge>
-          ))}
+          {topEffects.length > 0 ? (
+            topEffects.map(effect => (
+              <Badge key={effect} variant="outline" className="capitalize">
+                {effect}
+              </Badge>
+            ))
+          ) : (
+            <Badge variant="outline">No effects data</Badge>
+          )}
         </CardFooter>
       </Link>
     </Card>

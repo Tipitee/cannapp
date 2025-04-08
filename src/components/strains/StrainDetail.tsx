@@ -46,7 +46,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
 
     return Object.entries(effectsMap)
       .filter(([_, value]) => value && value !== '0')
-      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .sort((a, b) => Number(b[1] || '0') - Number(a[1] || '0'))
       .map(([key, value]) => ({ name: key, strength: value }));
   };
   
@@ -72,7 +72,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
 
     return Object.entries(medicalMap)
       .filter(([_, value]) => value && value !== '0')
-      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .sort((a, b) => Number(b[1] || '0') - Number(a[1] || '0'))
       .map(([key, value]) => ({ name: key, strength: value }));
   };
   
@@ -89,13 +89,21 @@ export function StrainDetail({ strain }: StrainDetailProps) {
 
     return Object.entries(sideEffectsMap)
       .filter(([_, value]) => value && value !== '0')
-      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .sort((a, b) => Number(b[1] || '0') - Number(a[1] || '0'))
       .map(([key, value]) => ({ name: key, strength: value }));
   };
 
   const effects = getEffects();
   const medical = getMedical();
   const sideEffects = getSideEffects();
+
+  // Format THC level with fallback
+  const formatThcLevel = () => {
+    if (strain.thc_level === undefined || strain.thc_level === null) {
+      return "?";
+    }
+    return parseFloat(String(strain.thc_level)).toFixed(1) + "%";
+  };
 
   return (
     <>
@@ -118,11 +126,9 @@ export function StrainDetail({ strain }: StrainDetailProps) {
         <Badge className={`${getTypeColor()}`}>
           {strain.type || "Unknown Type"}
         </Badge>
-        {strain.thc_level && (
-          <Badge variant="outline">
-            THC: {strain.thc_level.toFixed(1)}%
-          </Badge>
-        )}
+        <Badge variant="outline">
+          THC: {formatThcLevel()}
+        </Badge>
       </div>
       
       {strain.description && (
@@ -144,7 +150,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
                 {effects.map(({ name, strength }) => (
                   <div key={name} className="flex items-center justify-between border rounded p-2">
                     <span className="capitalize">{name.replace(/_/g, ' ')}</span>
-                    <Badge variant="secondary">{strength}</Badge>
+                    <Badge variant="secondary">{strength || "?"}</Badge>
                   </div>
                 ))}
               </div>
@@ -162,7 +168,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
                 {medical.map(({ name, strength }) => (
                   <div key={name} className="flex items-center justify-between border rounded p-2">
                     <span className="capitalize">{name.replace(/_/g, ' ')}</span>
-                    <Badge variant="secondary">{strength}</Badge>
+                    <Badge variant="secondary">{strength || "?"}</Badge>
                   </div>
                 ))}
               </div>
@@ -180,7 +186,7 @@ export function StrainDetail({ strain }: StrainDetailProps) {
                 {sideEffects.map(({ name, strength }) => (
                   <div key={name} className="flex items-center justify-between border rounded p-2">
                     <span className="capitalize">{name.replace(/_/g, ' ')}</span>
-                    <Badge variant="secondary">{strength}</Badge>
+                    <Badge variant="secondary">{strength || "?"}</Badge>
                   </div>
                 ))}
               </div>

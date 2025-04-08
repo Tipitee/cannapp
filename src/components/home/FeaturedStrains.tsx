@@ -18,6 +18,12 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
   
   if (!strains.length) return null;
   
+  // Format THC level with fallback
+  const formatThcLevel = (thcLevel: number | undefined) => {
+    if (thcLevel === undefined || thcLevel === null) return "?";
+    return `${parseFloat(String(thcLevel)).toFixed(1)}%`;
+  };
+  
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -50,11 +56,9 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
                   <Badge variant="outline" className="capitalize">
                     {strain.type || "Unknown"}
                   </Badge>
-                  {strain.thc_level && (
-                    <Badge variant="secondary" className="text-xs">
-                      THC: {strain.thc_level.toFixed(1)}%
-                    </Badge>
-                  )}
+                  <Badge variant="secondary" className="text-xs">
+                    THC: {formatThcLevel(strain.thc_level)}
+                  </Badge>
                 </div>
               </CardContent>
             </Link>

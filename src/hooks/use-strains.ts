@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Strain, StrainFilterProps } from "@/types/strain";
@@ -59,25 +58,34 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
           
           // Make sure thc_level exists before trying to use string methods on it
           if (strain.thc_level !== null && strain.thc_level !== undefined) {
-            const thcStr = String(strain.thc_level);
-            
-            // Handle ranges like "18–22%" or "18-22%"
-            const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
-            if (thcMatch) {
-              // Use the average of the range
-              thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
-            } else {
-              // Extract just the number
-              const numMatch = thcStr.match(/(\d+)/);
-              if (numMatch) {
-                thcLevel = parseInt(numMatch[1]);
+            try {
+              const thcStr = String(strain.thc_level);
+              
+              // Handle ranges like "18–22%" or "18-22%"
+              const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
+              if (thcMatch) {
+                // Use the average of the range
+                thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
+              } else {
+                // Extract just the number
+                const numMatch = thcStr.match(/(\d+)/);
+                if (numMatch) {
+                  thcLevel = parseInt(numMatch[1]);
+                }
               }
+            } catch (e) {
+              console.warn("Error parsing THC level:", e);
+              // If there's any error parsing, keep the original value
             }
           }
           
+          // Ensure all strain data has the required properties
           return {
             ...strain,
+            name: strain.name || "Unknown Strain",
             thc_level: thcLevel,
+            type: strain.type || "Unknown",
+            description: strain.description || ""
           };
         });
         
@@ -151,25 +159,34 @@ export const useStrain = (name: string) => {
           
           // Make sure thc_level exists before trying to use string methods on it
           if (data.thc_level !== null && data.thc_level !== undefined) {
-            const thcStr = String(data.thc_level);
-            
-            // Handle ranges like "18–22%" or "18-22%"
-            const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
-            if (thcMatch) {
-              // Use the average of the range
-              thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
-            } else {
-              // Extract just the number
-              const numMatch = thcStr.match(/(\d+)/);
-              if (numMatch) {
-                thcLevel = parseInt(numMatch[1]);
+            try {
+              const thcStr = String(data.thc_level);
+              
+              // Handle ranges like "18–22%" or "18-22%"
+              const thcMatch = thcStr.match(/(\d+)[-–](\d+)/);
+              if (thcMatch) {
+                // Use the average of the range
+                thcLevel = (parseInt(thcMatch[1]) + parseInt(thcMatch[2])) / 2;
+              } else {
+                // Extract just the number
+                const numMatch = thcStr.match(/(\d+)/);
+                if (numMatch) {
+                  thcLevel = parseInt(numMatch[1]);
+                }
               }
+            } catch (e) {
+              console.warn("Error parsing THC level:", e);
+              // If there's any error parsing, keep the original value
             }
           }
           
+          // Ensure all needed properties exist
           setStrain({
             ...data,
+            name: data.name || "Unknown Strain",
             thc_level: thcLevel,
+            type: data.type || "Unknown",
+            description: data.description || ""
           });
         }
       } catch (err) {
