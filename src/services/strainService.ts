@@ -9,26 +9,6 @@ interface SupabaseStrain {
   thc_level?: number;
   description?: string;
   img_url?: string;
-  relaxed?: string;
-  happy?: string;
-  euphoric?: string;
-  uplifted?: string;
-  creative?: string;
-  energetic?: string;
-  focused?: string;
-  tingly?: string;
-  sleepy?: string;
-  hungry?: string;
-  stress?: string;
-  anxiety?: string;
-  pain?: string;
-  depression?: string;
-  insomnia?: string;
-  lack_of_appetite?: string;
-  inflammation?: string;
-  muscle_spasms?: string;
-  headaches?: string;
-  nausea?: string;
   [key: string]: any; // Allow for additional properties
 }
 
@@ -79,7 +59,7 @@ export const strainService = {
       }
       
       // Apply type filter if provided
-      if (filters.type) {
+      if (filters.type && filters.type !== "undefined") {
         query = query.eq('type', filters.type);
       }
       
@@ -119,8 +99,8 @@ export const strainService = {
         reviewCount: Math.floor(Math.random() * 400) + 50, // Random review count for now
       }));
       
-      console.log("Mapped strains:", mappedStrains);
-      return mappedStrains;
+      console.log("Mapped strains:", mappedStrains.length);
+      return mappedStrains.length > 0 ? mappedStrains : fallbackMockStrains;
     } catch (error) {
       console.error("Error fetching strains:", error);
       // Fallback to mock data if there's an error

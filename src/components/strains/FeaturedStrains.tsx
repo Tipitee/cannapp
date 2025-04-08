@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { StrainCard } from "@/components/strains/StrainCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ export const FeaturedStrains = () => {
   // Create placeholder cards for loading state
   const renderPlaceholderCards = () => {
     return Array(4).fill(0).map((_, index) => (
-      <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+      <CarouselItem key={`placeholder-${index}`} className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-4">
         <div className="h-full w-full">
           <StrainCard 
             strain={{
@@ -98,10 +98,10 @@ export const FeaturedStrains = () => {
           }}
           className="w-full"
         >
-          <CarouselContent className="-ml-2 md:-ml-4">
+          <CarouselContent className="-ml-4">
             {loading ? renderPlaceholderCards() : (
               strains.map((strain) => (
-                <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                <CarouselItem key={strain.id} className="basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-4">
                   <div className="h-full w-full">
                     <StrainCard strain={strain} compact />
                   </div>

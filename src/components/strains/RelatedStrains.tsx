@@ -49,7 +49,7 @@ export function RelatedStrains({
   // Create placeholder cards for loading state
   const renderPlaceholderCards = () => {
     return Array(3).fill(0).map((_, index) => (
-      <CarouselItem key={`placeholder-${index}`} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
+      <CarouselItem key={`placeholder-${index}`} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4">
         <div className="h-full w-full">
           <StrainCard 
             strain={{
@@ -77,7 +77,7 @@ export function RelatedStrains({
       <div className="space-y-4 py-4">
         <h3 className="text-lg font-semibold text-white">{t("similarStrains") || "Similar Strains"}</h3>
         <Carousel opts={{ align: "start" }} className="w-full">
-          <CarouselContent className="-ml-2 md:-ml-4">
+          <CarouselContent className="-ml-4">
             {renderPlaceholderCards()}
           </CarouselContent>
         </Carousel>
@@ -99,9 +99,9 @@ export function RelatedStrains({
         }}
         className="w-full"
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="-ml-4">
           {filteredStrains.map((strain) => (
-            <CarouselItem key={strain.id} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/3">
+            <CarouselItem key={strain.id} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4">
               <div className="h-full w-full">
                 <StrainCard strain={strain} compact />
               </div>

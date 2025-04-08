@@ -16,6 +16,8 @@ export function useStrains(filter: StrainFilter = {}) {
       try {
         setLoading(true);
         
+        console.log("Fetching strains with filters:", filter);
+        
         // Fetch from Supabase using the strainService
         const data = await strainService.getStrains(filter);
         
