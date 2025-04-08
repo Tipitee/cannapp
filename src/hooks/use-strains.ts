@@ -15,6 +15,7 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
       setError(null);
       
       try {
+        console.log("Fetching strains with filter:", filter);
         let query = supabase.from("strains").select("*");
         
         // Apply filters
@@ -43,8 +44,12 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
         
         const { data, error: apiError } = await query;
         
-        if (apiError) throw apiError;
+        if (apiError) {
+          console.error("Supabase API error:", apiError);
+          throw new Error(`Supabase error: ${apiError.message}`);
+        }
         
+        console.log("Strains fetched:", data);
         let resultData = data || [];
         
         // Transform data if needed to match expected format
@@ -81,7 +86,8 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
           const filteredData = transformedData.filter(strain => {
             return filter.effects!.some(effect => {
               // Check if the effect exists in effects, flavors, or description fields
-              const effectValue = strain[effect as keyof Strain];
+              const effectKey = effect as keyof Strain;
+              const effectValue = strain[effectKey];
               const descriptionMatch = strain.description?.toLowerCase().includes(effect.toLowerCase());
               return (effectValue && effectValue !== '0' && effectValue !== '') || descriptionMatch;
             });
@@ -95,7 +101,7 @@ export const useStrains = (filter: StrainFilterProps = {}) => {
         setError(err as Error);
         setStrains([]);
         toast.error("Failed to load strains from database", {
-          description: "Please check your connection and try again",
+          description: (err as Error).message || "Please check your connection and try again",
         });
       } finally {
         setLoading(false);
@@ -124,14 +130,19 @@ export const useStrain = (name: string) => {
       setError(null);
       
       try {
+        console.log("Fetching strain details for:", name);
         const { data, error: apiError } = await supabase
           .from("strains")
           .select("*")
           .eq("name", name)
           .maybeSingle();
 
-        if (apiError) throw apiError;
+        if (apiError) {
+          console.error("Supabase API error:", apiError);
+          throw new Error(`Supabase error: ${apiError.message}`);
+        }
         
+        console.log("Strain data:", data);
         if (!data) {
           throw new Error("Strain not found");
         } else {
@@ -166,7 +177,7 @@ export const useStrain = (name: string) => {
         setError(err as Error);
         setStrain(null);
         toast.error("Failed to load strain details", {
-          description: "Please try again later",
+          description: (err as Error).message || "Please try again later",
         });
       } finally {
         setLoading(false);
