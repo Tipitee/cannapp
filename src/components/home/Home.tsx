@@ -31,6 +31,7 @@ export const Home = () => {
     navigate("/", { state: { activeTab: tab } });
   };
   
+  // Fixed the component definition to not use 'new' keyword
   const AppCard = ({ title, description, icon: Icon, onClick, className }: { 
     title: string;
     description: string;
