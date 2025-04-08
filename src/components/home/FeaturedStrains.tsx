@@ -19,9 +19,32 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
   if (!strains.length) return null;
   
   // Format THC level with fallback
-  const formatThcLevel = (thcLevel: number | undefined) => {
+  const formatThcLevel = (thcLevel: number | string | undefined) => {
     if (thcLevel === undefined || thcLevel === null) return "?";
+    
+    // Handle numeric values
+    if (typeof thcLevel === 'number') {
+      return `${parseFloat(String(thcLevel)).toFixed(1)}%`;
+    }
+    
+    // Already formatted string (e.g. "15%")
+    if (typeof thcLevel === 'string' && thcLevel.includes('%')) {
+      return thcLevel;
+    }
+    
+    // Raw number as string
     return `${parseFloat(String(thcLevel)).toFixed(1)}%`;
+  };
+  
+  // Get strain type color
+  const getTypeColor = (type?: string) => {
+    if (!type) return "bg-gray-500";
+    
+    const typeLower = type.toLowerCase();
+    if (typeLower.includes('sativa')) return 'bg-green-500';
+    if (typeLower.includes('indica')) return 'bg-purple-500';
+    if (typeLower.includes('hybrid')) return 'bg-orange-500';
+    return 'bg-gray-500';
   };
   
   return (
@@ -36,12 +59,12 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {strains.map((strain, index) => (
           <Card key={index} className="overflow-hidden hover:shadow-md transition-all">
-            <Link to={`/strains/${strain.name}`}>
+            <Link to={`/strains/${encodeURIComponent(strain.name || '')}`}>
               <div className="aspect-square bg-muted overflow-hidden">
                 {strain.img_url ? (
                   <img 
                     src={strain.img_url} 
-                    alt={strain.name} 
+                    alt={strain.name || 'Unknown strain'} 
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -51,9 +74,9 @@ export const FeaturedStrains = ({ strains }: FeaturedStrainsProps) => {
                 )}
               </div>
               <CardContent className="p-4">
-                <h4 className="font-medium text-md truncate">{strain.name}</h4>
+                <h4 className="font-medium text-md truncate">{strain.name || "Unknown Strain"}</h4>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="outline" className="capitalize">
+                  <Badge variant="outline" className={`capitalize ${getTypeColor(strain.type)}`}>
                     {strain.type || "Unknown"}
                   </Badge>
                   <Badge variant="secondary" className="text-xs">

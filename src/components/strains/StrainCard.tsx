@@ -14,22 +14,45 @@ export function StrainCard({ strain }: StrainCardProps) {
   
   // Get top 3 effects with highest values
   const getTopEffects = () => {
-    const effectsMap: Record<string, string | undefined> = {
-      relaxed: strain.relaxed,
-      happy: strain.happy,
-      euphoric: strain.euphoric,
-      uplifted: strain.uplifted,
-      sleepy: strain.sleepy,
-      creative: strain.creative,
-      energetic: strain.energetic,
-      focused: strain.focused,
-    };
+    // List of all possible effect properties
+    const allEffectKeys = [
+      // Standard effects
+      'relaxed', 'happy', 'euphoric', 'uplifted', 'sleepy', 'creative', 
+      'energetic', 'focused', 'talkative', 'hungry', 'tingly', 'giggly', 'aroused',
+      
+      // Side effects
+      'dry_mouth', 'dry_eyes', 'dizzy', 'paranoid', 'anxious', 'headache',
+      
+      // Medical conditions
+      'stress', 'pain', 'depression', 'anxiety', 'insomnia', 'fatigue', 
+      'lack_of_appetite', 'nausea', 'headaches', 'cramps', 'inflammation', 
+      'muscle_spasms', 'eye_pressure', 'migraines', 'ptsd',
+      'spinal_cord_injury', 'fibromyalgia', 'phantom_limb_pain',
+      'epilepsy', 'multiple_sclerosis', 'bipolar_disorder', 'cancer',
+      'gastrointestinal_disorder', 'asthma', 'anorexia', 'arthritis',
+      'add_adhd', 'muscular_dystrophy', 'hypertension', 'glaucoma',
+      'pms', 'seizures', 'spasticity'
+    ];
+    
+    // Map to collect all available effects and their numeric values
+    const effectsMap = allEffectKeys.reduce<Record<string, number>>((acc, key) => {
+      // Handle both camelCase and snake_case property names for compatibility
+      const value = strain[key as keyof Strain];
+      if (value && value !== '0' && value !== '') {
+        // Convert string values to numbers for comparison
+        const numValue = parseFloat(String(value));
+        if (!isNaN(numValue)) {
+          acc[key] = numValue;
+        }
+      }
+      return acc;
+    }, {});
 
+    // Convert to array, sort by value and take top 3
     return Object.entries(effectsMap)
-      .filter(([_, value]) => value && value !== '0')
-      .sort((a, b) => Number(b[1] || '0') - Number(a[1] || '0'))
+      .sort((a, b) => b[1] - a[1])
       .slice(0, 3)
-      .map(([key]) => key);
+      .map(([key]) => key.replace(/_/g, ' '));
   };
   
   const topEffects = getTopEffects();
@@ -37,26 +60,49 @@ export function StrainCard({ strain }: StrainCardProps) {
   // Format THC levels for display with fallback
   const formatThcLevel = () => {
     if (strain.thc_level === undefined || strain.thc_level === null) return "?";
+    
+    // Handle numeric values
+    if (typeof strain.thc_level === 'number') {
+      return `${parseFloat(String(strain.thc_level)).toFixed(1)}%`;
+    }
+    
+    // Already formatted string (e.g. "15%")
+    if (typeof strain.thc_level === 'string' && strain.thc_level.includes('%')) {
+      return strain.thc_level;
+    }
+    
+    // Raw number as string
     return `${parseFloat(String(strain.thc_level)).toFixed(1)}%`;
   };
   
+  // Get strain type color
   const getTypeColor = () => {
-    switch(strain.type?.toLowerCase()) {
-      case 'sativa': return 'bg-green-500';
-      case 'indica': return 'bg-purple-500';
-      case 'hybrid': return 'bg-orange-500';
-      default: return 'bg-gray-500';
-    }
+    const type = strain.type?.toLowerCase() || '';
+    
+    if (type.includes('sativa')) return 'bg-green-500';
+    if (type.includes('indica')) return 'bg-purple-500';
+    if (type.includes('hybrid')) return 'bg-orange-500';
+    return 'bg-gray-500';
+  };
+
+  // Get a preview of the description (first 10 words)
+  const getDescriptionPreview = () => {
+    if (!strain.description) return "No description available.";
+    
+    const words = strain.description.split(' ');
+    if (words.length <= 10) return strain.description;
+    
+    return words.slice(0, 10).join(' ') + '... ';
   };
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <Link to={`/strains/${encodeURIComponent(strain.name)}`} className="block">
+      <Link to={`/strains/${encodeURIComponent(strain.name || '')}`} className="block">
         <div className="relative aspect-video bg-muted overflow-hidden">
           {strain.img_url ? (
             <img 
               src={strain.img_url} 
-              alt={strain.name} 
+              alt={strain.name || 'Unknown strain'} 
               className="w-full h-full object-cover"
             />
           ) : (
@@ -70,7 +116,7 @@ export function StrainCard({ strain }: StrainCardProps) {
         </div>
         
         <CardContent className="p-4">
-          <h3 className="font-semibold text-lg truncate">{strain.name}</h3>
+          <h3 className="font-semibold text-lg truncate">{strain.name || "Unknown Strain"}</h3>
           <div className="mt-2 flex items-center text-sm text-muted-foreground">
             <span>THC: {formatThcLevel()}</span>
             {strain.most_common_terpene && (
@@ -79,7 +125,8 @@ export function StrainCard({ strain }: StrainCardProps) {
           </div>
           
           <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-            {strain.description || "No description available."}
+            {getDescriptionPreview()}
+            <span className="text-primary hover:underline">Read more</span>
           </p>
         </CardContent>
         

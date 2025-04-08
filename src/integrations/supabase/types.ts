@@ -245,6 +245,180 @@ export type Database = {
           "alzheimer's": string | null
           anorexia: string | null
           anxiety: string | null
+          aroused: string | null
+          arthritis: string | null
+          asthma: string | null
+          bipolar_disorder: string | null
+          cancer: string | null
+          cramps: string | null
+          creative: string | null
+          "crohn's_disease": string | null
+          depression: string | null
+          description: string | null
+          effects: string[] | null
+          energetic: string | null
+          epilepsy: string | null
+          eye_pressure: string | null
+          fatigue: string | null
+          fibromyalgia: string | null
+          focused: string | null
+          gastrointestinal_disorder: string | null
+          giggly: string | null
+          glaucoma: string | null
+          headache: string | null
+          headaches: string | null
+          "hiv/aids": string | null
+          hungry: string | null
+          hypertension: string | null
+          img_url: string | null
+          inflammation: string | null
+          insomnia: string | null
+          lack_of_appetite: string | null
+          migraines: string | null
+          multiple_sclerosis: string | null
+          muscle_spasms: string | null
+          muscular_dystrophy: string | null
+          name: string
+          nausea: string | null
+          pain: string | null
+          "parkinson's": string | null
+          phantom_limb_pain: string | null
+          pms: string | null
+          ptsd: string | null
+          seizures: string | null
+          spasticity: string | null
+          spinal_cord_injury: string | null
+          stress: string | null
+          talkative: string | null
+          terpenes: string[] | null
+          thc_level: number | null
+          tingly: string | null
+          tinnitus: string | null
+          "tourette's_syndrome": string | null
+          type: string | null
+        }
+        Insert: {
+          "add/adhd"?: string | null
+          "alzheimer's"?: string | null
+          anorexia?: string | null
+          anxiety?: string | null
+          aroused?: string | null
+          arthritis?: string | null
+          asthma?: string | null
+          bipolar_disorder?: string | null
+          cancer?: string | null
+          cramps?: string | null
+          creative?: string | null
+          "crohn's_disease"?: string | null
+          depression?: string | null
+          description?: string | null
+          effects?: string[] | null
+          energetic?: string | null
+          epilepsy?: string | null
+          eye_pressure?: string | null
+          fatigue?: string | null
+          fibromyalgia?: string | null
+          focused?: string | null
+          gastrointestinal_disorder?: string | null
+          giggly?: string | null
+          glaucoma?: string | null
+          headache?: string | null
+          headaches?: string | null
+          "hiv/aids"?: string | null
+          hungry?: string | null
+          hypertension?: string | null
+          img_url?: string | null
+          inflammation?: string | null
+          insomnia?: string | null
+          lack_of_appetite?: string | null
+          migraines?: string | null
+          multiple_sclerosis?: string | null
+          muscle_spasms?: string | null
+          muscular_dystrophy?: string | null
+          name: string
+          nausea?: string | null
+          pain?: string | null
+          "parkinson's"?: string | null
+          phantom_limb_pain?: string | null
+          pms?: string | null
+          ptsd?: string | null
+          seizures?: string | null
+          spasticity?: string | null
+          spinal_cord_injury?: string | null
+          stress?: string | null
+          talkative?: string | null
+          terpenes?: string[] | null
+          thc_level?: number | null
+          tingly?: string | null
+          tinnitus?: string | null
+          "tourette's_syndrome"?: string | null
+          type?: string | null
+        }
+        Update: {
+          "add/adhd"?: string | null
+          "alzheimer's"?: string | null
+          anorexia?: string | null
+          anxiety?: string | null
+          aroused?: string | null
+          arthritis?: string | null
+          asthma?: string | null
+          bipolar_disorder?: string | null
+          cancer?: string | null
+          cramps?: string | null
+          creative?: string | null
+          "crohn's_disease"?: string | null
+          depression?: string | null
+          description?: string | null
+          effects?: string[] | null
+          energetic?: string | null
+          epilepsy?: string | null
+          eye_pressure?: string | null
+          fatigue?: string | null
+          fibromyalgia?: string | null
+          focused?: string | null
+          gastrointestinal_disorder?: string | null
+          giggly?: string | null
+          glaucoma?: string | null
+          headache?: string | null
+          headaches?: string | null
+          "hiv/aids"?: string | null
+          hungry?: string | null
+          hypertension?: string | null
+          img_url?: string | null
+          inflammation?: string | null
+          insomnia?: string | null
+          lack_of_appetite?: string | null
+          migraines?: string | null
+          multiple_sclerosis?: string | null
+          muscle_spasms?: string | null
+          muscular_dystrophy?: string | null
+          name?: string
+          nausea?: string | null
+          pain?: string | null
+          "parkinson's"?: string | null
+          phantom_limb_pain?: string | null
+          pms?: string | null
+          ptsd?: string | null
+          seizures?: string | null
+          spasticity?: string | null
+          spinal_cord_injury?: string | null
+          stress?: string | null
+          talkative?: string | null
+          terpenes?: string[] | null
+          thc_level?: number | null
+          tingly?: string | null
+          tinnitus?: string | null
+          "tourette's_syndrome"?: string | null
+          type?: string | null
+        }
+        Relationships: []
+      }
+      strains_backup: {
+        Row: {
+          "add/adhd": string | null
+          "alzheimer's": string | null
+          anorexia: string | null
+          anxiety: string | null
           anxious: string | null
           aroused: string | null
           arthritis: string | null
@@ -259,6 +433,7 @@ export type Database = {
           dizzy: string | null
           dry_eyes: string | null
           dry_mouth: string | null
+          effects: string[] | null
           energetic: string | null
           epilepsy: string | null
           euphoric: string | null
@@ -269,7 +444,6 @@ export type Database = {
           gastrointestinal_disorder: string | null
           giggly: string | null
           glaucoma: string | null
-          happy: string | null
           headache: string | null
           headaches: string | null
           "hiv/aids": string | null
@@ -280,11 +454,10 @@ export type Database = {
           insomnia: string | null
           lack_of_appetite: string | null
           migraines: string | null
-          most_common_terpene: string | null
           multiple_sclerosis: string | null
           muscle_spasms: string | null
           muscular_dystrophy: string | null
-          name: string
+          name: string | null
           nausea: string | null
           pain: string | null
           paranoid: string | null
@@ -292,13 +465,13 @@ export type Database = {
           phantom_limb_pain: string | null
           pms: string | null
           ptsd: string | null
-          relaxed: string | null
           seizures: string | null
           sleepy: string | null
           spasticity: string | null
           spinal_cord_injury: string | null
           stress: string | null
           talkative: string | null
+          terpenes: string[] | null
           thc_level: number | null
           tingly: string | null
           tinnitus: string | null
@@ -325,6 +498,7 @@ export type Database = {
           dizzy?: string | null
           dry_eyes?: string | null
           dry_mouth?: string | null
+          effects?: string[] | null
           energetic?: string | null
           epilepsy?: string | null
           euphoric?: string | null
@@ -335,7 +509,6 @@ export type Database = {
           gastrointestinal_disorder?: string | null
           giggly?: string | null
           glaucoma?: string | null
-          happy?: string | null
           headache?: string | null
           headaches?: string | null
           "hiv/aids"?: string | null
@@ -346,11 +519,10 @@ export type Database = {
           insomnia?: string | null
           lack_of_appetite?: string | null
           migraines?: string | null
-          most_common_terpene?: string | null
           multiple_sclerosis?: string | null
           muscle_spasms?: string | null
           muscular_dystrophy?: string | null
-          name: string
+          name?: string | null
           nausea?: string | null
           pain?: string | null
           paranoid?: string | null
@@ -358,13 +530,13 @@ export type Database = {
           phantom_limb_pain?: string | null
           pms?: string | null
           ptsd?: string | null
-          relaxed?: string | null
           seizures?: string | null
           sleepy?: string | null
           spasticity?: string | null
           spinal_cord_injury?: string | null
           stress?: string | null
           talkative?: string | null
+          terpenes?: string[] | null
           thc_level?: number | null
           tingly?: string | null
           tinnitus?: string | null
@@ -391,6 +563,7 @@ export type Database = {
           dizzy?: string | null
           dry_eyes?: string | null
           dry_mouth?: string | null
+          effects?: string[] | null
           energetic?: string | null
           epilepsy?: string | null
           euphoric?: string | null
@@ -401,7 +574,6 @@ export type Database = {
           gastrointestinal_disorder?: string | null
           giggly?: string | null
           glaucoma?: string | null
-          happy?: string | null
           headache?: string | null
           headaches?: string | null
           "hiv/aids"?: string | null
@@ -412,11 +584,10 @@ export type Database = {
           insomnia?: string | null
           lack_of_appetite?: string | null
           migraines?: string | null
-          most_common_terpene?: string | null
           multiple_sclerosis?: string | null
           muscle_spasms?: string | null
           muscular_dystrophy?: string | null
-          name?: string
+          name?: string | null
           nausea?: string | null
           pain?: string | null
           paranoid?: string | null
@@ -424,13 +595,13 @@ export type Database = {
           phantom_limb_pain?: string | null
           pms?: string | null
           ptsd?: string | null
-          relaxed?: string | null
           seizures?: string | null
           sleepy?: string | null
           spasticity?: string | null
           spinal_cord_injury?: string | null
           stress?: string | null
           talkative?: string | null
+          terpenes?: string[] | null
           thc_level?: number | null
           tingly?: string | null
           tinnitus?: string | null
